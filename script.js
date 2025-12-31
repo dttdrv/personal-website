@@ -3,8 +3,8 @@
    Living, breathing art installation
    ======================================== */
 
-// === Smooth Scroll with Lenis ===
-// Lenis is loaded via CDN in index.html
+// === Smooth Scroll with Lenis (Desktop only) ===
+// Lenis causes significant jank on mobile due to always-on RAF loop
 let lenis = null;
 
 const SmoothScrollInit = {
@@ -12,30 +12,33 @@ const SmoothScrollInit = {
     // Don't apply on reduced motion preference
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // SKIP ENTIRELY on touch devices - native scroll is far more performant
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (isTouchDevice) {
+      // Native smooth scroll via CSS is hardware-accelerated
+      document.documentElement.style.scrollBehavior = 'smooth';
+      return;
+    }
+
     // Check if Lenis is available (loaded via CDN)
     if (typeof Lenis === 'undefined') {
       console.warn('Lenis not loaded, smooth scroll disabled');
       return;
     }
 
-    // Detect touch device for mobile-specific configuration
-    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-    // Initialize Lenis with device-specific settings
+    // Desktop only - Initialize Lenis
     lenis = new Lenis({
-      duration: isTouchDevice ? 0.8 : 1.2,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      syncTouch: isTouchDevice,
-      syncTouchLerp: 0.1,
+      syncTouch: false,  // Never sync touch
       wheelMultiplier: 1,
-      touchMultiplier: 1.5,
       infinite: false,
     });
 
-    // Animation frame loop
+    // Animation frame loop (desktop only)
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -200,7 +203,9 @@ const MobileTouchRepel = {
   nameSection: null,
   touchX: 0,
   touchY: 0,
+  startY: 0, // Initial Y for scroll detection
   isTouching: false,
+  isScrolling: false, // True when user is scrolling (skip repel)
   isAnimating: false,
   moveThrottled: false,
 
@@ -239,9 +244,11 @@ const MobileTouchRepel = {
 
   onTouchStart(e) {
     this.isTouching = true;
+    this.isScrolling = false; // Reset scroll detection
     const touch = e.touches[0];
     this.touchX = touch.clientX;
     this.touchY = touch.clientY;
+    this.startY = touch.clientY; // Track initial Y for scroll detection
     this.updateTargets();
     // Start animation loop only when touching
     if (!this.isAnimating) {
@@ -252,7 +259,23 @@ const MobileTouchRepel = {
 
   onTouchMove(e) {
     if (!this.isTouching) return;
+
     const touch = e.touches[0];
+
+    // Detect scroll gesture: if vertical movement > 15px, treat as scroll
+    if (!this.isScrolling && Math.abs(touch.clientY - this.startY) > 15) {
+      this.isScrolling = true;
+      // Reset targets to stop repel effect during scroll
+      this.letterData.forEach(data => {
+        data.targetX = 0;
+        data.targetY = 0;
+      });
+      return;
+    }
+
+    // Skip updates while scrolling
+    if (this.isScrolling) return;
+
     this.touchX = touch.clientX;
     this.touchY = touch.clientY;
 
@@ -266,6 +289,7 @@ const MobileTouchRepel = {
 
   onTouchEnd() {
     this.isTouching = false;
+    this.isScrolling = false;
     // Reset all targets to 0
     this.letterData.forEach(data => {
       data.targetX = 0;
@@ -1091,30 +1115,18 @@ const HoverEffects = {
 // === Page Load Animation with Preloader ===
 const PageLoad = {
   preloader: null,
-  minLoadTime: 800, // Minimum time to show preloader
-
-  // All images to preload
-  imagesToPreload: [
-    'pictures/profile.jpg',
-    'pictures/IMG_20250415_230725_326_edit_16243105548541.jpg',
-    'pictures/IMG_20250419_235912.jpg',
-    'pictures/IMG_20250710_095454~2 (1).jpg',
-    'pictures/IMG_20250822_093038~2 (1).jpg',
-    'pictures/IMG_20250925_175649_edit_41287785265446.jpg'
-  ],
+  minLoadTime: 400, // Short minimum time - don't block interactivity
 
   init() {
     this.preloader = document.getElementById('preloader');
     const loadStart = Date.now();
 
-    // Wait for fonts AND all images to be ready
-    Promise.all([
-      document.fonts.ready,
-      this.preloadAllImages()
-    ]).then(() => {
+    // Only wait for fonts - don't block on images
+    // Images load lazily in background with cover reveal animation
+    document.fonts.ready.then(() => {
       document.body.classList.add('fonts-loaded');
 
-      // Ensure minimum load time has passed
+      // Ensure minimum load time has passed (keeps loader from flashing)
       const elapsed = Date.now() - loadStart;
       const remaining = Math.max(0, this.minLoadTime - elapsed);
 
@@ -1122,23 +1134,14 @@ const PageLoad = {
         this.hidePreloader();
       }, remaining);
     });
-  },
 
-  preloadAllImages() {
-    const promises = this.imagesToPreload.map(src => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.onload = resolve;
-        img.onerror = resolve; // Continue even if image fails
-        img.src = src;
-      });
-    });
-
-    // Race against a timeout to prevent infinite loading
-    return Promise.race([
-      Promise.all(promises),
-      new Promise(resolve => setTimeout(resolve, 5000))
-    ]);
+    // Failsafe: hide preloader after 2s regardless
+    setTimeout(() => {
+      if (this.preloader && !this.preloader.classList.contains('hidden')) {
+        document.body.classList.add('fonts-loaded');
+        this.hidePreloader();
+      }
+    }, 2000);
   },
 
   hidePreloader() {
@@ -1218,13 +1221,14 @@ const LanguageSwitcher = {
   }
 };
 
-// === Section Navigation (Scroll-based tracking) ===
+// === Section Navigation (IntersectionObserver-based tracking) ===
 const SectionNav = {
   nav: null,
   navItems: null,
   sections: null,
   currentSection: null,
-  ticking: false,
+  visibleSections: new Map(), // Track visibility ratios
+  observer: null,
 
   init() {
     this.nav = document.getElementById('section-nav');
@@ -1235,51 +1239,63 @@ const SectionNav = {
 
     if (!this.sections.length) return;
 
-    // Initial check (scroll handling moved to consolidated ScrollHandler)
-    this.updateActiveSection();
-  },
-
-  updateActiveSection() {
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const viewportCenter = scrollTop + windowHeight * 0.4; // Focus on upper portion of viewport
-
-    let closestSection = null;
-    let closestDistance = Infinity;
+    // Use IntersectionObserver instead of per-scroll getBoundingClientRect
+    // This is MUCH more performant on mobile
+    this.observer = new IntersectionObserver(
+      (entries) => this.handleIntersection(entries),
+      {
+        // Trigger when sections cross these thresholds
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+        // Focus on upper 40% of viewport (matches original behavior)
+        rootMargin: '-10% 0px -50% 0px'
+      }
+    );
 
     this.sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const sectionTop = scrollTop + rect.top;
-      const sectionBottom = sectionTop + rect.height;
-      const sectionCenter = sectionTop + rect.height / 2;
+      this.observer.observe(section);
+    });
 
-      // Check if section is in viewport at all
-      if (sectionBottom > scrollTop && sectionTop < scrollTop + windowHeight) {
-        // Calculate distance from viewport center to section center
-        const distance = Math.abs(viewportCenter - sectionCenter);
+    // Set initial section
+    this.currentSection = this.sections[0]?.id;
+    this.setActive(this.currentSection);
+  },
 
-        // Prefer sections that are more centered in view
-        if (distance < closestDistance) {
-          closestDistance = distance;
-          closestSection = section.id;
-        }
+  handleIntersection(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        this.visibleSections.set(entry.target.id, entry.intersectionRatio);
+      } else {
+        this.visibleSections.delete(entry.target.id);
       }
     });
 
-    // Also check if we're at the very top - always show first section
-    if (scrollTop < 100) {
-      closestSection = this.sections[0]?.id;
+    // Find the most visible section
+    let bestSection = null;
+    let bestRatio = 0;
+
+    this.visibleSections.forEach((ratio, id) => {
+      if (ratio > bestRatio) {
+        bestRatio = ratio;
+        bestSection = id;
+      }
+    });
+
+    // Edge cases: top and bottom of page
+    if (window.scrollY < 100) {
+      bestSection = this.sections[0]?.id;
+    } else if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50) {
+      bestSection = this.sections[this.sections.length - 1]?.id;
     }
 
-    // Also check if we're at the very bottom - show last section
-    if (scrollTop + windowHeight >= document.documentElement.scrollHeight - 50) {
-      closestSection = this.sections[this.sections.length - 1]?.id;
+    if (bestSection && bestSection !== this.currentSection) {
+      this.currentSection = bestSection;
+      this.setActive(bestSection);
     }
+  },
 
-    if (closestSection && closestSection !== this.currentSection) {
-      this.currentSection = closestSection;
-      this.setActive(closestSection);
-    }
+  // Keep for manual updates if needed (but shouldn't be called on scroll anymore)
+  updateActiveSection() {
+    // No-op - handled by IntersectionObserver now
   },
 
   setActive(sectionId) {
@@ -1402,11 +1418,22 @@ const AboutToggle = {
   init() {
     this.btn = document.getElementById('see-more-toggle');
     this.content = document.getElementById('about-extended');
+    this.isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     if (!this.btn || !this.content) return;
 
-    // Initialize word spans for bio paragraphs
-    this.initWordSpans();
+    // On mobile, defer word splitting to idle time to avoid blocking first paint
+    // On desktop, do it immediately for better visual polish
+    if (this.isMobile) {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => this.initWordSpans(), { timeout: 2000 });
+      } else {
+        // Fallback: defer with setTimeout
+        setTimeout(() => this.initWordSpans(), 1000);
+      }
+    } else {
+      this.initWordSpans();
+    }
 
     this.btn.addEventListener('click', () => this.toggle());
   },
@@ -1460,35 +1487,29 @@ const AboutToggle = {
 };
 
 // === Consolidated Scroll Handler ===
+// Now much lighter - SectionNav uses IntersectionObserver (no per-scroll calls)
 const ScrollHandler = {
   ticking: false,
   isMobile: false,
-  lastUpdate: 0,
 
   init() {
     this.isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-    window.addEventListener('scroll', () => this.onScroll(), { passive: true });
+
+    // Only attach scroll handler if parallax is active (desktop only)
+    if (!this.isMobile) {
+      window.addEventListener('scroll', () => this.onScroll(), { passive: true });
+    }
+    // SectionNav now uses IntersectionObserver - no scroll handler needed
+    // MobileMenu updates when opened, not on every scroll
   },
 
   onScroll() {
     if (!this.ticking) {
-      // On mobile, throttle to ~15fps instead of 60fps to save battery
-      const now = Date.now();
-      const delay = this.isMobile ? 66 : 0; // 66ms = ~15fps
-
-      if (now - this.lastUpdate > delay) {
-        requestAnimationFrame(() => {
-          // Skip parallax on mobile (already handled in ParallaxLayers but extra safety)
-          if (!this.isMobile) {
-            ParallaxLayers.update();
-          }
-          SectionNav.updateActiveSection();
-          MobileMenu.updateActiveItem();
-          this.ticking = false;
-          this.lastUpdate = Date.now();
-        });
-        this.ticking = true;
-      }
+      requestAnimationFrame(() => {
+        ParallaxLayers.update();
+        this.ticking = false;
+      });
+      this.ticking = true;
     }
   }
 };
@@ -1591,20 +1612,9 @@ const MobileMenu = {
   updateActiveItem() {
     if (!this.navItems) return;
 
-    const scrollTop = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const sections = Array.from(document.querySelectorAll('.room[id]'));
-
-    let currentSection = sections[0]?.id;
-
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const sectionTop = scrollTop + rect.top;
-
-      if (scrollTop >= sectionTop - windowHeight * 0.4) {
-        currentSection = section.id;
-      }
-    });
+    // Reuse SectionNav's tracked section instead of recalculating
+    // This avoids duplicate getBoundingClientRect calls
+    const currentSection = SectionNav.currentSection;
 
     this.navItems.forEach(item => {
       const isActive = item.dataset.section === currentSection;

@@ -439,32 +439,99 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   50% { opacity: 1; }
 }
 
-/* === Subtle Top Blur Overlay === */
+/* === Top Blur Overlay with Chromatic Aberration === */
 .top-blur-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 42px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    transparent 100%
-  );
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  height: 90px;
   pointer-events: none;
   z-index: 9990;
-}
-
-:root[data-theme="dark"] .top-blur-overlay {
-  background: linear-gradient(
+  /* Smooth fade using mask */
+  -webkit-mask-image: linear-gradient(
     to bottom,
-    rgba(10, 10, 10, 0.7) 0%,
-    rgba(10, 10, 10, 0.4) 50%,
+    black 0%,
+    black 25%,
     transparent 100%
   );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 25%,
+    transparent 100%
+  );
+}
+
+/* Base blur layer */
+.top-blur-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* Chromatic aberration - red/cyan color fringing */
+.top-blur-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 60, 60, 0.06) 0%,
+      rgba(255, 80, 80, 0.03) 40%,
+      transparent 80%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(60, 180, 255, 0.06) 0%,
+      rgba(80, 200, 255, 0.03) 40%,
+      transparent 80%
+    );
+  background-position: -3px 0, 3px 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  mix-blend-mode: normal;
+  opacity: 0.8;
+}
+
+:root[data-theme="dark"] .top-blur-overlay::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 8, 8, 0.7) 0%,
+    rgba(10, 10, 10, 0.35) 50%,
+    transparent 100%
+  );
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+}
+
+:root[data-theme="dark"] .top-blur-overlay::after {
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255, 50, 50, 0.08) 0%,
+      rgba(255, 70, 70, 0.04) 40%,
+      transparent 80%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(50, 160, 255, 0.08) 0%,
+      rgba(70, 180, 255, 0.04) 40%,
+      transparent 80%
+    );
+  background-position: -3px 0, 3px 0;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.9;
 }
 
 /* === Scroll Progress === */
@@ -2212,76 +2279,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
   /* === MOBILE PERFORMANCE OPTIMIZATIONS === */
 
-  /* Disable ALL backdrop-filter on mobile - extremely expensive */
-  .modal-backdrop,
-  .project-modal-backdrop,
-  .top-blur-overlay {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  /* Add touch-action for better scroll performance */
+  .room--name {
+    touch-action: pan-y;
   }
 
-  .modal-backdrop,
-  .project-modal-backdrop {
-    background: rgba(0, 0, 0, 0.92);
-  }
-
-  .top-blur-overlay {
-    background: linear-gradient(
-      to bottom,
-      var(--white) 0%,
-      rgba(255, 255, 255, 0.9) 50%,
-      transparent 100%
-    );
-  }
-
-  /* Disable SVG noise filter on mobile - very expensive */
-  .room--name::before {
-    display: none !important;
-  }
-
-  /* HIDE ambient layer completely on mobile */
-  .ambient-layer {
-    display: none !important;
-  }
-
-  /* Disable ALL infinite animations on mobile */
-  .ambient-orb,
-  .ambient-shape,
-  .scroll-arrow,
-  .profile-accent,
-  .annotation-marker {
-    animation: none !important;
-  }
-
-  /* REMOVE all box-shadows on mobile */
-  .carousel-card,
-  .carousel-card[data-position="center"],
-  .project-card,
-  .experience,
-  .modal-content {
-    box-shadow: none !important;
-  }
-
-  /* Disable parallax transforms on mobile */
+  /* Disable parallax transforms on mobile - handled in JS */
   [data-parallax] {
     transform: none !important;
   }
 
-  /* Disable will-change on mobile to save GPU memory */
-  .name-letter,
-  .carousel-card,
-  .ambient-orb,
-  .ambient-shape {
-    will-change: auto !important;
-  }
-
-  /* Simplify transitions on mobile */
-  .experience-details {
-    transition: none !important;
-  }
-
-  .about-extended {
-    transition: max-height 0.5s ease, opacity 0.3s ease !important;
+  /* Remove layer promotion on mobile to reduce GPU memory */
+  .room {
+    transform: none !important;
   }
 }
 

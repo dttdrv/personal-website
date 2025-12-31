@@ -448,10 +448,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: 42px;
   background: linear-gradient(
     to bottom,
-    var(--white) 0%,
-    rgba(255, 255, 255, 0.8) 40%,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
     transparent 100%
   );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   pointer-events: none;
   z-index: 9990;
 }
@@ -459,8 +461,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 :root[data-theme="dark"] .top-blur-overlay {
   background: linear-gradient(
     to bottom,
-    var(--white) 0%,
-    rgba(10, 10, 10, 0.8) 40%,
+    rgba(10, 10, 10, 0.7) 0%,
+    rgba(10, 10, 10, 0.4) 50%,
     transparent 100%
   );
 }
@@ -2210,12 +2212,26 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
   /* === MOBILE PERFORMANCE OPTIMIZATIONS === */
 
-  /* Disable expensive backdrop blur on mobile */
+  /* Disable ALL backdrop-filter on mobile - extremely expensive */
   .modal-backdrop,
-  .project-modal-backdrop {
+  .project-modal-backdrop,
+  .top-blur-overlay {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+
+  .modal-backdrop,
+  .project-modal-backdrop {
     background: rgba(0, 0, 0, 0.92);
+  }
+
+  .top-blur-overlay {
+    background: linear-gradient(
+      to bottom,
+      var(--white) 0%,
+      rgba(255, 255, 255, 0.9) 50%,
+      transparent 100%
+    );
   }
 
   /* Disable SVG noise filter on mobile - very expensive */
@@ -2223,41 +2239,49 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     display: none !important;
   }
 
-  /* Pause/disable infinite animations on mobile */
+  /* HIDE ambient layer completely on mobile */
+  .ambient-layer {
+    display: none !important;
+  }
+
+  /* Disable ALL infinite animations on mobile */
   .ambient-orb,
-  .ambient-shape {
-    animation: none !important;
-  }
-
-  .scroll-arrow {
-    animation: none !important;
-  }
-
-  .profile-accent {
-    animation: none !important;
-  }
-
+  .ambient-shape,
+  .scroll-arrow,
+  .profile-accent,
   .annotation-marker {
     animation: none !important;
   }
 
-  /* Reduce box-shadow complexity on mobile */
-  .carousel-card[data-position="center"] {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  /* REMOVE all box-shadows on mobile */
+  .carousel-card,
+  .carousel-card[data-position="center"],
+  .project-card,
+  .experience,
+  .modal-content {
+    box-shadow: none !important;
   }
 
-  .project-card {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-
-  /* Disable parallax transforms on mobile - handled in JS but CSS backup */
+  /* Disable parallax transforms on mobile */
   [data-parallax] {
     transform: none !important;
   }
 
-  /* Simplify ambient layer on mobile */
-  .ambient-layer {
-    opacity: 0.3;
+  /* Disable will-change on mobile to save GPU memory */
+  .name-letter,
+  .carousel-card,
+  .ambient-orb,
+  .ambient-shape {
+    will-change: auto !important;
+  }
+
+  /* Simplify transitions on mobile */
+  .experience-details {
+    transition: none !important;
+  }
+
+  .about-extended {
+    transition: max-height 0.5s ease, opacity 0.3s ease !important;
   }
 }
 

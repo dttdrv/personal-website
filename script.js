@@ -23,13 +23,13 @@ const SmoothScrollInit = {
 
     // Initialize Lenis with device-specific settings
     lenis = new Lenis({
-      duration: isTouchDevice ? 0.8 : 1.2,  // Faster on mobile for responsiveness
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing function
+      duration: isTouchDevice ? 0.8 : 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: !isTouchDevice,  // Disable wheel smoothing on touch (no wheel anyway)
-      syncTouch: isTouchDevice,     // Enable smooth scroll on touch devices
-      syncTouchLerp: 0.1,           // Faster touch response (was 0.075)
+      smoothWheel: true,
+      syncTouch: isTouchDevice,
+      syncTouchLerp: 0.1,
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
       infinite: false,
@@ -55,6 +55,7 @@ const MagneticLetters = {
   isActive: false,
   isTouchDevice: false,
   needsRecalc: false,
+  isAnimating: false,
 
   init() {
     // Check if touch device or low-end device - skip magnetic effect
@@ -104,15 +105,28 @@ const MagneticLetters = {
       const dy = this.mouseY - this.lastCalcY;
       if (dx * dx + dy * dy > 25) {
         this.needsRecalc = true;
+        // Start animation loop if not running
+        if (!this.isAnimating) {
+          this.isAnimating = true;
+          this.animate();
+        }
       }
     }, { passive: true });
 
-    // Animate on each frame
-    this.animate();
+    // DON'T start animation loop - only run when mouse moves
   },
 
   lerp(start, end, factor) {
     return start + (end - start) * factor;
+  },
+
+  // Check if all letters are settled
+  isSettled() {
+    return this.letterData.every(d =>
+      Math.abs(d.currentX) < 0.1 && Math.abs(d.currentY) < 0.1 &&
+      Math.abs(d.currentRotation) < 0.1 && Math.abs(d.currentScale - 1) < 0.001 &&
+      Math.abs(d.targetX) < 0.1 && Math.abs(d.targetY) < 0.1
+    );
   },
 
   animate() {
@@ -164,8 +178,16 @@ const MagneticLetters = {
       if (Math.abs(data.currentX) > 0.1 || Math.abs(data.currentY) > 0.1 ||
           Math.abs(data.currentRotation) > 0.1 || Math.abs(data.currentScale - 1) > 0.001) {
         data.element.style.transform = `translate(${data.currentX}px, ${data.currentY}px) rotate(${data.currentRotation}deg) scale(${data.currentScale})`;
+      } else {
+        data.element.style.transform = '';
       }
     });
+
+    // Stop animation when settled to save CPU
+    if (this.isSettled() && !this.needsRecalc) {
+      this.isAnimating = false;
+      return;
+    }
 
     requestAnimationFrame(() => this.animate());
   }

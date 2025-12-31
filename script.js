@@ -253,7 +253,7 @@ const MobileTouchRepel = {
 
   updateTargets() {
     const repelRadius = 120; // How close touch needs to be to affect letters
-    const maxRepel = 12; // Maximum displacement in pixels (subtle)
+    const maxRepel = 16; // Maximum displacement in pixels (33% stronger)
 
     this.letterData.forEach(data => {
       const letter = data.element;
@@ -1066,25 +1066,92 @@ const HoverEffects = {
   }
 };
 
-// === Page Load Animation ===
+// === Page Load Animation with Preloader ===
 const PageLoad = {
+  preloader: null,
+  minLoadTime: 800, // Minimum time to show preloader
+
+  // All images to preload
+  imagesToPreload: [
+    'pictures/profile.jpg',
+    'pictures/IMG_20250415_230725_326_edit_16243105548541.jpg',
+    'pictures/IMG_20250419_235912.jpg',
+    'pictures/IMG_20250710_095454~2 (1).jpg',
+    'pictures/IMG_20250822_093038~2 (1).jpg',
+    'pictures/IMG_20250925_175649_edit_41287785265446.jpg'
+  ],
+
   init() {
-    document.fonts.ready.then(() => {
+    this.preloader = document.getElementById('preloader');
+    const loadStart = Date.now();
+
+    // Wait for fonts AND all images to be ready
+    Promise.all([
+      document.fonts.ready,
+      this.preloadAllImages()
+    ]).then(() => {
       document.body.classList.add('fonts-loaded');
 
-      // Stagger initial reveals
+      // Ensure minimum load time has passed
+      const elapsed = Date.now() - loadStart;
+      const remaining = Math.max(0, this.minLoadTime - elapsed);
+
+      setTimeout(() => {
+        this.hidePreloader();
+      }, remaining);
+    });
+  },
+
+  preloadAllImages() {
+    const promises = this.imagesToPreload.map(src => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = resolve; // Continue even if image fails
+        img.src = src;
+      });
+    });
+
+    // Race against a timeout to prevent infinite loading
+    return Promise.race([
+      Promise.all(promises),
+      new Promise(resolve => setTimeout(resolve, 5000))
+    ]);
+  },
+
+  hidePreloader() {
+    if (this.preloader) {
+      // Add hidden class to trigger fade out
+      this.preloader.classList.add('hidden');
+
+      // Stagger initial reveals after preloader starts fading
       setTimeout(() => {
         const firstRoom = document.querySelector('.room--name');
         if (firstRoom) {
           firstRoom.classList.add('visible');
         }
-      }, 100);
+      }, 200);
 
       // Animate ambient layer in
       setTimeout(() => {
         document.querySelector('.ambient-layer')?.classList.add('active');
-      }, 500);
-    });
+      }, 400);
+
+      // Reveal carousel cards with staggered animation
+      setTimeout(() => {
+        const cards = document.querySelectorAll('.carousel-card');
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.classList.add('revealed');
+          }, index * 100);
+        });
+      }, 600);
+
+      // Remove preloader from DOM after animation completes
+      setTimeout(() => {
+        this.preloader.remove();
+      }, 800);
+    }
   }
 };
 

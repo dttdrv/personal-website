@@ -16,16 +16,59 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" as="style">
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+  <!-- Preload critical images -->
+  <link rel="preload" href="pictures/profile.jpg" as="image">
+  <link rel="preload" href="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" as="image">
+  <link rel="preload" href="pictures/IMG_20250419_235912.jpg" as="image">
+  <link rel="preload" href="pictures/IMG_20250710_095454~2 (1).jpg" as="image">
+  <link rel="preload" href="pictures/IMG_20250822_093038~2 (1).jpg" as="image">
+  <link rel="preload" href="pictures/IMG_20250925_175649_edit_41287785265446.jpg" as="image">
+
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Inline critical CSS for faster first paint -->
+  <!-- Inline critical CSS for preloader (must be instant) -->
   <style>
-    body { opacity: 0; }
-    body.fonts-loaded { opacity: 1; transition: opacity 0.3s ease; }
+    /* Preloader - Minimal clock spinner */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFFFFF;
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
+    }
+    .preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .preloader-spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid #E5E5E5;
+      border-top-color: #0000FF;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* Dark mode preloader */
+    @media (prefers-color-scheme: dark) {
+      .preloader { background: #0A0A0A; }
+      .preloader-spinner { border-color: #2a2a2a; border-top-color: #4466FF; }
+    }
   </style>
 </head>
 <body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-spinner"></div>
+  </div>
+
   <!-- Scroll Progress -->
   <div class="scroll-progress"></div>
 
@@ -212,7 +255,7 @@
         <!-- Profile Image Area -->
         <div class="about-visual" data-scroll-reveal>
           <div class="profile-frame">
-            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="lazy">
+            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="eager">
             <div class="profile-accent"></div>
           </div>
         </div>

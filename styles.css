@@ -63,6 +63,7 @@ html.lenis, html.lenis body {
   overflow: hidden;
 }
 
+
 html::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
@@ -164,7 +165,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   transition: color 0.3s ease;
 }
 
-/* Labels hidden by default, revealed on hover with left-to-right fade */
+/* Labels hidden by default, revealed on hover */
 .nav-label {
   font-size: 0.7rem;
   font-weight: 600;
@@ -172,14 +173,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   text-transform: uppercase;
   color: var(--black);
   white-space: nowrap;
-  clip-path: inset(0 100% 0 0);
+  transform: translateX(-10px);
   opacity: 0;
-  transition: clip-path 0.4s var(--ease-out-expo), opacity 0.3s ease, color 0.3s ease;
+  transition: transform 0.3s var(--ease-out-expo), opacity 0.3s ease, color 0.3s ease;
 }
 
 .nav-item:hover .nav-label,
 .nav-item.active .nav-label {
-  clip-path: inset(0 0 0 0);
+  transform: translateX(0);
   opacity: 1;
 }
 
@@ -331,9 +332,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .ambient-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
+  opacity: 0.25;
   animation: ambientFloat 20s ease-in-out infinite;
+  will-change: transform;
 }
 
 .ambient-orb--1 {
@@ -430,15 +431,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: 42px;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(255, 255, 255, 0.2) 60%,
+    var(--white) 0%,
+    rgba(255, 255, 255, 0.8) 40%,
     transparent 100%
   );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
-  border-radius: 0 0 24px 24px;
   pointer-events: none;
   z-index: 9990;
 }
@@ -446,8 +442,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 :root[data-theme="dark"] .top-blur-overlay {
   background: linear-gradient(
     to bottom,
-    rgba(10, 10, 10, 0.5) 0%,
-    rgba(10, 10, 10, 0.2) 60%,
+    var(--white) 0%,
+    rgba(10, 10, 10, 0.8) 40%,
     transparent 100%
   );
 }
@@ -1161,6 +1157,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   min-height: auto;
   padding: var(--space-xl) var(--space-lg);
   padding-bottom: 6rem;
+  overflow: visible;
 }
 
 .albums-header {
@@ -1238,13 +1235,14 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   overflow: hidden;
   transition: all 0.7s var(--ease-out-expo);
   cursor: pointer;
+  will-change: transform;
 }
 
 /* Card positions - Stacked fan effect */
 .carousel-card[data-position="center"] {
   z-index: 5;
   transform: translateX(0) rotate(0deg) scale(1);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
 }
 
 .carousel-card[data-position="left"] {
@@ -1289,7 +1287,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .carousel-card[data-position="center"]:hover {
   transform: translateX(0) rotate(0deg) scale(1.02);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .card-image {
@@ -1564,8 +1562,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   width: 90%;
   max-width: 480px;
   max-height: 85vh;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   background: var(--white);
   padding: var(--space-md) var(--space-lg);
   transform: translateY(30px) scale(0.95);
@@ -1722,15 +1722,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: 42px;
   background: linear-gradient(
     to bottom,
-    rgba(255, 255, 255, 0.5) 0%,
-    rgba(255, 255, 255, 0.2) 60%,
+    var(--white) 0%,
+    rgba(255, 255, 255, 0.8) 40%,
     transparent 100%
   );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 40%, transparent 100%);
-  border-radius: 0 0 24px 24px;
   pointer-events: none;
   z-index: 5;
   opacity: 0;
@@ -1749,8 +1744,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 :root[data-theme="dark"] .project-modal-blur {
   background: linear-gradient(
     to bottom,
-    rgba(10, 10, 10, 0.5) 0%,
-    rgba(10, 10, 10, 0.2) 60%,
+    var(--white) 0%,
+    rgba(10, 10, 10, 0.8) 40%,
     transparent 100%
   );
 }
@@ -1769,8 +1764,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   padding: var(--space-lg);
   padding-top: 15vh;
   padding-bottom: var(--space-xl);
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -2077,8 +2074,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 @media (max-width: 480px) {
-  .name { flex-direction: column; align-items: center; }
-  .name-letter { font-size: clamp(4rem, 20vw, 6rem); }
+  .name {
+    flex-direction: column;
+    align-items: center;
+    font-size: clamp(2.5rem, 14vw, 4rem);
+  }
+  .name--last {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+  .name-letter { font-size: inherit; }
   .experience-meta { flex-direction: column; align-items: flex-start; }
   .album-track {
     margin: 0 calc(var(--space-md) * -1);

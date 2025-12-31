@@ -47,13 +47,19 @@ const MagneticLetters = {
   letterData: [],
   mouseX: 0,
   mouseY: 0,
+  lastCalcX: 0,
+  lastCalcY: 0,
   isActive: false,
   isTouchDevice: false,
+  needsRecalc: false,
 
   init() {
-    // Check if touch device - don't run magnetic effect on mobile
+    // Check if touch device or low-end device - skip magnetic effect
     this.isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     if (this.isTouchDevice) return;
+
+    // Skip on low-end devices
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return;
 
     // Select ALL magnetic containers (DEYAN and TODOROV)
     this.containers = document.querySelectorAll('[data-magnetic]');
@@ -84,12 +90,19 @@ const MagneticLetters = {
       return;
     }
 
-    // Track mouse position
+    // Track mouse position with movement threshold
     document.addEventListener('mousemove', (e) => {
       this.mouseX = e.clientX;
       this.mouseY = e.clientY;
       this.isActive = true;
-    });
+
+      // Only mark for recalc if moved more than 5px
+      const dx = this.mouseX - this.lastCalcX;
+      const dy = this.mouseY - this.lastCalcY;
+      if (dx * dx + dy * dy > 25) {
+        this.needsRecalc = true;
+      }
+    }, { passive: true });
 
     // Animate on each frame
     this.animate();
@@ -100,52 +113,56 @@ const MagneticLetters = {
   },
 
   animate() {
-    const lerpFactor = 0.12; // Smoothness factor (lower = smoother)
+    const lerpFactor = 0.12;
 
-    if (this.isActive) {
+    if (this.isActive && this.needsRecalc) {
+      this.lastCalcX = this.mouseX;
+      this.lastCalcY = this.mouseY;
+      this.needsRecalc = false;
+
       this.letterData.forEach((data) => {
         const letter = data.element;
         const rect = letter.getBoundingClientRect();
         const letterCenterX = rect.left + rect.width / 2;
         const letterCenterY = rect.top + rect.height / 2;
 
-        // Calculate distance from mouse to letter center
         const deltaX = this.mouseX - letterCenterX;
         const deltaY = this.mouseY - letterCenterY;
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        // Magnetic effect radius
         const magnetRadius = 200;
         const maxDisplacement = 25;
 
         if (distance < magnetRadius && distance > 0) {
-          // Calculate displacement based on proximity
           const force = (magnetRadius - distance) / magnetRadius;
-          const easeForce = force * force; // Ease out effect
+          const easeForce = force * force;
 
-          // Set targets
           data.targetX = (deltaX / distance) * maxDisplacement * easeForce;
           data.targetY = (deltaY / distance) * maxDisplacement * easeForce;
           data.targetRotation = (deltaX / magnetRadius) * 15 * easeForce;
           data.targetScale = 1 + (easeForce * 0.1);
         } else {
-          // Return to original position
           data.targetX = 0;
           data.targetY = 0;
           data.targetRotation = 0;
           data.targetScale = 1;
         }
-
-        // Apply lerping for smooth movement
-        data.currentX = this.lerp(data.currentX, data.targetX, lerpFactor);
-        data.currentY = this.lerp(data.currentY, data.targetY, lerpFactor);
-        data.currentRotation = this.lerp(data.currentRotation, data.targetRotation, lerpFactor);
-        data.currentScale = this.lerp(data.currentScale, data.targetScale, lerpFactor);
-
-        // Apply transform
-        letter.style.transform = `translate(${data.currentX}px, ${data.currentY}px) rotate(${data.currentRotation}deg) scale(${data.currentScale})`;
       });
     }
+
+    // Always lerp towards targets
+    this.letterData.forEach((data) => {
+      data.currentX = this.lerp(data.currentX, data.targetX, lerpFactor);
+      data.currentY = this.lerp(data.currentY, data.targetY, lerpFactor);
+      data.currentRotation = this.lerp(data.currentRotation, data.targetRotation, lerpFactor);
+      data.currentScale = this.lerp(data.currentScale, data.targetScale, lerpFactor);
+
+      // Only update DOM if there's meaningful movement
+      if (Math.abs(data.currentX) > 0.1 || Math.abs(data.currentY) > 0.1 ||
+          Math.abs(data.currentRotation) > 0.1 || Math.abs(data.currentScale - 1) > 0.001) {
+        data.element.style.transform = `translate(${data.currentX}px, ${data.currentY}px) rotate(${data.currentRotation}deg) scale(${data.currentScale})`;
+      }
+    });
 
     requestAnimationFrame(() => this.animate());
   }
@@ -527,11 +544,8 @@ const ProjectModal = {
     this.modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Destroy Lenis so modal can scroll with native scrolling
-    if (lenis) {
-      lenis.destroy();
-      lenis = null;
-    }
+    // Stop Lenis - modal has data-lenis-prevent for native scroll
+    if (lenis) lenis.stop();
 
     // Enable modal scroll tracking for progress bar
     ScrollProgress.setModalMode(true, this.wrapper);
@@ -545,14 +559,13 @@ const ProjectModal = {
     ScrollProgress.setModalMode(false);
 
     // Wait for animation to complete before removing active
-    // Content fades (0-0.2s) → Line collapses (0.15-0.55s) → Backdrop fades (0.4-0.7s)
     setTimeout(() => {
       this.modal.classList.remove('active');
       this.modal.classList.remove('closing');
       document.body.style.overflow = '';
 
-      // Reinitialize Lenis smooth scroll
-      SmoothScrollInit.init();
+      // Resume Lenis smooth scroll
+      if (lenis) lenis.start();
     }, 700);
   }
 };
@@ -600,11 +613,8 @@ const EmailModal = {
   open() {
     this.modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    // Destroy Lenis so form can scroll with native scrolling
-    if (lenis) {
-      lenis.destroy();
-      lenis = null;
-    }
+    // Stop Lenis - modal has data-lenis-prevent for native scroll
+    if (lenis) lenis.stop();
     setTimeout(() => {
       this.form?.querySelector('input')?.focus();
     }, 100);
@@ -613,8 +623,8 @@ const EmailModal = {
   close() {
     this.modal.classList.remove('active');
     document.body.style.overflow = '';
-    // Reinitialize Lenis smooth scroll
-    SmoothScrollInit.init();
+    // Resume Lenis smooth scroll
+    if (lenis) lenis.start();
   },
 
   async handleSubmit(e) {
@@ -707,6 +717,9 @@ const PhotoCarousel = {
       if (e.key === 'ArrowRight') this.navigate('next');
     });
 
+    // Get the stack element early for all event handlers
+    const stack = this.carousel.querySelector('.carousel-stack');
+
     // Touch/swipe support
     let touchStartX = 0;
     this.carousel.addEventListener('touchstart', (e) => {
@@ -722,8 +735,52 @@ const PhotoCarousel = {
       }
     }, { passive: true });
 
+    // Mouse drag support
+    let isDragging = false;
+    let dragStartX = 0;
+    let hasDragged = false;
+
+    stack.addEventListener('mousedown', (e) => {
+      // Only left mouse button
+      if (e.button !== 0) return;
+      isDragging = true;
+      hasDragged = false;
+      dragStartX = e.clientX;
+      stack.classList.add('dragging');
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const diff = dragStartX - e.clientX;
+      if (Math.abs(diff) > 10) {
+        hasDragged = true;
+      }
+    });
+
+    document.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      stack.classList.remove('dragging');
+
+      if (hasDragged) {
+        const diff = dragStartX - e.clientX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) this.navigate('next');
+          else this.navigate('prev');
+        }
+      }
+    });
+
+    // Also handle mouseleave on document to catch edge cases
+    document.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        stack.classList.remove('dragging');
+      }
+    });
+
     // Scroll wheel navigation - only when hovering over carousel stack
-    const stack = this.carousel.querySelector('.carousel-stack');
     let wheelTimeout = null;
     let wheelAccumulator = 0;
     let isHoveringStack = false;
@@ -864,6 +921,9 @@ const ParallaxLayers = {
   ambientElements: null,
 
   init() {
+    // Skip on low-end devices
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return;
+
     this.elements = document.querySelectorAll('[data-parallax]');
     this.ambientElements = document.querySelectorAll('.ambient-orb, .ambient-shape');
 
@@ -871,17 +931,23 @@ const ParallaxLayers = {
       return;
     }
 
-    window.addEventListener('scroll', () => this.update(), { passive: true });
-
-    // Mouse parallax for ambient elements
-    document.addEventListener('mousemove', (e) => this.mouseParallax(e), { passive: true });
+    // Mouse parallax for ambient elements (throttled)
+    let lastMouseMove = 0;
+    document.addEventListener('mousemove', (e) => {
+      const now = Date.now();
+      if (now - lastMouseMove > 32) { // ~30fps
+        lastMouseMove = now;
+        this.mouseParallax(e);
+      }
+    }, { passive: true });
   },
 
   update() {
+    if (!this.elements) return;
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    this.elements?.forEach(element => {
+    this.elements.forEach(element => {
       const rect = element.getBoundingClientRect();
       const elementCenter = rect.top + rect.height / 2;
       const distanceFromCenter = elementCenter - windowHeight / 2;
@@ -895,10 +961,11 @@ const ParallaxLayers = {
   },
 
   mouseParallax(e) {
+    if (!this.ambientElements) return;
     const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
     const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
 
-    this.ambientElements?.forEach((el, index) => {
+    this.ambientElements.forEach((el, index) => {
       const speed = 10 + (index * 5);
       const x = mouseX * speed;
       const y = mouseY * speed;
@@ -1036,21 +1103,8 @@ const SectionNav = {
 
     if (!this.sections.length) return;
 
-    // Use scroll event with throttling for reliable tracking
-    window.addEventListener('scroll', () => this.onScroll(), { passive: true });
-
-    // Initial check
+    // Initial check (scroll handling moved to consolidated ScrollHandler)
     this.updateActiveSection();
-  },
-
-  onScroll() {
-    if (!this.ticking) {
-      requestAnimationFrame(() => {
-        this.updateActiveSection();
-        this.ticking = false;
-      });
-      this.ticking = true;
-    }
   },
 
   updateActiveSection() {
@@ -1273,6 +1327,27 @@ const AboutToggle = {
   }
 };
 
+// === Consolidated Scroll Handler ===
+const ScrollHandler = {
+  ticking: false,
+
+  init() {
+    window.addEventListener('scroll', () => this.onScroll(), { passive: true });
+  },
+
+  onScroll() {
+    if (!this.ticking) {
+      requestAnimationFrame(() => {
+        ParallaxLayers.update();
+        SectionNav.updateActiveSection();
+        MobileMenu.updateActiveItem();
+        this.ticking = false;
+      });
+      this.ticking = true;
+    }
+  }
+};
+
 // === Initialize Everything ===
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize i18n first
@@ -1312,6 +1387,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mobile menu
   MobileMenu.init();
+
+  // Consolidated scroll handler
+  ScrollHandler.init();
 });
 
 // === Mobile Menu ===
@@ -1344,9 +1422,7 @@ const MobileMenu = {
         this.close();
       }
     });
-
-    // Update active state based on scroll
-    window.addEventListener('scroll', () => this.updateActiveItem(), { passive: true });
+    // Scroll handling moved to consolidated ScrollHandler
   },
 
   toggle() {

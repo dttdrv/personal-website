@@ -18,15 +18,18 @@ const SmoothScrollInit = {
       return;
     }
 
-    // Initialize Lenis with smooth settings
+    // Detect touch device for mobile-specific configuration
+    const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    // Initialize Lenis with device-specific settings
     lenis = new Lenis({
-      duration: 1.2,           // Duration of scroll animation
+      duration: isTouchDevice ? 0.8 : 1.2,  // Faster on mobile for responsiveness
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Easing function
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: true,
-      syncTouch: true,         // Enable smooth scroll on touch devices
-      syncTouchLerp: 0.075,    // Touch lerp for mobile smoothness
+      smoothWheel: !isTouchDevice,  // Disable wheel smoothing on touch (no wheel anyway)
+      syncTouch: isTouchDevice,     // Enable smooth scroll on touch devices
+      syncTouchLerp: 0.1,           // Faster touch response (was 0.075)
       wheelMultiplier: 1,
       touchMultiplier: 1.5,
       infinite: false,
@@ -176,6 +179,8 @@ const MobileTouchRepel = {
   touchX: 0,
   touchY: 0,
   isTouching: false,
+  isAnimating: false,
+  moveThrottled: false,
 
   init() {
     // Only run on touch devices
@@ -207,8 +212,7 @@ const MobileTouchRepel = {
     this.nameSection.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
     this.nameSection.addEventListener('touchend', () => this.onTouchEnd(), { passive: true });
 
-    // Start animation loop
-    this.animate();
+    // DON'T start animation loop - only run when touching
   },
 
   onTouchStart(e) {
@@ -217,6 +221,11 @@ const MobileTouchRepel = {
     this.touchX = touch.clientX;
     this.touchY = touch.clientY;
     this.updateTargets();
+    // Start animation loop only when touching
+    if (!this.isAnimating) {
+      this.isAnimating = true;
+      this.animate();
+    }
   },
 
   onTouchMove(e) {
@@ -224,7 +233,13 @@ const MobileTouchRepel = {
     const touch = e.touches[0];
     this.touchX = touch.clientX;
     this.touchY = touch.clientY;
-    this.updateTargets();
+
+    // Throttle updateTargets to ~30fps to reduce layout thrashing
+    if (!this.moveThrottled) {
+      this.moveThrottled = true;
+      this.updateTargets();
+      setTimeout(() => { this.moveThrottled = false; }, 32);
+    }
   },
 
   onTouchEnd() {
@@ -273,7 +288,25 @@ const MobileTouchRepel = {
     return start + (end - start) * factor;
   },
 
+  // Check if all letters are settled back to rest position
+  isSettled() {
+    return this.letterData.every(d =>
+      Math.abs(d.currentX) < 0.1 && Math.abs(d.currentY) < 0.1 &&
+      Math.abs(d.targetX) < 0.1 && Math.abs(d.targetY) < 0.1
+    );
+  },
+
   animate() {
+    // Stop the loop if not touching AND all letters are settled
+    if (!this.isTouching && this.isSettled()) {
+      this.isAnimating = false;
+      // Clear any remaining transforms
+      this.letterData.forEach(data => {
+        data.element.style.transform = '';
+      });
+      return;
+    }
+
     const lerpFactor = 0.15; // Smoothness (higher = faster response)
 
     this.letterData.forEach(data => {
@@ -919,8 +952,13 @@ const PhotoCarousel = {
 const ParallaxLayers = {
   elements: null,
   ambientElements: null,
+  isMobile: false,
 
   init() {
+    // Skip parallax entirely on mobile - too expensive
+    this.isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    if (this.isMobile) return;
+
     // Skip on low-end devices
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return;
 
@@ -943,7 +981,10 @@ const ParallaxLayers = {
   },
 
   update() {
+    // Skip on mobile
+    if (this.isMobile) return;
     if (!this.elements) return;
+
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
@@ -961,7 +1002,9 @@ const ParallaxLayers = {
   },
 
   mouseParallax(e) {
+    if (this.isMobile) return;
     if (!this.ambientElements) return;
+
     const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
     const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
 
@@ -1330,20 +1373,33 @@ const AboutToggle = {
 // === Consolidated Scroll Handler ===
 const ScrollHandler = {
   ticking: false,
+  isMobile: false,
+  lastUpdate: 0,
 
   init() {
+    this.isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
     window.addEventListener('scroll', () => this.onScroll(), { passive: true });
   },
 
   onScroll() {
     if (!this.ticking) {
-      requestAnimationFrame(() => {
-        ParallaxLayers.update();
-        SectionNav.updateActiveSection();
-        MobileMenu.updateActiveItem();
-        this.ticking = false;
-      });
-      this.ticking = true;
+      // On mobile, throttle to ~15fps instead of 60fps to save battery
+      const now = Date.now();
+      const delay = this.isMobile ? 66 : 0; // 66ms = ~15fps
+
+      if (now - this.lastUpdate > delay) {
+        requestAnimationFrame(() => {
+          // Skip parallax on mobile (already handled in ParallaxLayers but extra safety)
+          if (!this.isMobile) {
+            ParallaxLayers.update();
+          }
+          SectionNav.updateActiveSection();
+          MobileMenu.updateActiveItem();
+          this.ticking = false;
+          this.lastUpdate = Date.now();
+        });
+        this.ticking = true;
+      }
     }
   }
 };

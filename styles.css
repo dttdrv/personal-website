@@ -81,6 +81,9 @@ body {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
   transition: background-color 0.4s ease, color 0.4s ease;
+  /* Fix mobile rendering/clipping glitch */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 body::-webkit-scrollbar {
@@ -327,6 +330,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
+  /* Fix mobile compositing issues */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .ambient-orb {
@@ -375,6 +382,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   position: absolute;
   border: 1px solid rgba(0, 0, 255, 0.1);
   animation: ambientRotate 60s linear infinite;
+  will-change: transform;
 }
 
 :root[data-theme="dark"] .ambient-shape {
@@ -478,6 +486,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: var(--white);
   content-visibility: auto;
   contain-intrinsic-size: auto 100vh;
+  /* Fix mobile compositing/clipping issues */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* === Room 1: The Name === */
@@ -2167,6 +2179,58 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   /* Disable magnetic letter effect indication */
   .name-letter {
     transition: color 0.3s ease;
+  }
+
+  /* === MOBILE PERFORMANCE OPTIMIZATIONS === */
+
+  /* Disable expensive backdrop blur on mobile */
+  .modal-backdrop,
+  .project-modal-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(0, 0, 0, 0.92);
+  }
+
+  /* Disable SVG noise filter on mobile - very expensive */
+  .room--name::before {
+    display: none !important;
+  }
+
+  /* Pause/disable infinite animations on mobile */
+  .ambient-orb,
+  .ambient-shape {
+    animation: none !important;
+  }
+
+  .scroll-arrow {
+    animation: none !important;
+  }
+
+  .profile-accent {
+    animation: none !important;
+  }
+
+  .annotation-marker {
+    animation: none !important;
+  }
+
+  /* Reduce box-shadow complexity on mobile */
+  .carousel-card[data-position="center"] {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Disable parallax transforms on mobile - handled in JS but CSS backup */
+  [data-parallax] {
+    transform: none !important;
+  }
+
+  /* Simplify ambient layer on mobile */
+  .ambient-layer {
+    opacity: 0.3;
   }
 }
 

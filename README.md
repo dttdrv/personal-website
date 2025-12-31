@@ -6,4 +6,4 @@ built with html, css, javascript. uses lenis for smooth scrolling.
 
 theme and language follow your system settings automatically.
 
-live at deyantodorov.com (when i set that up)
+live at dttdrv.xyz

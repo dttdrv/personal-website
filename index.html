@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Deyan Todorov - Personal portfolio showcasing work, photography, and projects.">
+  <meta name="theme-color" content="#FFFFFF">
+  <title>Deyan Todorov</title>
+
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com">
+
+  <!-- Preload critical fonts -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Inline critical CSS for faster first paint -->
+  <style>
+    body { opacity: 0; }
+    body.fonts-loaded { opacity: 1; transition: opacity 0.3s ease; }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress"></div>
+
+  <!-- Subtle Top Blur Overlay -->
+  <div class="top-blur-overlay"></div>
+
+
+  <!-- Mobile Menu Button (Bottom-Right) -->
+  <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+  </button>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay">
+    <nav class="mobile-menu-nav">
+      <a href="#name" class="mobile-nav-item" data-section="name">
+        <span class="mobile-nav-number">01</span>
+        <span class="mobile-nav-label" data-i18n="nav.top">Top</span>
+      </a>
+      <a href="#about" class="mobile-nav-item" data-section="about">
+        <span class="mobile-nav-number">02</span>
+        <span class="mobile-nav-label" data-i18n="nav.about">About</span>
+      </a>
+      <a href="#work" class="mobile-nav-item" data-section="work">
+        <span class="mobile-nav-number">03</span>
+        <span class="mobile-nav-label" data-i18n="nav.work">Work</span>
+      </a>
+      <a href="#albums" class="mobile-nav-item" data-section="albums">
+        <span class="mobile-nav-number">04</span>
+        <span class="mobile-nav-label" data-i18n="nav.photography">Photography</span>
+      </a>
+      <a href="#contact" class="mobile-nav-item" data-section="contact">
+        <span class="mobile-nav-number">05</span>
+        <span class="mobile-nav-label" data-i18n="nav.contact">Contact</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Section Navigation (Bottom-Left) - Numbers only, labels on hover -->
+  <nav class="section-nav" id="section-nav">
+    <a href="#name" class="nav-item active" data-section="name">
+      <span class="nav-number">01</span>
+      <span class="nav-label" data-i18n="nav.top">Top</span>
+    </a>
+    <a href="#about" class="nav-item" data-section="about">
+      <span class="nav-number">02</span>
+      <span class="nav-label" data-i18n="nav.about">About</span>
+    </a>
+    <a href="#work" class="nav-item" data-section="work">
+      <span class="nav-number">03</span>
+      <span class="nav-label" data-i18n="nav.work">Work</span>
+    </a>
+    <a href="#albums" class="nav-item" data-section="albums">
+      <span class="nav-number">04</span>
+      <span class="nav-label" data-i18n="nav.photography">Photography</span>
+    </a>
+    <a href="#contact" class="nav-item" data-section="contact">
+      <span class="nav-number">05</span>
+      <span class="nav-label" data-i18n="nav.contact">Contact</span>
+    </a>
+  </nav>
+
+  <!-- Ambient Floating Elements -->
+  <div class="ambient-layer">
+    <div class="ambient-orb ambient-orb--1"></div>
+    <div class="ambient-orb ambient-orb--2"></div>
+    <div class="ambient-orb ambient-orb--3"></div>
+    <div class="ambient-shape ambient-shape--1"></div>
+    <div class="ambient-shape ambient-shape--2"></div>
+  </div>
+
+  <!-- Email Form Modal -->
+  <div class="modal" id="email-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <h3 class="modal-title" data-i18n="modal.title">Get in Touch</h3>
+      <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="form-group">
+          <label for="name" data-i18n="modal.name">Name</label>
+          <input type="text" id="form-name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email" data-i18n="modal.email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="subject" data-i18n="modal.subject">Subject</label>
+          <input type="text" id="subject" name="subject" required>
+        </div>
+        <div class="form-group">
+          <label for="message" data-i18n="modal.message">Message</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="form-submit">
+          <span data-i18n="modal.send">Send Message</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+      <div class="form-success" style="display: none;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+          <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p data-i18n="modal.success">Message sent successfully!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Modal (Fade → Line → Content) -->
+  <div class="project-modal" id="project-modal">
+    <div class="project-modal-backdrop"></div>
+
+    <!-- Top blur overlay (same as main page) -->
+    <div class="project-modal-blur"></div>
+
+    <!-- Close button (top-left arrow) -->
+    <button class="project-modal-close" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <!-- Content wrapper for centering -->
+    <div class="project-modal-wrapper">
+      <!-- Title ABOVE the line -->
+      <div class="project-modal-title-section">
+        <h2 class="project-modal-title" id="modal-project-title">Project Title</h2>
+      </div>
+
+      <!-- The horizontal accent line -->
+      <div class="project-modal-line"></div>
+
+      <!-- Content BELOW the line -->
+      <div class="project-modal-content-section">
+        <p class="project-modal-tagline" id="modal-project-tagline">Project tagline</p>
+        <p class="project-modal-description" id="modal-project-description">Project description goes here.</p>
+        <div class="project-links-modal" id="modal-project-links"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery -->
+  <main class="gallery">
+
+    <!-- Room 1: The Name -->
+    <section class="room room--name" id="name">
+      <div class="name-container" data-parallax="0.1" data-scroll-reveal>
+        <h1 class="name" data-magnetic data-i18n-name="firstName">
+          <span class="name-letter" data-letter>D</span>
+          <span class="name-letter" data-letter>E</span>
+          <span class="name-letter" data-letter>Y</span>
+          <span class="name-letter" data-letter>A</span>
+          <span class="name-letter" data-letter>N</span>
+        </h1>
+        <h1 class="name name--last" data-magnetic data-i18n-name="lastName">
+          <span class="name-letter" data-letter>T</span>
+          <span class="name-letter" data-letter>O</span>
+          <span class="name-letter" data-letter>D</span>
+          <span class="name-letter" data-letter>O</span>
+          <span class="name-letter" data-letter>R</span>
+          <span class="name-letter" data-letter>O</span>
+          <span class="name-letter" data-letter>V</span>
+        </h1>
+      </div>
+
+    </section>
+
+    <!-- Room 2: About / The Statement -->
+    <section class="room room--about" id="about">
+      <div class="about-header" data-scroll-reveal>
+        <h2 class="section-title" data-i18n="nav.about">About</h2>
+      </div>
+
+      <div class="about-container">
+        <!-- Profile Image Area -->
+        <div class="about-visual" data-scroll-reveal>
+          <div class="profile-frame">
+            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="lazy">
+            <div class="profile-accent"></div>
+          </div>
+        </div>
+
+        <!-- Statement -->
+        <div class="about-content" data-scroll-animate>
+          <!-- Abstract: Work Philosophy -->
+          <div class="about-abstract">
+            <p class="statement" data-i18n="about.statement">
+              <span class="word">I</span>
+              <span class="word">believe</span>
+              <span class="word">in</span>
+              <span class="word">doing</span>
+              <span class="word">a</span>
+              <span class="word">job</span>
+              <span class="word accent">100%</span>
+              <span class="word">or</span>
+              <span class="word">not</span>
+              <span class="word">doing</span>
+              <span class="word">it</span>
+              <span class="word">at</span>
+              <span class="word">all.</span>
+            </p>
+          </div>
+
+          <!-- Collapsible Extended Content -->
+          <div class="about-extended-wrapper">
+            <div class="about-extended collapsed" id="about-extended">
+              <p class="about-paragraph" data-i18n="about.p1"></p>
+              <p class="about-paragraph" data-i18n="about.p2"></p>
+            </div>
+
+            <!-- Bio Toggle: Plus → X -->
+            <button class="bio-toggle" id="see-more-toggle" aria-expanded="false">
+              <span class="bio-toggle-icon">
+                <span class="plus-h"></span>
+                <span class="plus-v"></span>
+              </span>
+            </button>
+          </div>
+
+          <div class="statement-annotation">
+            <span class="annotation-marker">*</span>
+            <span class="annotation-text" data-i18n="about.annotation">12th grade student preparing for psychology studies</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room 3: Work -->
+    <section class="room room--works" id="work">
+      <div class="works-header" data-scroll-reveal>
+        <h2 class="section-title" data-i18n="sections.work">Work</h2>
+      </div>
+
+      <div class="projects-grid">
+        <!-- In Progress -->
+        <div class="work-subsection" data-scroll-reveal data-delay="1">
+          <h3 class="subsection-label">In Progress</h3>
+
+          <article class="project-card" data-project="eptesicus-labs">
+            <div class="project-card-inner">
+              <div class="project-info">
+                <h3 class="project-name">Eptesicus Labs</h3>
+                <p class="project-brief">Research initiative</p>
+              </div>
+              <span class="project-arrow">→</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Completed -->
+        <div class="work-subsection" data-scroll-reveal data-delay="2">
+          <h3 class="subsection-label">Completed</h3>
+
+          <article class="project-card" data-project="schoolmap">
+            <div class="project-card-inner">
+              <div class="project-info">
+                <h3 class="project-name">SchoolMap</h3>
+                <p class="project-brief">Classroom-ready map tool</p>
+              </div>
+              <span class="project-arrow">→</span>
+            </div>
+          </article>
+
+          <article class="project-card" data-project="bas-award">
+            <div class="project-card-inner">
+              <div class="project-info">
+                <h3 class="project-name" data-i18n="bas.title">Bulgarian Academy of Sciences</h3>
+                <p class="project-brief" data-i18n="bas.tagline">"Water for Peace" — 1st Place</p>
+              </div>
+              <span class="project-arrow">→</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room 5: Photography Albums -->
+    <section class="room room--albums" id="albums">
+      <div class="albums-header" data-scroll-reveal>
+        <h2 class="section-title" data-i18n="sections.photography">Photography</h2>
+      </div>
+
+      <p class="albums-note" data-scroll-reveal data-delay="1" data-i18n="albums.note">Mixed photography, curated as yearly albums</p>
+
+      <!-- Album 2025 - Stacked Card Carousel -->
+      <div class="album" data-scroll-reveal data-delay="2">
+        <div class="album-label">
+          <span class="album-year">2025</span>
+        </div>
+
+        <div class="photo-carousel" id="photo-carousel">
+          <!-- Navigation Arrow Left -->
+          <button class="carousel-arrow carousel-arrow--left" aria-label="Previous photo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- Stacked Cards Container -->
+          <div class="carousel-stack">
+            <div class="carousel-card" data-index="0" data-position="far-left">
+              <div class="card-image">
+                <img src="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" alt="Photo April 2025" loading="lazy">
+              </div>
+            </div>
+            <div class="carousel-card" data-index="1" data-position="left">
+              <div class="card-image">
+                <img src="pictures/IMG_20250419_235912.jpg" alt="Photo April 2025" loading="lazy">
+              </div>
+            </div>
+            <div class="carousel-card" data-index="2" data-position="center">
+              <div class="card-image">
+                <img src="pictures/IMG_20250710_095454~2 (1).jpg" alt="Photo July 2025" loading="lazy">
+              </div>
+            </div>
+            <div class="carousel-card" data-index="3" data-position="right">
+              <div class="card-image">
+                <img src="pictures/IMG_20250822_093038~2 (1).jpg" alt="Photo August 2025" loading="lazy">
+              </div>
+            </div>
+            <div class="carousel-card" data-index="4" data-position="far-right">
+              <div class="card-image">
+                <img src="pictures/IMG_20250925_175649_edit_41287785265446.jpg" alt="Photo September 2025" loading="lazy">
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Arrow Right -->
+          <button class="carousel-arrow carousel-arrow--right" aria-label="Next photo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- Flowing Caption -->
+          <div class="carousel-caption">
+            <p class="caption-text" data-caption="0">Silhouette under foggy streetlight</p>
+            <p class="caption-text" data-caption="1">Ancient bell tower at night</p>
+            <p class="caption-text" data-caption="2">Tiger drinking from still water</p>
+            <p class="caption-text" data-caption="3">Mountain peaks through clouds</p>
+            <p class="caption-text" data-caption="4">Yellow chrysanthemums at market</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room 6: Contact -->
+    <section class="room room--contact" id="contact">
+      <div class="contact-header" data-scroll-reveal>
+        <h2 class="section-title" data-i18n="sections.contact">Contact</h2>
+      </div>
+
+      <div class="contact-content" data-scroll-reveal>
+        <button class="contact-email" id="open-email-form">
+          <span class="email-word">deyan.todorov21</span>
+          <span class="email-at">@</span>
+          <span class="email-word">gmail.com</span>
+        </button>
+
+        <p class="contact-note" id="cv-link" data-i18n="contact.note">
+          CV available on <span class="cv-request">request</span>.
+        </p>
+
+        <p class="social-disclaimer" data-i18n="contact.socialDisclaimer">
+          Not currently active on social media until 1.1.2027.
+        </p>
+
+        <!-- Social Links - Minimal Text Style -->
+        <div class="socials">
+          <a href="https://github.com/dttdrv" class="social-link" target="_blank" rel="noopener">GitHub</a>
+          <span class="social-divider">/</span>
+          <a href="https://facebook.com/dttdrv" class="social-link" target="_blank" rel="noopener">Facebook</a>
+          <span class="social-divider">/</span>
+          <a href="https://instagram.com/dttdrv" class="social-link" target="_blank" rel="noopener">Instagram</a>
+          <span class="social-divider">/</span>
+          <a href="https://x.com/dttdrv" class="social-link" target="_blank" rel="noopener">X/Twitter</a>
+          <span class="social-divider">/</span>
+          <a href="https://threads.net/@dttdrv" class="social-link" target="_blank" rel="noopener">Threads</a>
+        </div>
+      </div>
+
+      <footer class="contact-footer">
+        <span data-i18n="footer.text">This is a website.</span>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- Scripts with defer for non-blocking loading -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="translations.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

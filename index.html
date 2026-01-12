@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +14,15 @@
   <link rel="preconnect" href="https://unpkg.com">
 
   <!-- Preload critical fonts -->
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" as="style">
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap"
+    as="style">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
 
-  <!-- Preload critical images -->
-  <link rel="preload" href="pictures/profile.jpg" as="image">
-  <link rel="preload" href="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" as="image">
-  <link rel="preload" href="pictures/IMG_20250419_235912.jpg" as="image">
-  <link rel="preload" href="pictures/IMG_20250710_095454~2 (1).jpg" as="image">
-  <link rel="preload" href="pictures/IMG_20250822_093038~2 (1).jpg" as="image">
-  <link rel="preload" href="pictures/IMG_20250925_175649_edit_41287785265446.jpg" as="image">
+  <!-- Preload only hero image - carousel images stay lazy -->
+  <link rel="preload" href="pictures/profile.jpg" as="image" fetchpriority="high">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -40,11 +40,13 @@
       background: #FFFFFF;
       transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
     }
+
     .preloader.hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
+
     .preloader-spinner {
       width: 32px;
       height: 32px;
@@ -53,16 +55,27 @@
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
+
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
+
     /* Dark mode preloader */
     @media (prefers-color-scheme: dark) {
-      .preloader { background: #0A0A0A; }
-      .preloader-spinner { border-color: #2a2a2a; border-top-color: #4466FF; }
+      .preloader {
+        background: #0A0A0A;
+      }
+
+      .preloader-spinner {
+        border-color: #2a2a2a;
+        border-top-color: #4466FF;
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Preloader -->
   <div class="preloader" id="preloader">
@@ -72,8 +85,8 @@
   <!-- Scroll Progress -->
   <div class="scroll-progress"></div>
 
-  <!-- Subtle Top Blur Overlay -->
-  <div class="top-blur-overlay"></div>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress"></div>
 
 
   <!-- Mobile Menu Button (Bottom-Right) -->
@@ -148,11 +161,11 @@
     <div class="modal-content" data-lenis-prevent>
       <button class="modal-close" aria-label="Close">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
       </button>
       <h3 class="modal-title" data-i18n="modal.title">Get in Touch</h3>
-      <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form class="contact-form" id="contact-form">
         <div class="form-group">
           <label for="name" data-i18n="modal.name">Name</label>
           <input type="text" id="form-name" name="name" required>
@@ -172,14 +185,16 @@
         <button type="submit" class="form-submit">
           <span data-i18n="modal.send">Send Message</span>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </button>
       </form>
       <div class="form-success" style="display: none;">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-          <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
-          <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2" />
+          <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
         <p data-i18n="modal.success">Message sent successfully!</p>
       </div>
@@ -196,7 +211,8 @@
     <!-- Close button (top-left arrow) -->
     <button class="project-modal-close" aria-label="Close">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+          stroke-linejoin="round" />
       </svg>
     </button>
 
@@ -299,7 +315,8 @@
 
           <div class="statement-annotation">
             <span class="annotation-marker">*</span>
-            <span class="annotation-text" data-i18n="about.annotation">12th grade student preparing for psychology studies</span>
+            <span class="annotation-text" data-i18n="about.annotation">12th grade student preparing for psychology
+              studies</span>
           </div>
         </div>
       </div>
@@ -319,7 +336,7 @@
           <article class="project-card" data-project="eptesicus-labs">
             <div class="project-card-inner">
               <div class="project-info">
-                <h3 class="project-name">Eptesicus Labs</h3>
+                <h3 class="project-name">Eptesicus Laboratories</h3>
                 <p class="project-brief">Research initiative</p>
               </div>
               <span class="project-arrow">→</span>
@@ -350,6 +367,16 @@
               <span class="project-arrow">→</span>
             </div>
           </article>
+
+          <article class="project-card" data-project="collatz">
+            <div class="project-card-inner">
+              <div class="project-info">
+                <h3 class="project-name" data-i18n="collatz.title">Collatz Conjecture</h3>
+                <p class="project-brief" data-i18n="collatz.tagline">Research Paper</p>
+              </div>
+              <span class="project-arrow">→</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -360,10 +387,21 @@
         <h2 class="section-title" data-i18n="sections.photography">Photography</h2>
       </div>
 
-      <p class="albums-note" data-scroll-reveal data-delay="1" data-i18n="albums.note">Mixed photography, curated as yearly albums</p>
+      <p class="albums-note" data-scroll-reveal data-delay="1" data-i18n="albums.note">Mixed photography, curated as
+        yearly albums</p>
+
+      <!-- Album 2026 - Empty State -->
+      <div class="album" data-scroll-reveal data-delay="2">
+        <div class="album-label">
+          <span class="album-year">2026</span>
+        </div>
+        <div class="album-empty">
+          <p class="album-empty-text" data-i18n="albums.noPhotos">No photos yet.</p>
+        </div>
+      </div>
 
       <!-- Album 2025 - Stacked Card Carousel -->
-      <div class="album" data-scroll-reveal data-delay="2">
+      <div class="album" data-scroll-reveal data-delay="3">
         <div class="album-label">
           <span class="album-year">2025</span>
         </div>
@@ -372,7 +410,8 @@
           <!-- Navigation Arrow Left -->
           <button class="carousel-arrow carousel-arrow--left" aria-label="Previous photo">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
             </svg>
           </button>
 
@@ -380,7 +419,8 @@
           <div class="carousel-stack">
             <div class="carousel-card" data-index="0" data-position="far-left">
               <div class="card-image">
-                <img src="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" alt="Photo April 2025" loading="lazy">
+                <img src="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" alt="Photo April 2025"
+                  loading="lazy">
               </div>
             </div>
             <div class="carousel-card" data-index="1" data-position="left">
@@ -400,7 +440,8 @@
             </div>
             <div class="carousel-card" data-index="4" data-position="far-right">
               <div class="card-image">
-                <img src="pictures/IMG_20250925_175649_edit_41287785265446.jpg" alt="Photo September 2025" loading="lazy">
+                <img src="pictures/IMG_20250925_175649_edit_41287785265446.jpg" alt="Photo September 2025"
+                  loading="lazy">
               </div>
             </div>
           </div>
@@ -408,7 +449,8 @@
           <!-- Navigation Arrow Right -->
           <button class="carousel-arrow carousel-arrow--right" aria-label="Next photo">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
             </svg>
           </button>
 
@@ -471,4 +513,5 @@
   <script src="translations.js" defer></script>
   <script src="script.js" defer></script>
 </body>
+
 </html>

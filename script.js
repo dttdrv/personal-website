@@ -179,7 +179,7 @@ const MagneticLetters = {
 
       // Only update DOM if there's meaningful movement
       if (Math.abs(data.currentX) > 0.1 || Math.abs(data.currentY) > 0.1 ||
-          Math.abs(data.currentRotation) > 0.1 || Math.abs(data.currentScale - 1) > 0.001) {
+        Math.abs(data.currentRotation) > 0.1 || Math.abs(data.currentScale - 1) > 0.001) {
         data.element.style.transform = `translate(${data.currentX}px, ${data.currentY}px) rotate(${data.currentRotation}deg) scale(${data.currentScale})`;
       } else {
         data.element.style.transform = '';
@@ -541,7 +541,7 @@ const ProjectModal = {
     // Define project data
     this.projectData = {
       'eptesicus-labs': {
-        title: 'Eptesicus Labs',
+        title: 'Eptesicus Laboratories',
         tagline: 'Advancing on-device intelligence',
         description: 'Building a world where AI runs on customer-controlled hardware through small, dependable models. We solve the problems of cloud-first AI — vendor lock-in, compounding costs, and data exposure — by developing on-device models paired with reliability tooling designed for enterprise deployment. Our objective: make on-device AI the default for real products.',
         media: null,
@@ -564,6 +564,15 @@ const ProjectModal = {
         description: 'March 2024 — The Bulgarian Academy of Sciences hosted a themed presentation contest focused on "Water for Peace," exploring the critical intersection of water resources and international cooperation. My project examined sustainable water resource management frameworks and how shared water systems can become bridges for peace. Awarded 1st place among all participants.',
         media: null,
         links: []
+      },
+      'collatz': {
+        title: 'Collatz Conjecture',
+        tagline: 'Research Paper',
+        description: 'A recently completed research paper on the Collatz Conjecture, exploring distribution patterns and stochastic characteristics of hailstone sequences.',
+        media: null,
+        links: [
+          { text: 'Read on Zenodo', url: 'https://zenodo.org/records/18222656' }
+        ]
       }
     };
 
@@ -716,37 +725,39 @@ const EmailModal = {
     submitBtn.disabled = true;
     submitBtn.querySelector('span').textContent = I18n.t('modal.sending');
 
-    try {
-      const response = await fetch(this.form.action, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
+    // Simulate delay for effect
+    await new Promise(resolve => setTimeout(resolve, 800));
 
-      if (response.ok) {
-        this.form.style.display = 'none';
-        if (successMsg) successMsg.style.display = 'block';
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    const subject = `Contact from Website: ${email}`;
+    const body = `${message}\n\nFrom: ${email}`;
 
-        setTimeout(() => {
-          this.close();
-          this.form.reset();
-          this.form.style.display = 'flex';
-          if (successMsg) successMsg.style.display = 'none';
-          submitBtn.disabled = false;
-          submitBtn.querySelector('span').textContent = I18n.t('modal.send');
-        }, 2500);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      submitBtn.querySelector('span').textContent = I18n.t('modal.error');
-      submitBtn.disabled = false;
+    const mailtoLink = `mailto:deyan.todorov21@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
+    window.location.href = mailtoLink;
+
+    // Reset UI
+    submitBtn.querySelector('span').textContent = 'Open Client';
+    submitBtn.disabled = false;
+
+    // Show success message briefly inside form or just close?
+    // Using existing success element
+    this.form.style.display = 'none';
+    successMsg.style.display = 'block'; // Changed from this.success to successMsg
+
+    // Reset form after delay
+    setTimeout(() => {
+      this.close();
       setTimeout(() => {
+        this.form.reset();
+        this.form.style.display = 'flex';
+        successMsg.style.display = 'none';
+        submitBtn.disabled = false;
         submitBtn.querySelector('span').textContent = I18n.t('modal.send');
-      }, 2000);
-    }
-  }
+      }, 500);
+    }, 2000);
+  },
 };
 
 // === Photo Carousel - Stacked Cards ===
@@ -795,6 +806,19 @@ const PhotoCarousel = {
       if (e.key === 'ArrowLeft') this.navigate('prev');
       if (e.key === 'ArrowRight') this.navigate('next');
     });
+
+    // Horizontal Scroll (Trackpad)
+    this.carousel.addEventListener('wheel', (e) => {
+      // Only handle if horizontal scroll is dominant
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        // Debounce or threshold
+        if (Math.abs(e.deltaX) > 10 && !this.isAnimating) {
+          if (e.deltaX > 0) this.navigate('next');
+          else this.navigate('prev');
+        }
+      }
+    }, { passive: false });
 
     // Get the stack element early for all event handlers
     const stack = this.carousel.querySelector('.carousel-stack');

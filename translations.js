@@ -41,7 +41,8 @@ const TRANSLATIONS = {
     albums: {
       note: 'Mixed photography, curated as yearly albums',
       currentYear: 'Current Year',
-      viewFull: 'View Full Album'
+      viewFull: 'View Full Album',
+      noPhotos: 'No photos yet.'
     },
     contact: {
       note: 'CV available on <span class="cv-request">request</span>.',
@@ -72,6 +73,10 @@ const TRANSLATIONS = {
       resultTitle: 'The Result',
       resultText: 'Awarded 1st place among all participants, recognizing both the depth of research and the clarity of presentation.',
       award: '1st Place Award'
+    },
+    collatz: {
+      title: 'Collatz Conjecture',
+      tagline: 'Research Paper'
     }
   },
 
@@ -112,7 +117,8 @@ const TRANSLATIONS = {
     albums: {
       note: 'Photographie mixte, organisee en albums annuels',
       currentYear: 'Annee en cours',
-      viewFull: 'Voir l\'album complet'
+      viewFull: 'Voir l\'album complet',
+      noPhotos: 'Pas encore de photos.'
     },
     contact: {
       note: 'CV disponible sur <span class="cv-request">demande</span>.',
@@ -142,6 +148,10 @@ const TRANSLATIONS = {
       resultTitle: 'Le Resultat',
       resultText: 'Premiere place parmi tous les participants, reconnaissant a la fois la profondeur de la recherche et la clarte de la presentation.',
       award: 'Prix de la 1ere place'
+    },
+    collatz: {
+      title: 'Collatz Conjecture',
+      tagline: 'Research Paper'
     }
   },
 
@@ -182,7 +192,8 @@ const TRANSLATIONS = {
     albums: {
       note: 'Разнообразна фотография, организирана в годишни албуми',
       currentYear: 'Текуща година',
-      viewFull: 'Виж пълен албум'
+      viewFull: 'Виж пълен албум',
+      noPhotos: 'Все още няма снимки.'
     },
     contact: {
       note: 'CV на разположение при <span class="cv-request">заявка</span>.',
@@ -212,6 +223,10 @@ const TRANSLATIONS = {
       resultTitle: 'Резултатът',
       resultText: 'Награден с първо място сред всички участници, признавайки както дълбочината на изследването, така и яснотата на презентацията.',
       award: 'Награда за 1-во място'
+    },
+    collatz: {
+      title: 'Collatz Conjecture',
+      tagline: 'Research Paper'
     }
   },
 
@@ -252,7 +267,8 @@ const TRANSLATIONS = {
     albums: {
       note: 'Fotografia mista, curata come album annuali',
       currentYear: 'Anno corrente',
-      viewFull: 'Vedi album completo'
+      viewFull: 'Vedi album completo',
+      noPhotos: 'Nessuna foto ancora.'
     },
     contact: {
       note: 'CV disponibile su <span class="cv-request">richiesta</span>.',
@@ -282,6 +298,10 @@ const TRANSLATIONS = {
       resultTitle: 'Il Risultato',
       resultText: 'Premiato con il primo posto tra tutti i partecipanti, riconoscendo sia la profondita della ricerca che la chiarezza della presentazione.',
       award: 'Premio 1o posto'
+    },
+    collatz: {
+      title: 'Collatz Conjecture',
+      tagline: 'Research Paper'
     }
   },
 
@@ -322,7 +342,8 @@ const TRANSLATIONS = {
     albums: {
       note: 'Gemischte Fotografie, kuratiert als Jahresalben',
       currentYear: 'Aktuelles Jahr',
-      viewFull: 'Vollstandiges Album ansehen'
+      viewFull: 'Vollstandiges Album ansehen',
+      noPhotos: 'Noch keine Fotos.'
     },
     contact: {
       note: 'Lebenslauf auf <span class="cv-request">Anfrage</span> verfügbar.',
@@ -352,6 +373,10 @@ const TRANSLATIONS = {
       resultTitle: 'Das Ergebnis',
       resultText: 'Ausgezeichnet mit dem ersten Platz unter allen Teilnehmern, in Anerkennung sowohl der Tiefe der Forschung als auch der Klarheit der Prasentation.',
       award: 'Preis fur den 1. Platz'
+    },
+    collatz: {
+      title: 'Collatz Conjecture',
+      tagline: 'Research Paper'
     }
   }
 };

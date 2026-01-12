@@ -601,7 +601,6 @@ const ProjectModal = {
 
   open(projectId, cardElement) {
     const project = this.projectData[projectId];
-    console.log('Opening project:', projectId, project);
     if (!project) return;
 
     // Populate modal content

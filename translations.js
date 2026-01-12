@@ -158,8 +158,8 @@ const TRANSLATIONS = {
   // Bulgarian (Cyrillic)
   bg: {
     name: {
-      firstName: 'ДЕЯН',
-      lastName: 'ТОДОРОВ'
+      firstName: 'Деян',
+      lastName: 'Тодоров'
     },
     nav: {
       top: 'Начало',

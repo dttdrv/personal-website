@@ -2581,3 +2581,5 @@ button {
     transform: none !important;
   }
 }
+.album-empty-text { font-family: var(--font-display) !important; font-size: 2rem !important; font-style: italic !important; color: var(--gray) !important; text-align: center !important; }
+

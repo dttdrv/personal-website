@@ -2130,6 +2130,22 @@ button {
   margin-bottom: var(--space-lg);
 }
 
+/* Image Container */
+.project-modal-image-container {
+  margin: var(--space-md) 0;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.project-modal-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
 .project-modal-description {
   font-size: 1.1rem;
   line-height: 2;

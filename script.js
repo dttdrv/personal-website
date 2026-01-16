@@ -562,8 +562,10 @@ const ProjectModal = {
         title: 'Bulgarian Academy of Sciences',
         tagline: '"Water for Peace" — 1st Place',
         description: 'March 2024 — The Bulgarian Academy of Sciences hosted a themed presentation contest focused on "Water for Peace," exploring the critical intersection of water resources and international cooperation. My project examined sustainable water resource management frameworks and how shared water systems can become bridges for peace. Awarded 1st place among all participants.',
-        media: null,
-        links: []
+        media: 'pictures/bas-diploma.jpg',
+        links: [
+          { text: 'Download Presentation', url: 'assets/documents/Voda_za_mir.pptx' }
+        ]
       },
       'collatz': {
         title: 'Collatz Conjecture',
@@ -612,6 +614,20 @@ const ProjectModal = {
     if (titleEl) titleEl.textContent = project.title;
     if (taglineEl) taglineEl.textContent = project.tagline;
     if (descriptionEl) descriptionEl.textContent = project.description;
+
+    // Handle Image
+    const imageContainer = this.modal.querySelector('#modal-project-image-container');
+    const imageEl = this.modal.querySelector('#modal-project-image');
+
+    if (imageContainer && imageEl) {
+      if (project.media) {
+        imageEl.src = project.media;
+        imageContainer.style.display = 'block';
+      } else {
+        imageContainer.style.display = 'none';
+        imageEl.src = '';
+      }
+    }
 
     // Handle links
     if (linksEl) {

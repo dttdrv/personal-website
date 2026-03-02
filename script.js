@@ -117,6 +117,25 @@ const MagneticLetters = {
     }, { passive: true });
 
     // DON'T start animation loop - only run when mouse moves
+
+    this.cachePositions();
+  },
+
+  cachePositions() {
+    this.letterData.forEach(data => {
+      // Temporarily clear any active transform so we read the baseline geometry
+      const currentTransform = data.element.style.transform;
+      data.element.style.transform = '';
+
+      const rect = data.element.getBoundingClientRect();
+      data.baseLeft = rect.left + window.scrollX;
+      data.baseTop = rect.top + window.scrollY;
+      data.width = rect.width;
+      data.height = rect.height;
+
+      // Restore the transform
+      data.element.style.transform = currentTransform;
+    });
   },
 
   lerp(start, end, factor) {
@@ -141,10 +160,8 @@ const MagneticLetters = {
       this.needsRecalc = false;
 
       this.letterData.forEach((data) => {
-        const letter = data.element;
-        const rect = letter.getBoundingClientRect();
-        const letterCenterX = rect.left + rect.width / 2;
-        const letterCenterY = rect.top + rect.height / 2;
+        const letterCenterX = (data.baseLeft - window.scrollX) + (data.width / 2);
+        const letterCenterY = (data.baseTop - window.scrollY) + (data.height / 2);
 
         const deltaX = this.mouseX - letterCenterX;
         const deltaY = this.mouseY - letterCenterY;
@@ -240,6 +257,25 @@ const MobileTouchRepel = {
     this.nameSection.addEventListener('touchend', () => this.onTouchEnd(), { passive: true });
 
     // DON'T start animation loop - only run when touching
+
+    this.cachePositions();
+  },
+
+  cachePositions() {
+    this.letterData.forEach(data => {
+      // Temporarily clear any active transform so we read the baseline geometry
+      const currentTransform = data.element.style.transform;
+      data.element.style.transform = '';
+
+      const rect = data.element.getBoundingClientRect();
+      data.baseLeft = rect.left + window.scrollX;
+      data.baseTop = rect.top + window.scrollY;
+      data.width = rect.width;
+      data.height = rect.height;
+
+      // Restore the transform
+      data.element.style.transform = currentTransform;
+    });
   },
 
   onTouchStart(e) {
@@ -302,10 +338,8 @@ const MobileTouchRepel = {
     const maxRepel = 16; // Maximum displacement in pixels (33% stronger)
 
     this.letterData.forEach(data => {
-      const letter = data.element;
-      const rect = letter.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2;
-      const letterCenterY = rect.top + rect.height / 2;
+      const letterCenterX = (data.baseLeft - window.scrollX) + (data.width / 2);
+      const letterCenterY = (data.baseTop - window.scrollY) + (data.height / 2);
 
       // Calculate distance from touch to letter center
       const deltaX = letterCenterX - this.touchX;
@@ -1678,5 +1712,11 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     // Recalculate any size-dependent values if needed
+    if (typeof MagneticLetters !== 'undefined' && MagneticLetters.letterData?.length > 0) {
+      MagneticLetters.cachePositions();
+    }
+    if (typeof MobileTouchRepel !== 'undefined' && MobileTouchRepel.letterData?.length > 0) {
+      MobileTouchRepel.cachePositions();
+    }
   }, 250);
 });

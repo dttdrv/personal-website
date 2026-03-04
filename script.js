@@ -461,12 +461,13 @@ const ScrollProgress = {
   bar: null,
   modalContent: null,
   isModalActive: false,
+  ticking: false,
 
   init() {
     this.bar = document.querySelector('.scroll-progress');
     if (!this.bar) return;
 
-    window.addEventListener('scroll', () => this.update(), { passive: true });
+    window.addEventListener('scroll', () => this.onScroll(), { passive: true });
     this.update();
   },
 
@@ -475,10 +476,30 @@ const ScrollProgress = {
     this.modalContent = contentElement;
 
     if (active && contentElement) {
-      contentElement.addEventListener('scroll', () => this.updateModal(), { passive: true });
+      contentElement.addEventListener('scroll', () => this.onScrollModal(), { passive: true });
       this.updateModal();
     } else {
       this.update();
+    }
+  },
+
+  onScroll() {
+    if (!this.ticking) {
+      requestAnimationFrame(() => {
+        this.update();
+        this.ticking = false;
+      });
+      this.ticking = true;
+    }
+  },
+
+  onScrollModal() {
+    if (!this.ticking) {
+      requestAnimationFrame(() => {
+        this.updateModal();
+        this.ticking = false;
+      });
+      this.ticking = true;
     }
   },
 
@@ -486,16 +507,18 @@ const ScrollProgress = {
     if (this.isModalActive) return;
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / docHeight) * 100;
-    this.bar.style.width = `${progress}%`;
+    // Bolt Optimization: Calculate scaleX 0-1 for GPU acceleration
+    const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
+    this.bar.style.transform = `scaleX(${progress})`;
   },
 
   updateModal() {
     if (!this.isModalActive || !this.modalContent) return;
     const scrollTop = this.modalContent.scrollTop;
     const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
-    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    this.bar.style.width = `${progress}%`;
+    // Bolt Optimization: Calculate scaleX 0-1 for GPU acceleration
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+    this.bar.style.transform = `scaleX(${progress})`;
   }
 };
 

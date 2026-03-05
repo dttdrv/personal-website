@@ -1,0 +1,3 @@
+## 2024-05-24 - [CSS Animation Performance]
+**Learning:** Animating `width` property on scroll events (like for a progress bar) triggers layout calculations and repaints, causing layout thrashing.
+**Action:** Use `transform: scaleX()` along with `transform-origin` and `will-change: transform` to animate scale. CSS transforms are hardware-accelerated and only trigger composite layers, significantly improving performance for high-frequency events like scrolling.

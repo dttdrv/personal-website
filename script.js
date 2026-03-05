@@ -486,16 +486,18 @@ const ScrollProgress = {
     if (this.isModalActive) return;
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / docHeight) * 100;
-    this.bar.style.width = `${progress}%`;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
+    // use transform scaleX instead of width to prevent layout thrashing
+    this.bar.style.transform = `scaleX(${progress})`;
   },
 
   updateModal() {
     if (!this.isModalActive || !this.modalContent) return;
     const scrollTop = this.modalContent.scrollTop;
     const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
-    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    this.bar.style.width = `${progress}%`;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+    // use transform scaleX instead of width to prevent layout thrashing
+    this.bar.style.transform = `scaleX(${progress})`;
   }
 };
 

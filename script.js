@@ -92,6 +92,8 @@ const MagneticLetters = {
 
     if (!this.letterData.length) return;
 
+    this.cachePositions();
+
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
@@ -119,6 +121,22 @@ const MagneticLetters = {
     // DON'T start animation loop - only run when mouse moves
   },
 
+  cachePositions() {
+    this.letterData.forEach((data) => {
+      const letter = data.element;
+      // temporarily clear transform to get true document-relative position
+      const currentTransform = letter.style.transform;
+      letter.style.transform = '';
+
+      const rect = letter.getBoundingClientRect();
+      data.baseX = rect.left + rect.width / 2 + window.scrollX;
+      data.baseY = rect.top + rect.height / 2 + window.scrollY;
+
+      // restore transform
+      letter.style.transform = currentTransform;
+    });
+  },
+
   lerp(start, end, factor) {
     return start + (end - start) * factor;
   },
@@ -141,10 +159,8 @@ const MagneticLetters = {
       this.needsRecalc = false;
 
       this.letterData.forEach((data) => {
-        const letter = data.element;
-        const rect = letter.getBoundingClientRect();
-        const letterCenterX = rect.left + rect.width / 2;
-        const letterCenterY = rect.top + rect.height / 2;
+        const letterCenterX = data.baseX - window.scrollX;
+        const letterCenterY = data.baseY - window.scrollY;
 
         const deltaX = this.mouseX - letterCenterX;
         const deltaY = this.mouseY - letterCenterY;
@@ -234,6 +250,8 @@ const MobileTouchRepel = {
       });
     });
 
+    this.cachePositions();
+
     // Touch event listeners on the name section
     this.nameSection.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: true });
     this.nameSection.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
@@ -287,6 +305,20 @@ const MobileTouchRepel = {
     }
   },
 
+  cachePositions() {
+    this.letterData.forEach(data => {
+      const letter = data.element;
+      const currentTransform = letter.style.transform;
+      letter.style.transform = '';
+
+      const rect = letter.getBoundingClientRect();
+      data.baseX = rect.left + rect.width / 2 + window.scrollX;
+      data.baseY = rect.top + rect.height / 2 + window.scrollY;
+
+      letter.style.transform = currentTransform;
+    });
+  },
+
   onTouchEnd() {
     this.isTouching = false;
     this.isScrolling = false;
@@ -302,10 +334,8 @@ const MobileTouchRepel = {
     const maxRepel = 16; // Maximum displacement in pixels (33% stronger)
 
     this.letterData.forEach(data => {
-      const letter = data.element;
-      const rect = letter.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2;
-      const letterCenterY = rect.top + rect.height / 2;
+      const letterCenterX = data.baseX - window.scrollX;
+      const letterCenterY = data.baseY - window.scrollY;
 
       // Calculate distance from touch to letter center
       const deltaX = letterCenterX - this.touchX;
@@ -1037,6 +1067,7 @@ const PhotoCarousel = {
 // === Parallax Layers ===
 const ParallaxLayers = {
   elements: null,
+  layerData: [],
   ambientElements: null,
   isMobile: false,
 
@@ -1050,6 +1081,8 @@ const ParallaxLayers = {
 
     this.elements = document.querySelectorAll('[data-parallax]');
     this.ambientElements = document.querySelectorAll('.ambient-orb, .ambient-shape');
+
+    this.cachePositions();
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
@@ -1066,23 +1099,45 @@ const ParallaxLayers = {
     }, { passive: true });
   },
 
+  cachePositions() {
+    if (!this.elements) return;
+
+    this.layerData = [];
+    this.elements.forEach(element => {
+      const currentTransform = element.style.transform;
+      element.style.transform = '';
+
+      const rect = element.getBoundingClientRect();
+      this.layerData.push({
+        element: element,
+        baseTop: rect.top + window.scrollY,
+        baseBottom: rect.bottom + window.scrollY,
+        baseCenter: rect.top + rect.height / 2 + window.scrollY,
+        speed: parseFloat(element.dataset.parallax) || 0.1
+      });
+
+      element.style.transform = currentTransform;
+    });
+  },
+
   update() {
     // Skip on mobile
     if (this.isMobile) return;
-    if (!this.elements) return;
+    if (!this.layerData || !this.layerData.length) return;
 
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    this.elements.forEach(element => {
-      const rect = element.getBoundingClientRect();
-      const elementCenter = rect.top + rect.height / 2;
-      const distanceFromCenter = elementCenter - windowHeight / 2;
-      const speed = parseFloat(element.dataset.parallax) || 0.1;
+    this.layerData.forEach(data => {
+      const currentTop = data.baseTop - scrollY;
+      const currentBottom = data.baseBottom - scrollY;
+      const elementCenter = data.baseCenter - scrollY;
 
-      if (rect.bottom > 0 && rect.top < windowHeight) {
-        const translateY = distanceFromCenter * speed;
-        element.style.transform = `translateY(${translateY}px)`;
+      const distanceFromCenter = elementCenter - windowHeight / 2;
+
+      if (currentBottom > 0 && currentTop < windowHeight) {
+        const translateY = distanceFromCenter * data.speed;
+        data.element.style.transform = `translateY(${translateY}px)`;
       }
     });
   },
@@ -1165,6 +1220,11 @@ const PageLoad = {
     // Images load lazily in background with cover reveal animation
     document.fonts.ready.then(() => {
       document.body.classList.add('fonts-loaded');
+
+      // Update cached positions after fonts render
+      if (typeof MagneticLetters !== 'undefined') MagneticLetters.cachePositions();
+      if (typeof MobileTouchRepel !== 'undefined') MobileTouchRepel.cachePositions();
+      if (typeof ParallaxLayers !== 'undefined') ParallaxLayers.cachePositions();
 
       // Ensure minimum load time has passed (keeps loader from flashing)
       const elapsed = Date.now() - loadStart;
@@ -1678,5 +1738,8 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
     // Recalculate any size-dependent values if needed
+    if (typeof MagneticLetters !== 'undefined') MagneticLetters.cachePositions();
+    if (typeof MobileTouchRepel !== 'undefined') MobileTouchRepel.cachePositions();
+    if (typeof ParallaxLayers !== 'undefined') ParallaxLayers.cachePositions();
   }, 250);
 });

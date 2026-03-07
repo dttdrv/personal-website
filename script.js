@@ -85,12 +85,19 @@ const MagneticLetters = {
           targetX: 0,
           targetY: 0,
           targetRotation: 0,
-          targetScale: 1
+          targetScale: 1,
+          cachedCenterX: 0,
+          cachedCenterY: 0
         });
       });
     });
 
     if (!this.letterData.length) return;
+
+    // cache initial positions
+    this.cachePositions();
+    // re-cache when fonts load since layout might shift
+    document.fonts.ready.then(() => this.cachePositions());
 
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -119,6 +126,30 @@ const MagneticLetters = {
     // DON'T start animation loop - only run when mouse moves
   },
 
+  cachePositions() {
+    if (!this.containers.length) return;
+
+    // clear transforms to get accurate base positions
+    this.letterData.forEach(data => {
+      data.element.style.transform = '';
+    });
+
+    this.letterData.forEach(data => {
+      const rect = data.element.getBoundingClientRect();
+      // store document-relative coordinates
+      data.cachedCenterX = rect.left + rect.width / 2 + window.scrollX;
+      data.cachedCenterY = rect.top + rect.height / 2 + window.scrollY;
+    });
+
+    // restore transforms if needed
+    this.letterData.forEach(data => {
+      if (Math.abs(data.currentX) > 0.1 || Math.abs(data.currentY) > 0.1 ||
+        Math.abs(data.currentRotation) > 0.1 || Math.abs(data.currentScale - 1) > 0.001) {
+        data.element.style.transform = `translate(${data.currentX}px, ${data.currentY}px) rotate(${data.currentRotation}deg) scale(${data.currentScale})`;
+      }
+    });
+  },
+
   lerp(start, end, factor) {
     return start + (end - start) * factor;
   },
@@ -141,10 +172,9 @@ const MagneticLetters = {
       this.needsRecalc = false;
 
       this.letterData.forEach((data) => {
-        const letter = data.element;
-        const rect = letter.getBoundingClientRect();
-        const letterCenterX = rect.left + rect.width / 2;
-        const letterCenterY = rect.top + rect.height / 2;
+        // use cached document positions converted to viewport coordinates
+        const letterCenterX = data.cachedCenterX - window.scrollX;
+        const letterCenterY = data.cachedCenterY - window.scrollY;
 
         const deltaX = this.mouseX - letterCenterX;
         const deltaY = this.mouseY - letterCenterY;
@@ -230,9 +260,16 @@ const MobileTouchRepel = {
         currentX: 0,
         currentY: 0,
         targetX: 0,
-        targetY: 0
+        targetY: 0,
+        cachedCenterX: 0,
+        cachedCenterY: 0
       });
     });
+
+    // cache initial positions
+    this.cachePositions();
+    // re-cache when fonts load
+    document.fonts.ready.then(() => this.cachePositions());
 
     // Touch event listeners on the name section
     this.nameSection.addEventListener('touchstart', (e) => this.onTouchStart(e), { passive: true });
@@ -240,6 +277,28 @@ const MobileTouchRepel = {
     this.nameSection.addEventListener('touchend', () => this.onTouchEnd(), { passive: true });
 
     // DON'T start animation loop - only run when touching
+  },
+
+  cachePositions() {
+    if (!this.letters.length) return;
+
+    // clear transforms
+    this.letterData.forEach(data => {
+      data.element.style.transform = '';
+    });
+
+    this.letterData.forEach(data => {
+      const rect = data.element.getBoundingClientRect();
+      data.cachedCenterX = rect.left + rect.width / 2 + window.scrollX;
+      data.cachedCenterY = rect.top + rect.height / 2 + window.scrollY;
+    });
+
+    // restore transforms if needed
+    this.letterData.forEach(data => {
+      if (Math.abs(data.currentX) > 0.1 || Math.abs(data.currentY) > 0.1) {
+        data.element.style.transform = `translate(${data.currentX}px, ${data.currentY}px)`;
+      }
+    });
   },
 
   onTouchStart(e) {
@@ -302,10 +361,9 @@ const MobileTouchRepel = {
     const maxRepel = 16; // Maximum displacement in pixels (33% stronger)
 
     this.letterData.forEach(data => {
-      const letter = data.element;
-      const rect = letter.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2;
-      const letterCenterY = rect.top + rect.height / 2;
+      // use cached document positions converted to viewport coordinates
+      const letterCenterX = data.cachedCenterX - window.scrollX;
+      const letterCenterY = data.cachedCenterY - window.scrollY;
 
       // Calculate distance from touch to letter center
       const deltaX = letterCenterX - this.touchX;
@@ -1037,6 +1095,7 @@ const PhotoCarousel = {
 // === Parallax Layers ===
 const ParallaxLayers = {
   elements: null,
+  elementData: [],
   ambientElements: null,
   isMobile: false,
 
@@ -1050,6 +1109,17 @@ const ParallaxLayers = {
 
     this.elements = document.querySelectorAll('[data-parallax]');
     this.ambientElements = document.querySelectorAll('.ambient-orb, .ambient-shape');
+
+    // Store elements and cache initial positions
+    this.elementData = Array.from(this.elements).map(el => ({
+      element: el,
+      cachedTop: 0,
+      cachedHeight: 0,
+      speed: parseFloat(el.dataset.parallax) || 0.1
+    }));
+
+    this.cachePositions();
+    document.fonts.ready.then(() => this.cachePositions());
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
@@ -1066,23 +1136,44 @@ const ParallaxLayers = {
     }, { passive: true });
   },
 
+  cachePositions() {
+    if (this.isMobile || !this.elementData.length) return;
+
+    // clear transforms
+    this.elementData.forEach(data => {
+      data.element.style.transform = '';
+    });
+
+    this.elementData.forEach(data => {
+      const rect = data.element.getBoundingClientRect();
+      data.cachedTop = rect.top + window.scrollY;
+      data.cachedHeight = rect.height;
+    });
+
+    // restore transforms via an immediate update
+    this.update();
+  },
+
   update() {
     // Skip on mobile
     if (this.isMobile) return;
-    if (!this.elements) return;
+    if (!this.elementData.length) return;
 
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
 
-    this.elements.forEach(element => {
-      const rect = element.getBoundingClientRect();
-      const elementCenter = rect.top + rect.height / 2;
-      const distanceFromCenter = elementCenter - windowHeight / 2;
-      const speed = parseFloat(element.dataset.parallax) || 0.1;
+    this.elementData.forEach(data => {
+      // Calculate current rect.top using cached document position minus scroll
+      const currentTop = data.cachedTop - scrollY;
+      const currentBottom = currentTop + data.cachedHeight;
 
-      if (rect.bottom > 0 && rect.top < windowHeight) {
-        const translateY = distanceFromCenter * speed;
-        element.style.transform = `translateY(${translateY}px)`;
+      const elementCenter = currentTop + data.cachedHeight / 2;
+      const distanceFromCenter = elementCenter - windowHeight / 2;
+
+      // Only apply transform if element is in viewport
+      if (currentBottom > 0 && currentTop < windowHeight) {
+        const translateY = distanceFromCenter * data.speed;
+        data.element.style.transform = `translateY(${translateY}px)`;
       }
     });
   },
@@ -1677,6 +1768,9 @@ let resizeTimeout;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
-    // Recalculate any size-dependent values if needed
+    // Recalculate size-dependent values to maintain layout accuracy without forced reflows during animations
+    if (typeof MagneticLetters !== 'undefined') MagneticLetters.cachePositions();
+    if (typeof MobileTouchRepel !== 'undefined') MobileTouchRepel.cachePositions();
+    if (typeof ParallaxLayers !== 'undefined') ParallaxLayers.cachePositions();
   }, 250);
 });

@@ -85,9 +85,6 @@
   <!-- Scroll Progress -->
   <div class="scroll-progress"></div>
 
-  <!-- Scroll Progress -->
-  <div class="scroll-progress"></div>
-
 
   <!-- Mobile Menu Button (Bottom-Right) -->
   <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
@@ -167,7 +164,7 @@
       <h3 class="modal-title" data-i18n="modal.title">Get in Touch</h3>
       <form class="contact-form" id="contact-form">
         <div class="form-group">
-          <label for="name" data-i18n="modal.name">Name</label>
+          <label for="form-name" data-i18n="modal.name">Name</label>
           <input type="text" id="form-name" name="name" required>
         </div>
         <div class="form-group">
@@ -277,7 +274,8 @@
         <!-- Profile Image Area -->
         <div class="about-visual" data-scroll-reveal>
           <div class="profile-frame">
-            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="eager">
+            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="eager"
+              fetchpriority="high" decoding="async">
             <div class="profile-accent"></div>
           </div>
         </div>
@@ -426,28 +424,30 @@
             <div class="carousel-card" data-index="0" data-position="far-left">
               <div class="card-image">
                 <img src="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" alt="Photo April 2025"
-                  loading="lazy">
+                  loading="lazy" decoding="async">
               </div>
             </div>
             <div class="carousel-card" data-index="1" data-position="left">
               <div class="card-image">
-                <img src="pictures/IMG_20250419_235912.jpg" alt="Photo April 2025" loading="lazy">
+                <img src="pictures/IMG_20250419_235912.jpg" alt="Photo April 2025" loading="lazy" decoding="async">
               </div>
             </div>
             <div class="carousel-card" data-index="2" data-position="center">
               <div class="card-image">
-                <img src="pictures/IMG_20250710_095454~2 (1).jpg" alt="Photo July 2025" loading="lazy">
+                <img src="pictures/IMG_20250710_095454~2 (1).jpg" alt="Photo July 2025" loading="lazy"
+                  decoding="async">
               </div>
             </div>
             <div class="carousel-card" data-index="3" data-position="right">
               <div class="card-image">
-                <img src="pictures/IMG_20250822_093038~2 (1).jpg" alt="Photo August 2025" loading="lazy">
+                <img src="pictures/IMG_20250822_093038~2 (1).jpg" alt="Photo August 2025" loading="lazy"
+                  decoding="async">
               </div>
             </div>
             <div class="carousel-card" data-index="4" data-position="far-right">
               <div class="card-image">
                 <img src="pictures/IMG_20250925_175649_edit_41287785265446.jpg" alt="Photo September 2025"
-                  loading="lazy">
+                  loading="lazy" decoding="async">
               </div>
             </div>
           </div>

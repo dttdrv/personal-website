@@ -461,33 +461,55 @@ const ScrollProgress = {
   bar: null,
   modalContent: null,
   isModalActive: false,
+  modalScrollHandler: null,
+  ticking: false,
 
   init() {
     this.bar = document.querySelector('.scroll-progress');
     if (!this.bar) return;
 
-    window.addEventListener('scroll', () => this.update(), { passive: true });
+    window.addEventListener('scroll', () => this.requestUpdate(), { passive: true });
     this.update();
   },
 
   setModalMode(active, contentElement = null) {
+    if (this.modalContent && this.modalScrollHandler) {
+      this.modalContent.removeEventListener('scroll', this.modalScrollHandler);
+    }
+
     this.isModalActive = active;
     this.modalContent = contentElement;
 
     if (active && contentElement) {
-      contentElement.addEventListener('scroll', () => this.updateModal(), { passive: true });
+      this.modalScrollHandler = () => this.requestUpdate();
+      contentElement.addEventListener('scroll', this.modalScrollHandler, { passive: true });
       this.updateModal();
     } else {
+      this.modalScrollHandler = null;
       this.update();
     }
+  },
+
+  requestUpdate() {
+    if (this.ticking) return;
+
+    this.ticking = true;
+    requestAnimationFrame(() => {
+      if (this.isModalActive) {
+        this.updateModal();
+      } else {
+        this.update();
+      }
+      this.ticking = false;
+    });
   },
 
   update() {
     if (this.isModalActive) return;
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / docHeight) * 100;
-    this.bar.style.width = `${progress}%`;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
   },
 
   updateModal() {
@@ -495,7 +517,7 @@ const ScrollProgress = {
     const scrollTop = this.modalContent.scrollTop;
     const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
     const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    this.bar.style.width = `${progress}%`;
+    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
   }
 };
 
@@ -1126,8 +1148,9 @@ const SmoothScroll = {
         const target = document.querySelector(href);
         if (target) {
           e.preventDefault();
+          const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           target.scrollIntoView({
-            behavior: 'smooth',
+            behavior: prefersReducedMotion ? 'auto' : 'smooth',
             block: 'start'
           });
         }
@@ -1223,7 +1246,9 @@ const PageLoad = {
 // === Random Float Animation Delays ===
 const RandomDelays = {
   init() {
-    // Add random animation delays to floating elements
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // Add random animation delays only to ambient floating elements
     document.querySelectorAll('.ambient-orb, .ambient-shape').forEach(el => {
       const randomDelay = Math.random() * 3;
       el.style.animationDelay = `${randomDelay}s`;
@@ -1491,9 +1516,9 @@ const AboutToggle = {
       if (text && text !== key) {
         const words = text.split(' ');
         p.innerHTML = words.map(word => {
-          const delay = globalWordIndex * 0.035; // 35ms between each word
+          const delayIndex = globalWordIndex;
           globalWordIndex++;
-          return `<span class="bio-word" style="transition-delay: ${delay}s">${word}</span>`;
+          return `<span class="bio-word" style="--word-delay-index: ${delayIndex}">${word}</span>`;
         }).join(' ');
       }
     });

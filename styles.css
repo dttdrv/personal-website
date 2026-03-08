@@ -187,7 +187,7 @@ button {
   gap: var(--space-xs);
   padding: 6px 0;
   opacity: 0.5;
-  transition: all 0.3s var(--ease-out-expo);
+  transition: opacity 0.3s var(--ease-out-expo);
 }
 
 .nav-item:hover,
@@ -245,7 +245,7 @@ button {
   gap: 5px;
   z-index: 9999;
   cursor: pointer;
-  transition: all 0.3s var(--ease-out-expo);
+  transition: background-color 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
 }
 
 .menu-line {
@@ -253,7 +253,7 @@ button {
   width: 18px;
   height: 2px;
   background: var(--black);
-  transition: all 0.3s var(--ease-out-expo);
+  transition: transform 0.3s var(--ease-out-expo), opacity 0.3s ease, background-color 0.3s ease;
 }
 
 /* Animate to X when open */
@@ -380,6 +380,7 @@ button {
   pointer-events: none;
   z-index: 1;
   overflow: hidden;
+  contain: layout paint;
   /* Fix mobile compositing issues */
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -909,6 +910,7 @@ button {
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo);
+  transition-delay: calc(var(--word-delay-index, 0) * 0.035s);
 }
 
 .about-extended.expanded .about-paragraph .bio-word {
@@ -2222,6 +2224,14 @@ button {
   transition-delay: 0s;
 }
 
+
+/* Pause animations when tab is hidden */
+body.paused *,
+body.paused *::before,
+body.paused *::after {
+  animation-play-state: paused !important;
+}
+
 /* === Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
 
@@ -2253,7 +2263,12 @@ button {
     opacity: 1 !important;
     transform: none !important;
   }
+
+  .bio-word {
+    transition-delay: 0s !important;
+  }
 }
+
 
 /* === Responsive === */
 @media (max-width: 1024px) {

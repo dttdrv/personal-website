@@ -1,3 +1,7 @@
 ## 2024-05-16 - [Frontend Performance: Caching getBoundingClientRect in Animation Loops]
 **Learning:** Frequent calls to `getBoundingClientRect()` inside `requestAnimationFrame` loops or scroll handlers (like in `MagneticLetters`, `MobileTouchRepel`, and `ParallaxLayers`) cause significant layout thrashing and forced synchronous layouts, degrading rendering performance.
 **Action:** Always pre-calculate and cache document-relative element positions during initialization (`init()`). Update this cache on window resize events and after custom fonts load (using `document.fonts.ready.then()`). During active animations (`animate()`, `update()`, etc.), calculate viewport-relative positions using the cached document coordinates minus the current scroll offset (`window.scrollX` / `window.scrollY`) instead of directly querying the DOM.
+
+## 2024-05-16 - [Frontend Performance: Avoid layout thrashing during scroll]
+**Learning:** Using `width` css property to update elements causes layout calculation on every frame, which degrades rendering performance.
+**Action:** Always use `transform: scaleX()` or `transform: scaleY()` for animating sizing dimensions whenever possible instead of `width` and `height`, and also use `transform-origin` to keep the scaling from the correct origin point.

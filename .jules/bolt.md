@@ -1,3 +1,6 @@
 ## 2024-05-16 - [Frontend Performance: Caching getBoundingClientRect in Animation Loops]
 **Learning:** Frequent calls to `getBoundingClientRect()` inside `requestAnimationFrame` loops or scroll handlers (like in `MagneticLetters`, `MobileTouchRepel`, and `ParallaxLayers`) cause significant layout thrashing and forced synchronous layouts, degrading rendering performance.
 **Action:** Always pre-calculate and cache document-relative element positions during initialization (`init()`). Update this cache on window resize events and after custom fonts load (using `document.fonts.ready.then()`). During active animations (`animate()`, `update()`, etc.), calculate viewport-relative positions using the cached document coordinates minus the current scroll offset (`window.scrollX` / `window.scrollY`) instead of directly querying the DOM.
+## 2024-05-16 - [Frontend Performance: Optimizing Scroll-Linked Progress Bars]
+**Learning:** Directly modifying layout properties like `width` inside high-frequency event handlers (like scroll or `requestAnimationFrame`) causes expensive forced synchronous layouts and repaints (layout thrashing), degrading scroll performance.
+**Action:** Use CSS `transform: scaleX()` with `transform-origin: left` to update progress bars instead of `width`. This shifts the animation to the GPU (compositor thread) and avoids reflows entirely.

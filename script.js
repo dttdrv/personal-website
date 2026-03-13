@@ -567,7 +567,8 @@ const ScrollProgress = {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    // use transform: scalex instead of width to prevent layout thrashing
+    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(100, progress)) / 100})`;
   },
 
   updateModal() {
@@ -575,7 +576,8 @@ const ScrollProgress = {
     const scrollTop = this.modalContent.scrollTop;
     const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
     const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    // use transform: scalex instead of width to prevent layout thrashing
+    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(100, progress)) / 100})`;
   }
 };
 

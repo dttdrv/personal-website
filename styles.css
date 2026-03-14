@@ -588,15 +588,19 @@ button {
 }
 
 /* === Scroll Progress === */
+/* ⚡ bolt: optimization - use transform scaleX instead of width to prevent layout thrashing */
+/* layout calculation happens once, compositing is hardware accelerated */
 .scroll-progress {
   position: fixed;
   top: 0;
   left: 0;
   height: 2px;
   background: var(--accent);
-  width: 0%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
   z-index: 10001;
-  transition: width 0.1s linear;
+  transition: transform 0.1s linear;
 }
 
 /* === Gallery === */

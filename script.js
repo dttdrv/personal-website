@@ -864,10 +864,22 @@ const PhotoCarousel = {
   currentIndex: 2, // Start with center card (index 2)
   positions: ['far-left', 'left', 'center', 'right', 'far-right'],
   isAnimating: false,
+  isVisible: false,
+  observer: null,
 
   init() {
     this.carousel = document.getElementById('photo-carousel');
     if (!this.carousel) return;
+
+    // ⚡ Bolt: Optimize performance by using IntersectionObserver to track visibility
+    // instead of calling getBoundingClientRect() on every keydown event,
+    // which causes forced synchronous layouts.
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0.1 });
+    this.observer.observe(this.carousel);
 
     this.cards = Array.from(this.carousel.querySelectorAll('.carousel-card'));
     this.captions = Array.from(this.carousel.querySelectorAll('.caption-text'));
@@ -1028,9 +1040,7 @@ const PhotoCarousel = {
   },
 
   isInView() {
-    if (!this.carousel) return false;
-    const rect = this.carousel.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
+    return this.isVisible;
   },
 
   navigate(direction) {

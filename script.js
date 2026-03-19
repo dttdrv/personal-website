@@ -521,8 +521,11 @@ const ScrollProgress = {
   isModalActive: false,
   modalScrollHandler: null,
   ticking: false,
+  cachedDocHeight: 0,
+  cachedWindowHeight: 0,
 
   init() {
+    this.cacheDimensions();
     this.bar = document.querySelector('.scroll-progress');
     if (!this.bar) return;
 
@@ -562,10 +565,15 @@ const ScrollProgress = {
     });
   },
 
+  cacheDimensions() {
+    this.cachedDocHeight = document.documentElement.scrollHeight;
+    this.cachedWindowHeight = window.innerHeight;
+  },
+
   update() {
     if (this.isModalActive) return;
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight = this.cachedDocHeight - this.cachedWindowHeight;
     const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
   },
@@ -1385,8 +1393,11 @@ const SectionNav = {
   currentSection: null,
   visibleSections: new Map(), // Track visibility ratios
   observer: null,
+  cachedDocHeight: 0,
+  cachedWindowHeight: 0,
 
   init() {
+    this.cacheDimensions();
     this.nav = document.getElementById('section-nav');
     if (!this.nav) return;
 
@@ -1439,7 +1450,7 @@ const SectionNav = {
     // Edge cases: top and bottom of page
     if (window.scrollY < 100) {
       bestSection = this.sections[0]?.id;
-    } else if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50) {
+    } else if (window.scrollY + this.cachedWindowHeight >= this.cachedDocHeight - 50) {
       bestSection = this.sections[this.sections.length - 1]?.id;
     }
 
@@ -1447,6 +1458,11 @@ const SectionNav = {
       this.currentSection = bestSection;
       this.setActive(bestSection);
     }
+  },
+
+  cacheDimensions() {
+    this.cachedDocHeight = document.documentElement.scrollHeight;
+    this.cachedWindowHeight = window.innerHeight;
   },
 
   // Keep for manual updates if needed (but shouldn't be called on scroll anymore)
@@ -1797,5 +1813,15 @@ window.addEventListener('resize', () => {
     if (typeof MagneticLetters !== 'undefined') MagneticLetters.cachePositions();
     if (typeof MobileTouchRepel !== 'undefined') MobileTouchRepel.cachePositions();
     if (typeof ParallaxLayers !== 'undefined') ParallaxLayers.cachePositions();
+    if (typeof ScrollProgress !== 'undefined') ScrollProgress.cacheDimensions();
+    if (typeof SectionNav !== 'undefined') SectionNav.cacheDimensions();
   }, 250);
 });
+
+// === Layout observer for content changes ===
+// Detect changes in document height (e.g. from accordions, lazy images) to update cached dimensions
+const layoutObserver = new ResizeObserver(() => {
+  if (typeof ScrollProgress !== 'undefined') ScrollProgress.cacheDimensions();
+  if (typeof SectionNav !== 'undefined') SectionNav.cacheDimensions();
+});
+layoutObserver.observe(document.documentElement);

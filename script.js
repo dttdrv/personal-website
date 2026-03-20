@@ -864,6 +864,8 @@ const PhotoCarousel = {
   currentIndex: 2, // Start with center card (index 2)
   positions: ['far-left', 'left', 'center', 'right', 'far-right'],
   isAnimating: false,
+  isVisible: false, // ⚡ bolt: cache visibility state to prevent layout thrashing
+  observer: null,
 
   init() {
     this.carousel = document.getElementById('photo-carousel');
@@ -915,6 +917,14 @@ const PhotoCarousel = {
         }
       }
     }, { passive: false });
+
+    // ⚡ bolt: use intersectionobserver instead of getboundingclientrect
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0.1 });
+    this.observer.observe(this.carousel);
 
     // Get the stack element early for all event handlers
     const stack = this.carousel.querySelector('.carousel-stack');
@@ -1028,9 +1038,8 @@ const PhotoCarousel = {
   },
 
   isInView() {
-    if (!this.carousel) return false;
-    const rect = this.carousel.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
+    // ⚡ bolt: return cached state instead of synchronous layout query
+    return this.isVisible;
   },
 
   navigate(direction) {

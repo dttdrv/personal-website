@@ -521,13 +521,22 @@ const ScrollProgress = {
   isModalActive: false,
   modalScrollHandler: null,
   ticking: false,
+  cachedDocHeight: 0,
+  cachedWindowHeight: 0,
 
   init() {
     this.bar = document.querySelector('.scroll-progress');
     if (!this.bar) return;
 
+    this.cacheDimensions();
+
     window.addEventListener('scroll', () => this.requestUpdate(), { passive: true });
     this.update();
+  },
+
+  cacheDimensions() {
+    this.cachedDocHeight = document.documentElement.scrollHeight;
+    this.cachedWindowHeight = window.innerHeight;
   },
 
   setModalMode(active, contentElement = null) {
@@ -565,7 +574,8 @@ const ScrollProgress = {
   update() {
     if (this.isModalActive) return;
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    // ⚡ bolt: use cached dimensions to prevent layout thrashing on scroll
+    const docHeight = this.cachedDocHeight - this.cachedWindowHeight;
     const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
     this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
   },
@@ -1385,6 +1395,8 @@ const SectionNav = {
   currentSection: null,
   visibleSections: new Map(), // Track visibility ratios
   observer: null,
+  cachedDocHeight: 0,
+  cachedWindowHeight: 0,
 
   init() {
     this.nav = document.getElementById('section-nav');
@@ -1394,6 +1406,8 @@ const SectionNav = {
     this.sections = Array.from(document.querySelectorAll('.room[id]'));
 
     if (!this.sections.length) return;
+
+    this.cacheDimensions();
 
     // Use IntersectionObserver instead of per-scroll getBoundingClientRect
     // This is MUCH more performant on mobile
@@ -1439,7 +1453,8 @@ const SectionNav = {
     // Edge cases: top and bottom of page
     if (window.scrollY < 100) {
       bestSection = this.sections[0]?.id;
-    } else if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 50) {
+    // ⚡ bolt: use cached dimensions instead of synchronous dom lookups
+    } else if (window.scrollY + this.cachedWindowHeight >= this.cachedDocHeight - 50) {
       bestSection = this.sections[this.sections.length - 1]?.id;
     }
 
@@ -1447,6 +1462,11 @@ const SectionNav = {
       this.currentSection = bestSection;
       this.setActive(bestSection);
     }
+  },
+
+  cacheDimensions() {
+    this.cachedDocHeight = document.documentElement.scrollHeight;
+    this.cachedWindowHeight = window.innerHeight;
   },
 
   // Keep for manual updates if needed (but shouldn't be called on scroll anymore)
@@ -1712,6 +1732,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Consolidated scroll handler
   ScrollHandler.init();
+
+  // ⚡ bolt: global resize observer to update cached dimensions to prevent layout thrashing on scroll updates
+  const ro = new ResizeObserver(() => {
+    if (typeof ScrollProgress !== 'undefined') ScrollProgress.cacheDimensions();
+    if (typeof SectionNav !== 'undefined' && SectionNav.nav) SectionNav.cacheDimensions();
+  });
+  ro.observe(document.documentElement);
 });
 
 // === Mobile Menu ===
@@ -1797,5 +1824,8 @@ window.addEventListener('resize', () => {
     if (typeof MagneticLetters !== 'undefined') MagneticLetters.cachePositions();
     if (typeof MobileTouchRepel !== 'undefined') MobileTouchRepel.cachePositions();
     if (typeof ParallaxLayers !== 'undefined') ParallaxLayers.cachePositions();
+    // ⚡ bolt: recalculate dimensions for scroll tracking when viewport size changes
+    if (typeof ScrollProgress !== 'undefined') ScrollProgress.cacheDimensions();
+    if (typeof SectionNav !== 'undefined' && SectionNav.nav) SectionNav.cacheDimensions();
   }, 250);
 });

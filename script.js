@@ -171,10 +171,14 @@ const MagneticLetters = {
       this.lastCalcY = this.mouseY;
       this.needsRecalc = false;
 
+      // ⚡ bolt: hoist global property access out of high-frequency loop
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
+
       this.letterData.forEach((data) => {
         // use cached document positions converted to viewport coordinates
-        const letterCenterX = data.cachedCenterX - window.scrollX;
-        const letterCenterY = data.cachedCenterY - window.scrollY;
+        const letterCenterX = data.cachedCenterX - scrollX;
+        const letterCenterY = data.cachedCenterY - scrollY;
 
         const deltaX = this.mouseX - letterCenterX;
         const deltaY = this.mouseY - letterCenterY;
@@ -360,10 +364,14 @@ const MobileTouchRepel = {
     const repelRadius = 120; // How close touch needs to be to affect letters
     const maxRepel = 16; // Maximum displacement in pixels (33% stronger)
 
+    // ⚡ bolt: hoist global property access out of high-frequency loop
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+
     this.letterData.forEach(data => {
       // use cached document positions converted to viewport coordinates
-      const letterCenterX = data.cachedCenterX - window.scrollX;
-      const letterCenterY = data.cachedCenterY - window.scrollY;
+      const letterCenterX = data.cachedCenterX - scrollX;
+      const letterCenterY = data.cachedCenterY - scrollY;
 
       // Calculate distance from touch to letter center
       const deltaX = letterCenterX - this.touchX;

@@ -880,10 +880,17 @@ const PhotoCarousel = {
   currentIndex: 2, // Start with center card (index 2)
   positions: ['far-left', 'left', 'center', 'right', 'far-right'],
   isAnimating: false,
+  isVisible: false,
 
   init() {
     this.carousel = document.getElementById('photo-carousel');
     if (!this.carousel) return;
+
+    // Track visibility to avoid layout thrashing in event listeners
+    const observer = new IntersectionObserver((entries) => {
+      this.isVisible = entries[0].isIntersecting;
+    });
+    observer.observe(this.carousel);
 
     this.cards = Array.from(this.carousel.querySelectorAll('.carousel-card'));
     this.captions = Array.from(this.carousel.querySelectorAll('.caption-text'));
@@ -914,7 +921,8 @@ const PhotoCarousel = {
 
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-      if (!this.isInView()) return;
+      // ⚡ bolt: check cached visibility to prevent synchronous layout thrashing
+      if (!this.isVisible) return;
       if (e.key === 'ArrowLeft') this.navigate('prev');
       if (e.key === 'ArrowRight') this.navigate('next');
     });
@@ -1041,12 +1049,6 @@ const PhotoCarousel = {
         wheelAccumulator = 0;
       }, 150);
     }, { passive: false });
-  },
-
-  isInView() {
-    if (!this.carousel) return false;
-    const rect = this.carousel.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
   },
 
   navigate(direction) {

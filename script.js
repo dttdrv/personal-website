@@ -880,6 +880,8 @@ const PhotoCarousel = {
   currentIndex: 2, // Start with center card (index 2)
   positions: ['far-left', 'left', 'center', 'right', 'far-right'],
   isAnimating: false,
+  isVisible: false,
+  observer: null,
 
   init() {
     this.carousel = document.getElementById('photo-carousel');
@@ -1041,12 +1043,20 @@ const PhotoCarousel = {
         wheelAccumulator = 0;
       }, 150);
     }, { passive: false });
+
+    // ⚡ bolt: cache visibility using IntersectionObserver to avoid layout thrashing during keydown events
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+      });
+    }, {
+      threshold: 0.1
+    });
+    this.observer.observe(this.carousel);
   },
 
   isInView() {
-    if (!this.carousel) return false;
-    const rect = this.carousel.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
+    return this.isVisible;
   },
 
   navigate(direction) {

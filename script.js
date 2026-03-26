@@ -1136,6 +1136,8 @@ const ParallaxLayers = {
   elementData: [],
   ambientElements: null,
   isMobile: false,
+  cachedWindowHeight: 0,
+  cachedWindowWidth: 0,
 
   init() {
     // Skip parallax entirely on mobile - too expensive
@@ -1175,7 +1177,12 @@ const ParallaxLayers = {
   },
 
   cachePositions() {
-    if (this.isMobile || !this.elementData.length) return;
+    if (this.isMobile) return;
+
+    this.cachedWindowHeight = window.innerHeight;
+    this.cachedWindowWidth = window.innerWidth;
+
+    if (!this.elementData.length) return;
 
     // clear transforms
     this.elementData.forEach(data => {
@@ -1197,8 +1204,9 @@ const ParallaxLayers = {
     if (this.isMobile) return;
     if (!this.elementData.length) return;
 
+    // ⚡ bolt: hoist global property access out of high-frequency loop by caching window dimensions
     const scrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
+    const windowHeight = this.cachedWindowHeight;
 
     this.elementData.forEach(data => {
       // Calculate current rect.top using cached document position minus scroll
@@ -1220,8 +1228,9 @@ const ParallaxLayers = {
     if (this.isMobile) return;
     if (!this.ambientElements) return;
 
-    const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    // ⚡ bolt: hoist global property access out of high-frequency loop by caching window dimensions
+    const mouseX = (e.clientX / this.cachedWindowWidth - 0.5) * 2;
+    const mouseY = (e.clientY / this.cachedWindowHeight - 0.5) * 2;
 
     this.ambientElements.forEach((el, index) => {
       const speed = 10 + (index * 5);

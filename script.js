@@ -880,6 +880,8 @@ const PhotoCarousel = {
   currentIndex: 2, // Start with center card (index 2)
   positions: ['far-left', 'left', 'center', 'right', 'far-right'],
   isAnimating: false,
+  isVisible: false,
+  observer: null,
 
   init() {
     this.carousel = document.getElementById('photo-carousel');
@@ -899,6 +901,20 @@ const PhotoCarousel = {
 
     leftArrow?.addEventListener('click', () => this.navigate('prev'));
     rightArrow?.addEventListener('click', () => this.navigate('next'));
+
+    // Intersection observer for visibility tracking
+    // ⚡ bolt: cache visibility to prevent synchronous layout thrashing from getBoundingClientRect during keydown events
+    if (this.carousel) {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          this.isVisible = entry.isIntersecting;
+        });
+      }, {
+        threshold: 0,
+        rootMargin: '0px'
+      });
+      this.observer.observe(this.carousel);
+    }
 
     // Click on cards to navigate
     this.cards.forEach((card, index) => {
@@ -1045,8 +1061,8 @@ const PhotoCarousel = {
 
   isInView() {
     if (!this.carousel) return false;
-    const rect = this.carousel.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
+    // ⚡ bolt: return cached visibility instead of synchronous getBoundingClientRect
+    return this.isVisible;
   },
 
   navigate(direction) {

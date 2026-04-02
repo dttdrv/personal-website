@@ -880,6 +880,7 @@ const PhotoCarousel = {
   currentIndex: 2, // Start with center card (index 2)
   positions: ['far-left', 'left', 'center', 'right', 'far-right'],
   isAnimating: false,
+  isVisible: false, // ⚡ bolt: cache visibility
 
   init() {
     this.carousel = document.getElementById('photo-carousel');
@@ -889,6 +890,14 @@ const PhotoCarousel = {
     this.captions = Array.from(this.carousel.querySelectorAll('.caption-text'));
 
     if (!this.cards.length) return;
+
+    // ⚡ bolt: observe visibility to avoid synchronous getBoundingClientRect
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        this.isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0 }); // trigger as soon as any part enters/leaves
+    observer.observe(this.carousel);
 
     // Set initial caption
     this.updateCaption(this.currentIndex);
@@ -1044,9 +1053,7 @@ const PhotoCarousel = {
   },
 
   isInView() {
-    if (!this.carousel) return false;
-    const rect = this.carousel.getBoundingClientRect();
-    return rect.top < window.innerHeight && rect.bottom > 0;
+    return this.isVisible;
   },
 
   navigate(direction) {

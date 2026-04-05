@@ -2,3 +2,6 @@
 **Learning:** Frequent calls to `getBoundingClientRect()` inside `requestAnimationFrame` loops or scroll handlers (like in `MagneticLetters`, `MobileTouchRepel`, and `ParallaxLayers`) cause significant layout thrashing and forced synchronous layouts, degrading rendering performance.
 **Action:** Always pre-calculate and cache document-relative element positions during initialization (`init()`). Update this cache on window resize events and after custom fonts load (using `document.fonts.ready.then()`). During active animations (`animate()`, `update()`, etc.), calculate viewport-relative positions using the cached document coordinates minus the current scroll offset (`window.scrollX` / `window.scrollY`) instead of directly querying the DOM.
 
+## 2024-06-03 - [Frontend Performance: Avoid animating layout-inducing properties like width]
+**Learning:** Animating layout-inducing properties like `width` or `height` in scroll handlers (like in `ScrollProgress`) causes forced synchronous layouts and layout thrashing, severely degrading rendering performance and creating jank.
+**Action:** Replace layout-inducing property animations with GPU-accelerated ones, such as `transform: scaleX()` combined with an appropriate `transform-origin` (e.g. `transform-origin: left`). Set `will-change: transform` if the animation is expected to update frequently, such as on scroll.

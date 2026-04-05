@@ -582,16 +582,19 @@ const ScrollProgress = {
     if (this.isModalActive) return;
     const scrollTop = window.scrollY;
     const docHeight = this.cachedDocHeight - this.cachedWindowHeight;
-    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+    // ⚡ bolt: Optimize scroll bar animation using GPU-accelerated transform instead of layout-inducing width.
+    // Impact: Prevents forced synchronous layouts on scroll, reducing main thread blocking and ensuring smoother 60fps animations.
+    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
   },
 
   updateModal() {
     if (!this.isModalActive || !this.modalContent) return;
     const scrollTop = this.modalContent.scrollTop;
     const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
-    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+    // ⚡ bolt: Optimize modal scroll bar animation using transform: scaleX.
+    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
   }
 };
 

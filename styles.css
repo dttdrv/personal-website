@@ -594,9 +594,13 @@ button {
   left: 0;
   height: 2px;
   background: var(--accent);
-  width: 0%;
+  /* ⚡ bolt: Set to 100% and scale down using transform to avoid layout thrashing */
+  width: 100%;
   z-index: 10001;
-  transition: width 0.1s linear;
+  transform-origin: left;
+  transform: scaleX(0);
+  will-change: transform;
+  transition: transform 0.1s linear;
 }
 
 /* === Gallery === */

@@ -580,18 +580,21 @@ const ScrollProgress = {
 
   update() {
     if (this.isModalActive) return;
+    // ⚡ bolt: hoist global property access out of high-frequency loop
     const scrollTop = window.scrollY;
     const docHeight = this.cachedDocHeight - this.cachedWindowHeight;
-    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
+    // ⚡ bolt: use GPU-accelerated transform instead of layout-inducing width
+    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
   },
 
   updateModal() {
     if (!this.isModalActive || !this.modalContent) return;
     const scrollTop = this.modalContent.scrollTop;
     const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
-    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-    this.bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+    // ⚡ bolt: use GPU-accelerated transform instead of layout-inducing width
+    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
   }
 };
 

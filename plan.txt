@@ -1,0 +1,5 @@
+1. analyze the codebase to find performance bottlenecks according to bolt's daily process.
+2. i noticed `PhotoCarousel.isInView()` relies on `getBoundingClientRect()` which is called inside the high-frequency `keydown` event listener for keyboard navigation.
+3. we can implement an `IntersectionObserver` in `PhotoCarousel` to track the carousel's visibility (`isVisible`) and avoid calling `getBoundingClientRect()` on every keydown event.
+4. complete pre commit steps to ensure proper testing, verification, review, and reflection are done.
+5. submit the change with title "⚡ bolt: [performance improvement]".

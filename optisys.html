@@ -34,9 +34,8 @@
   <!-- Page-specific styles (built on the site's design tokens) -->
   <style>
     /* Header bar */
-    .opti-header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: var(--space-sm) var(--space-md); }
-    .opti-back { font-size: 0.8rem; letter-spacing: 0.04em; color: var(--gray); text-decoration: none; transition: color 0.3s ease; }
-    .opti-back:hover { color: var(--black); }
+    /* Above the edge-blur strips (z 9000) so header UI stays sharp */
+    .opti-header { position: fixed; top: 0; left: 0; right: 0; z-index: 9500; display: flex; justify-content: flex-end; align-items: center; padding: var(--space-sm) var(--space-md); }
     .opti-header-dl { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--black); text-decoration: none; border: 1px solid var(--black); padding: 0.55rem 1.2rem; transition: background-color 0.3s ease, color 0.3s ease; }
     .opti-header-dl:hover { background: var(--black); color: var(--white); }
 
@@ -91,9 +90,9 @@
   <!-- Scroll Progress -->
   <div class="scroll-progress"></div>
 
-  <!-- Header -->
+  <!-- Universal back button + page header -->
+  <a href="index.html" class="back-button">← Deyan Todorov</a>
   <header class="opti-header">
-    <a href="index.html" class="opti-back">← Deyan Todorov</a>
     <a href="https://github.com/dttdrv/optiSYS/releases/latest/download/optiSYS-1.0.0-setup.exe" class="opti-header-dl" data-download>Download</a>
   </header>
 

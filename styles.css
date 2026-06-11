@@ -55,6 +55,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -504,6 +505,32 @@ button {
   50% {
     opacity: 1;
   }
+}
+
+/* === Edge Blur (subtle top/bottom transparency fade) === */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 48px;
+  pointer-events: none;
+  z-index: 9000;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+body::before {
+  top: 0;
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+}
+
+body::after {
+  bottom: 0;
+  -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
+  mask-image: linear-gradient(to top, black 0%, transparent 100%);
 }
 
 /* === Scroll Progress === */
@@ -1119,13 +1146,6 @@ a.project-card {
 .contact-header {
   margin-bottom: var(--space-xl);
   text-align: center;
-}
-
-.social-disclaimer {
-  font-size: 0.85rem;
-  color: var(--gray);
-  font-style: italic;
-  margin-bottom: var(--space-md);
 }
 
 .contact-content {

@@ -784,7 +784,7 @@ const HoverEffects = {
 // === Page Load Animation with Preloader ===
 const PageLoad = {
   preloader: null,
-  minLoadTime: 400, // Short minimum time - don't block interactivity
+  minLoadTime: 200, // Short minimum time - don't block interactivity
 
   init() {
     this.preloader = document.getElementById('preloader');
@@ -804,13 +804,13 @@ const PageLoad = {
       }, remaining);
     });
 
-    // Failsafe: hide preloader after 2s regardless
+    // Failsafe: hide preloader after 1.2s regardless (fonts are same-origin now)
     setTimeout(() => {
       if (this.preloader && !this.preloader.classList.contains('hidden')) {
         document.body.classList.add('fonts-loaded');
         this.hidePreloader();
       }
-    }, 2000);
+    }, 1200);
   },
 
   hidePreloader() {

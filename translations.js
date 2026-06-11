@@ -28,9 +28,6 @@ const TRANSLATIONS = {
       work: 'Work',
       contact: 'Contact'
     },
-    contact: {
-      socialDisclaimer: 'Not currently active on social media until 1.1.2027.'
-    },
     modal: {
       title: 'Get in Touch',
       name: 'Name',
@@ -70,9 +67,6 @@ const TRANSLATIONS = {
     sections: {
       work: 'Travail',
       contact: 'Contact'
-    },
-    contact: {
-      socialDisclaimer: 'Pas actuellement actif sur les reseaux sociaux jusqu\'au 1.1.2027.'
     },
     modal: {
       title: 'Prendre Contact',
@@ -114,9 +108,6 @@ const TRANSLATIONS = {
       work: 'Работа',
       contact: 'Контакт'
     },
-    contact: {
-      socialDisclaimer: 'В момента не съм активен в социалните мрежи до 1.1.2027.'
-    },
     modal: {
       title: 'Свържете се',
       name: 'Име',
@@ -157,9 +148,6 @@ const TRANSLATIONS = {
       work: 'Lavoro',
       contact: 'Contatto'
     },
-    contact: {
-      socialDisclaimer: 'Attualmente non attivo sui social media fino al 1.1.2027.'
-    },
     modal: {
       title: 'Contattami',
       name: 'Nome',
@@ -199,9 +187,6 @@ const TRANSLATIONS = {
     sections: {
       work: 'Arbeit',
       contact: 'Kontakt'
-    },
-    contact: {
-      socialDisclaimer: 'Derzeit nicht aktiv in sozialen Medien bis 1.1.2027.'
     },
     modal: {
       title: 'Kontakt aufnehmen',

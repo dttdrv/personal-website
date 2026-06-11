@@ -7,9 +7,7 @@
   <meta name="description" content="optiSYS - a native Windows system optimizer by Deyan Todorov. Keeps your PC quick and your connection smooth, quietly.">
   <meta name="theme-color" content="#FFFFFF">
   <title>optiSYS — Deyan Todorov</title>
-
-  <!-- Preconnect for Lenis (smooth scroll) -->
-  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Preload critical above-the-fold fonts (self-hosted) -->
   <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -74,6 +72,9 @@
     .opti-meta { color: var(--gray); font-size: 0.9rem; margin-bottom: var(--space-lg); }
     .opti-dl { font-size: 1.4rem; color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 4px; transition: color 0.3s ease, border-color 0.3s ease; }
     .opti-dl:hover { color: var(--accent); border-color: var(--accent); }
+    .opti-repo { margin-top: var(--space-md); }
+    .opti-repo a { font-size: 0.9rem; color: var(--gray); text-decoration: none; border-bottom: 1px solid var(--gray-light); padding-bottom: 2px; transition: color 0.3s ease, border-color 0.3s ease; }
+    .opti-repo a:hover { color: var(--accent); border-color: var(--accent); }
 
     @media (max-width: 760px) {
       .opti-showcase { grid-template-columns: 1fr; gap: var(--space-lg); }
@@ -93,7 +94,7 @@
   <!-- Header -->
   <header class="opti-header">
     <a href="index.html" class="opti-back">← Deyan Todorov</a>
-    <a href="https://github.com/dttdrv/optiSYS/releases" class="opti-header-dl" target="_blank" rel="noopener">Download</a>
+    <a href="https://github.com/dttdrv/optiSYS/releases/latest/download/optiSYS-1.0.0-setup.exe" class="opti-header-dl" data-download>Download</a>
   </header>
 
   <!-- Ambient Floating Elements -->
@@ -162,16 +163,29 @@
       </div>
       <div class="opti-get" data-scroll-reveal>
         <p class="opti-meta">Version 1.0 · Windows 10 (1809+) or 11 · free &amp; open source</p>
-        <a class="opti-dl" href="https://github.com/dttdrv/optiSYS/releases" target="_blank" rel="noopener">Download for Windows</a>
+        <a class="opti-dl" href="https://github.com/dttdrv/optiSYS/releases/latest/download/optiSYS-1.0.0-setup.exe" data-download>Download for Windows</a>
+        <p class="opti-repo"><a href="https://github.com/dttdrv/optiSYS" target="_blank" rel="noopener">View the repo on GitHub</a></p>
       </div>
     </section>
 
   </main>
 
   <!-- Scripts -->
-  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script src="lenis.min.js" defer></script>
   <script src="translations.js" defer></script>
   <script src="script.js" defer></script>
+
+  <!-- Resolve the latest setup.exe so the hardcoded fallback never goes stale -->
+  <script>
+    fetch('https://api.github.com/repos/dttdrv/optiSYS/releases/latest')
+      .then(r => r.ok ? r.json() : null)
+      .then(rel => {
+        const asset = rel && rel.assets && rel.assets.find(a => a.name.endsWith('-setup.exe'));
+        if (!asset) return;
+        document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
+      })
+      .catch(() => { /* fallback href already points at the current release */ });
+  </script>
 </body>
 
 </html>

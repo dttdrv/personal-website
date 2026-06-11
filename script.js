@@ -59,6 +59,7 @@ const MagneticLetters = {
   isTouchDevice: false,
   needsRecalc: false,
   isAnimating: false,
+  inited: false,
 
   init() {
     // Check if touch device or low-end device - skip magnetic effect
@@ -123,6 +124,7 @@ const MagneticLetters = {
       }
     }, { passive: true });
 
+    this.inited = true;
     // DON'T start animation loop - only run when mouse moves
   },
 
@@ -242,6 +244,7 @@ const MobileTouchRepel = {
   isScrolling: false, // True when user is scrolling (skip repel)
   isAnimating: false,
   moveThrottled: false,
+  inited: false,
 
   init() {
     // Only run on touch devices
@@ -280,6 +283,7 @@ const MobileTouchRepel = {
     this.nameSection.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
     this.nameSection.addEventListener('touchend', () => this.onTouchEnd(), { passive: true });
 
+    this.inited = true;
     // DON'T start animation loop - only run when touching
   },
 
@@ -525,9 +529,6 @@ const ScrollAnimate = {
 // === Scroll Progress Bar ===
 const ScrollProgress = {
   bar: null,
-  modalContent: null,
-  isModalActive: false,
-  modalScrollHandler: null,
   ticking: false,
   cachedDocHeight: 0,
   cachedWindowHeight: 0,
@@ -546,229 +547,22 @@ const ScrollProgress = {
     this.cachedWindowHeight = window.innerHeight;
   },
 
-  setModalMode(active, contentElement = null) {
-    if (this.modalContent && this.modalScrollHandler) {
-      this.modalContent.removeEventListener('scroll', this.modalScrollHandler);
-    }
-
-    this.isModalActive = active;
-    this.modalContent = contentElement;
-
-    if (active && contentElement) {
-      this.modalScrollHandler = () => this.requestUpdate();
-      contentElement.addEventListener('scroll', this.modalScrollHandler, { passive: true });
-      this.updateModal();
-    } else {
-      this.modalScrollHandler = null;
-      this.update();
-    }
-  },
-
   requestUpdate() {
     if (this.ticking) return;
 
     this.ticking = true;
     requestAnimationFrame(() => {
-      if (this.isModalActive) {
-        this.updateModal();
-      } else {
-        this.update();
-      }
+      this.update();
       this.ticking = false;
     });
   },
 
   update() {
-    if (this.isModalActive) return;
     const scrollTop = window.scrollY;
     const docHeight = this.cachedDocHeight - this.cachedWindowHeight;
     const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
     // ⚡ bolt: use transform instead of width to prevent layout thrashing
     this.bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
-  },
-
-  updateModal() {
-    if (!this.isModalActive || !this.modalContent) return;
-    const scrollTop = this.modalContent.scrollTop;
-    const scrollHeight = this.modalContent.scrollHeight - this.modalContent.clientHeight;
-    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
-    // ⚡ bolt: use transform instead of width to prevent layout thrashing
-    this.bar.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
-  }
-};
-
-// === Annotation Reveal ===
-const AnnotationReveal = {
-  init() {
-    const annotations = document.querySelectorAll('.statement-annotation');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('revealed');
-          }, 1000);
-        }
-      });
-    }, {
-      threshold: 0.5
-    });
-
-    annotations.forEach(el => observer.observe(el));
-  }
-};
-
-// === Project Modal (Fade → Line → Content Animation) ===
-const ProjectModal = {
-  modal: null,
-  backdrop: null,
-  closeBtn: null,
-  wrapper: null,
-  line: null,
-  projectData: {},
-
-  init() {
-    this.modal = document.getElementById('project-modal');
-    if (!this.modal) return;
-
-    this.backdrop = this.modal.querySelector('.project-modal-backdrop');
-    this.closeBtn = this.modal.querySelector('.project-modal-close');
-    this.wrapper = this.modal.querySelector('.project-modal-wrapper');
-    this.line = this.modal.querySelector('.project-modal-line');
-
-    // Define project data
-    this.projectData = {
-      'eptesicus-labs': {
-        title: 'Eptesicus Laboratories',
-        tagline: 'Advancing on-device intelligence',
-        description: 'Building a world where AI runs on customer-controlled hardware through small, dependable models. We solve the problems of cloud-first AI — vendor lock-in, compounding costs, and data exposure — by developing on-device models paired with reliability tooling designed for enterprise deployment. Our objective: make on-device AI the default for real products.',
-        media: null,
-        links: [
-          { text: 'View', url: 'https://eptesicuslabs.com' }
-        ]
-      },
-      'schoolmap': {
-        title: 'SchoolMap',
-        tagline: 'Classroom-ready map tool',
-        description: 'Teachers repeatedly lose valuable class time searching for suitable maps during geography quizzes and classroom exercises. SchoolMap provides instant access to clean, quiz-ready maps optimized for classroom projection. Designed for speed — teachers can pull up any map within seconds, not minutes.',
-        media: null,
-        links: [
-          { text: 'View', url: 'https://schoolmap.pages.dev' }
-        ]
-      },
-      'bas-award': {
-        title: 'Bulgarian Academy of Sciences',
-        tagline: '"Water for Peace" — 1st Place',
-        description: 'March 2024 — The Bulgarian Academy of Sciences hosted a themed presentation contest focused on "Water for Peace," exploring the critical intersection of water resources and international cooperation. My project examined sustainable water resource management frameworks and how shared water systems can become bridges for peace. Awarded 1st place among all participants.',
-        media: 'pictures/bas-diploma.jpg',
-        links: [
-          { text: 'Download Presentation', url: 'assets/documents/Voda_za_mir.pptx' }
-        ]
-      },
-      'collatz': {
-        title: 'Collatz Conjecture',
-        tagline: 'Research Paper',
-        description: 'A recently completed research paper on the Collatz Conjecture, exploring distribution patterns and stochastic characteristics of hailstone sequences.',
-        media: null,
-        links: [
-          { text: 'Read on Zenodo', url: 'https://zenodo.org/records/18222656' }
-        ]
-      }
-    };
-
-    // Click handlers for project cards
-    document.querySelectorAll('.project-card[data-project]').forEach(card => {
-      card.addEventListener('click', (e) => {
-        this.open(card.dataset.project, card);
-      });
-    });
-
-    // Close handlers
-    if (this.closeBtn) {
-      this.closeBtn.addEventListener('click', () => this.close());
-    }
-    if (this.backdrop) {
-      this.backdrop.addEventListener('click', () => this.close());
-    }
-
-    // Escape key to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
-        this.close();
-      }
-    });
-  },
-
-  open(projectId, cardElement) {
-    const project = this.projectData[projectId];
-    if (!project) return;
-
-    // Populate modal content
-    const titleEl = this.modal.querySelector('.project-modal-title');
-    const taglineEl = this.modal.querySelector('.project-modal-tagline');
-    const descriptionEl = this.modal.querySelector('.project-modal-description');
-    const linksEl = this.modal.querySelector('.project-links-modal');
-
-    if (titleEl) titleEl.textContent = project.title;
-    if (taglineEl) taglineEl.textContent = project.tagline;
-    if (descriptionEl) descriptionEl.textContent = project.description;
-
-    // Handle Image
-    const imageContainer = this.modal.querySelector('#modal-project-image-container');
-    const imageEl = this.modal.querySelector('#modal-project-image');
-
-    if (imageContainer && imageEl) {
-      if (project.media) {
-        imageEl.src = project.media;
-        imageContainer.style.display = 'block';
-      } else {
-        imageContainer.style.display = 'none';
-        imageEl.src = '';
-      }
-    }
-
-    // Handle links
-    if (linksEl) {
-      linksEl.innerHTML = '';
-      project.links.forEach(link => {
-        const a = document.createElement('a');
-        a.href = link.url;
-        a.className = 'project-link-modal';
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.textContent = link.text;
-        linksEl.appendChild(a);
-      });
-    }
-
-    // Show modal with animation
-    this.modal.classList.remove('closing');
-    this.modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Stop Lenis - modal has data-lenis-prevent for native scroll
-    if (lenis) lenis.stop();
-
-    // Enable modal scroll tracking for progress bar
-    ScrollProgress.setModalMode(true, this.wrapper);
-  },
-
-  close() {
-    // Add closing class for smooth exit animation
-    this.modal.classList.add('closing');
-
-    // Disable modal scroll tracking
-    ScrollProgress.setModalMode(false);
-
-    // Wait for animation to complete before removing active
-    setTimeout(() => {
-      this.modal.classList.remove('active');
-      this.modal.classList.remove('closing');
-      document.body.style.overflow = '';
-
-      // Resume Lenis smooth scroll
-      if (lenis) lenis.start();
-    }, 700);
   }
 };
 
@@ -776,7 +570,6 @@ const ProjectModal = {
 const EmailModal = {
   modal: null,
   openBtn: null,
-  cvNote: null,
   closeBtn: null,
   backdrop: null,
   form: null,
@@ -784,20 +577,13 @@ const EmailModal = {
   init() {
     this.modal = document.getElementById('email-modal');
     this.openBtn = document.getElementById('open-email-form');
-    this.cvNote = document.getElementById('cv-link');
     this.closeBtn = this.modal?.querySelector('.modal-close');
     this.backdrop = this.modal?.querySelector('.modal-backdrop');
     this.form = this.modal?.querySelector('.contact-form');
 
-    if (!this.modal || !this.openBtn) return;
+    if (!this.modal) return;
 
-    this.openBtn.addEventListener('click', () => this.open());
-    // Use event delegation for cv-request since it gets replaced by translations
-    this.cvNote?.addEventListener('click', (e) => {
-      if (e.target.classList.contains('cv-request')) {
-        this.open();
-      }
-    });
+    this.openBtn?.addEventListener('click', () => this.open());
     this.closeBtn?.addEventListener('click', () => this.close());
     this.backdrop?.addEventListener('click', () => this.close());
 
@@ -874,280 +660,10 @@ const EmailModal = {
   },
 };
 
-// === Photo Carousel - Stacked Cards ===
-const PhotoCarousel = {
-  carousel: null,
-  cards: [],
-  captions: [],
-  currentIndex: 2, // Start with center card (index 2)
-  positions: ['far-left', 'left', 'center', 'right', 'far-right'],
-  isAnimating: false,
-  isVisible: false,
-  observer: null,
-
-  init() {
-    this.carousel = document.getElementById('photo-carousel');
-    if (!this.carousel) return;
-
-    // ⚡ bolt: cache visibility using IntersectionObserver to avoid getBoundingClientRect layout thrashing
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        this.isVisible = entry.isIntersecting;
-      });
-    }, {
-      rootMargin: '0px',
-      threshold: 0
-    });
-    this.observer.observe(this.carousel);
-
-    this.cards = Array.from(this.carousel.querySelectorAll('.carousel-card'));
-    this.captions = Array.from(this.carousel.querySelectorAll('.caption-text'));
-
-    if (!this.cards.length) return;
-
-    // Set initial caption
-    this.updateCaption(this.currentIndex);
-
-    // Arrow click handlers
-    const leftArrow = this.carousel.querySelector('.carousel-arrow--left');
-    const rightArrow = this.carousel.querySelector('.carousel-arrow--right');
-
-    leftArrow?.addEventListener('click', () => this.navigate('prev'));
-    rightArrow?.addEventListener('click', () => this.navigate('next'));
-
-    // Click on cards to navigate
-    this.cards.forEach((card, index) => {
-      card.addEventListener('click', () => {
-        const position = card.dataset.position;
-        if (position === 'left' || position === 'far-left') {
-          this.navigate('prev');
-        } else if (position === 'right' || position === 'far-right') {
-          this.navigate('next');
-        }
-      });
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (!this.isInView()) return;
-      if (e.key === 'ArrowLeft') this.navigate('prev');
-      if (e.key === 'ArrowRight') this.navigate('next');
-    });
-
-    // Horizontal Scroll (Trackpad)
-    this.carousel.addEventListener('wheel', (e) => {
-      // Only handle if horizontal scroll is dominant
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        e.preventDefault();
-        // Debounce or threshold
-        if (Math.abs(e.deltaX) > 10 && !this.isAnimating) {
-          if (e.deltaX > 0) this.navigate('next');
-          else this.navigate('prev');
-        }
-      }
-    }, { passive: false });
-
-    // Get the stack element early for all event handlers
-    const stack = this.carousel.querySelector('.carousel-stack');
-
-    // Touch/swipe support
-    let touchStartX = 0;
-    this.carousel.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    this.carousel.addEventListener('touchend', (e) => {
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) this.navigate('next');
-        else this.navigate('prev');
-      }
-    }, { passive: true });
-
-    // Mouse drag support
-    let isDragging = false;
-    let dragStartX = 0;
-    let hasDragged = false;
-
-    stack.addEventListener('mousedown', (e) => {
-      // Only left mouse button
-      if (e.button !== 0) return;
-      isDragging = true;
-      hasDragged = false;
-      dragStartX = e.clientX;
-      stack.classList.add('dragging');
-      e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const diff = dragStartX - e.clientX;
-      if (Math.abs(diff) > 10) {
-        hasDragged = true;
-      }
-    });
-
-    document.addEventListener('mouseup', (e) => {
-      if (!isDragging) return;
-      isDragging = false;
-      stack.classList.remove('dragging');
-
-      if (hasDragged) {
-        const diff = dragStartX - e.clientX;
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) this.navigate('next');
-          else this.navigate('prev');
-        }
-      }
-    });
-
-    // Also handle mouseleave on document to catch edge cases
-    document.addEventListener('mouseleave', () => {
-      if (isDragging) {
-        isDragging = false;
-        stack.classList.remove('dragging');
-      }
-    });
-
-    // Scroll wheel navigation - only when hovering over carousel stack
-    let wheelTimeout = null;
-    let wheelAccumulator = 0;
-    let isHoveringStack = false;
-    const wheelThreshold = 80; // Pixels of scroll needed to trigger navigation
-
-    // Track mouse enter/leave on the stack area
-    stack.addEventListener('mouseenter', () => {
-      isHoveringStack = true;
-    });
-
-    stack.addEventListener('mouseleave', () => {
-      isHoveringStack = false;
-      wheelAccumulator = 0;
-    });
-
-    // Only handle wheel when hovering directly over the stack
-    stack.addEventListener('wheel', (e) => {
-      if (!isHoveringStack) return;
-
-      // Prevent page scroll when over carousel stack
-      e.preventDefault();
-      e.stopPropagation();
-
-      // Use deltaX for horizontal scroll, or deltaY if no horizontal
-      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      wheelAccumulator += delta;
-
-      // Clear previous timeout
-      clearTimeout(wheelTimeout);
-
-      // Check if accumulated scroll exceeds threshold
-      if (Math.abs(wheelAccumulator) >= wheelThreshold) {
-        if (wheelAccumulator > 0) {
-          this.navigate('next');
-        } else {
-          this.navigate('prev');
-        }
-        wheelAccumulator = 0; // Reset after navigation
-      }
-
-      // Reset accumulator after scroll stops
-      wheelTimeout = setTimeout(() => {
-        wheelAccumulator = 0;
-      }, 150);
-    }, { passive: false });
-  },
-
-  isInView() {
-    return this.isVisible;
-  },
-
-  navigate(direction) {
-    if (this.isAnimating) return;
-    this.isAnimating = true;
-
-    // Exit current caption
-    const currentCaption = this.captions.find(c => c.classList.contains('active'));
-    if (currentCaption) {
-      currentCaption.classList.add('exiting');
-      currentCaption.classList.remove('active');
-    }
-
-    // Rotate positions
-    if (direction === 'next') {
-      // Shift all cards left
-      this.cards.forEach(card => {
-        const currentPos = card.dataset.position;
-        const currentIdx = this.positions.indexOf(currentPos);
-
-        if (currentIdx === 0) {
-          // far-left goes to hidden-left, then wraps to far-right
-          card.dataset.position = 'hidden-left';
-          setTimeout(() => {
-            card.style.transition = 'none';
-            card.dataset.position = 'hidden-right';
-            setTimeout(() => {
-              card.style.transition = '';
-              card.dataset.position = 'far-right';
-            }, 50);
-          }, 350);
-        } else {
-          card.dataset.position = this.positions[currentIdx - 1];
-        }
-      });
-      this.currentIndex = (this.currentIndex + 1) % this.cards.length;
-    } else {
-      // Shift all cards right
-      this.cards.forEach(card => {
-        const currentPos = card.dataset.position;
-        const currentIdx = this.positions.indexOf(currentPos);
-
-        if (currentIdx === this.positions.length - 1) {
-          // far-right goes to hidden-right, then wraps to far-left
-          card.dataset.position = 'hidden-right';
-          setTimeout(() => {
-            card.style.transition = 'none';
-            card.dataset.position = 'hidden-left';
-            setTimeout(() => {
-              card.style.transition = '';
-              card.dataset.position = 'far-left';
-            }, 50);
-          }, 350);
-        } else {
-          card.dataset.position = this.positions[currentIdx + 1];
-        }
-      });
-      this.currentIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
-    }
-
-    // Update caption after a short delay
-    setTimeout(() => {
-      this.updateCaption(this.currentIndex);
-    }, 300);
-
-    // Reset animation lock
-    setTimeout(() => {
-      this.isAnimating = false;
-      // Clean up exiting class
-      this.captions.forEach(c => c.classList.remove('exiting'));
-    }, 700);
-  },
-
-  updateCaption(index) {
-    this.captions.forEach((caption, i) => {
-      caption.classList.remove('active', 'exiting');
-      if (i === index) {
-        caption.classList.add('active');
-      }
-    });
-  }
-};
-
 // === Parallax Layers ===
 const ParallaxLayers = {
   elements: null,
   elementData: [],
-  ambientElements: null,
   isMobile: false,
 
   init() {
@@ -1159,7 +675,6 @@ const ParallaxLayers = {
     if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) return;
 
     this.elements = document.querySelectorAll('[data-parallax]');
-    this.ambientElements = document.querySelectorAll('.ambient-orb, .ambient-shape');
 
     // Store elements and cache initial positions
     this.elementData = Array.from(this.elements).map(el => ({
@@ -1171,20 +686,6 @@ const ParallaxLayers = {
 
     this.cachePositions();
     document.fonts.ready.then(() => this.cachePositions());
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return;
-    }
-
-    // Mouse parallax for ambient elements (throttled)
-    let lastMouseMove = 0;
-    document.addEventListener('mousemove', (e) => {
-      const now = Date.now();
-      if (now - lastMouseMove > 32) { // ~30fps
-        lastMouseMove = now;
-        this.mouseParallax(e);
-      }
-    }, { passive: true });
   },
 
   cachePositions() {
@@ -1227,21 +728,6 @@ const ParallaxLayers = {
         data.element.style.transform = `translateY(${translateY}px)`;
       }
     });
-  },
-
-  mouseParallax(e) {
-    if (this.isMobile) return;
-    if (!this.ambientElements) return;
-
-    const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-
-    this.ambientElements.forEach((el, index) => {
-      const speed = 10 + (index * 5);
-      const x = mouseX * speed;
-      const y = mouseY * speed;
-      el.style.transform = `translate(${x}px, ${y}px)`;
-    });
   }
 };
 
@@ -1283,7 +769,7 @@ const SmoothScroll = {
 const HoverEffects = {
   init() {
     // Add ripple effect to buttons only
-    document.querySelectorAll('.form-submit, .album-reveal, .bio-toggle').forEach(btn => {
+    document.querySelectorAll('.form-submit').forEach(btn => {
       btn.addEventListener('mouseenter', (e) => {
         const rect = btn.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -1344,16 +830,6 @@ const PageLoad = {
       setTimeout(() => {
         document.querySelector('.ambient-layer')?.classList.add('active');
       }, 400);
-
-      // Reveal carousel cards with staggered animation
-      setTimeout(() => {
-        const cards = document.querySelectorAll('.carousel-card');
-        cards.forEach((card, index) => {
-          setTimeout(() => {
-            card.classList.add('revealed');
-          }, index * 100);
-        });
-      }, 600);
 
       // Remove preloader from DOM after animation completes
       setTimeout(() => {
@@ -1577,12 +1053,14 @@ const I18n = {
       ).join('');
     }
 
-    // Reinitialize magnetic/touch effects after name change
-    if (typeof MagneticLetters !== 'undefined') {
+    // Reinitialize magnetic/touch effects after a name change.
+    // On initial load the deferred effect bootstrap handles this; only
+    // re-init here once those effects already exist (e.g. language switch).
+    if (typeof MagneticLetters !== 'undefined' && MagneticLetters.inited) {
       MagneticLetters.letterData = [];
       MagneticLetters.init();
     }
-    if (typeof MobileTouchRepel !== 'undefined') {
+    if (typeof MobileTouchRepel !== 'undefined' && MobileTouchRepel.inited) {
       MobileTouchRepel.letterData = [];
       MobileTouchRepel.letters = [];
       MobileTouchRepel.init();
@@ -1599,84 +1077,6 @@ const I18n = {
       const isAccent = word.includes('100%');
       return `<span class="word${isAccent ? ' accent' : ''}">${word}</span>`;
     }).join(' ');
-  }
-};
-
-// === About Section Toggle (Bio Plus → X) with Word-by-Word Animation ===
-const AboutToggle = {
-  btn: null,
-  content: null,
-  isExpanded: false,
-  initialized: false,
-
-  init() {
-    this.btn = document.getElementById('see-more-toggle');
-    this.content = document.getElementById('about-extended');
-    this.isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-    if (!this.btn || !this.content) return;
-
-    // On mobile, defer word splitting to idle time to avoid blocking first paint
-    // On desktop, do it immediately for better visual polish
-    if (this.isMobile) {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => this.initWordSpans(), { timeout: 2000 });
-      } else {
-        // Fallback: defer with setTimeout
-        setTimeout(() => this.initWordSpans(), 1000);
-      }
-    } else {
-      this.initWordSpans();
-    }
-
-    this.btn.addEventListener('click', () => this.toggle());
-  },
-
-  initWordSpans() {
-    if (this.initialized) return;
-
-    const paragraphs = this.content.querySelectorAll('.about-paragraph');
-    let globalWordIndex = 0;
-
-    paragraphs.forEach(p => {
-      const key = p.dataset.i18n;
-      const text = I18n.t(key);
-
-      if (text && text !== key) {
-        const words = text.split(' ');
-        p.innerHTML = words.map(word => {
-          const delayIndex = globalWordIndex;
-          globalWordIndex++;
-          return `<span class="bio-word" style="--word-delay-index: ${delayIndex}">${word}</span>`;
-        }).join(' ');
-      }
-    });
-
-    this.initialized = true;
-  },
-
-  toggle() {
-    this.isExpanded = !this.isExpanded;
-
-    // Toggle classes
-    this.content.classList.toggle('expanded', this.isExpanded);
-    this.content.classList.toggle('collapsed', !this.isExpanded);
-
-    // Update ARIA (CSS handles the plus → X rotation)
-    this.btn.setAttribute('aria-expanded', this.isExpanded.toString());
-
-    // Smooth scroll to content if expanding
-    if (this.isExpanded) {
-      setTimeout(() => {
-        this.content.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 100);
-    }
-  },
-
-  // Update word spans when language changes
-  updateLanguage() {
-    this.initialized = false;
-    this.initWordSpans();
   }
 };
 
@@ -1710,46 +1110,43 @@ const ScrollHandler = {
 
 // === Initialize Everything ===
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize i18n first
+  // --- Critical path: content correctness, theming (no flash), preloader ---
   I18n.init();
+  ThemeToggle.init();
+  LanguageSwitcher.init();
+  PageLoad.init();
 
-  // Smooth scroll with Lenis (must be early)
+  // --- Scroll engine + reveal infrastructure (observers/listeners only) ---
   SmoothScrollInit.init();
-
-  // Core functionality
   ScrollProgress.init();
   ScrollReveal.init();
   ScrollAnimate.init();
-  AnnotationReveal.init();
-  EmailModal.init();
-  PhotoCarousel.init();
-  SmoothScroll.init();
-  PageLoad.init();
-
-  // Enhanced effects
-  MagneticLetters.init();
-  MobileTouchRepel.init();
-  ParallaxLayers.init();
-  BreathingElements.init();
-  HoverEffects.init();
-  RandomDelays.init();
-
-  // Controls
-  ThemeToggle.init();
-  LanguageSwitcher.init();
   SectionNav.init();
 
-  // About section toggle
-  AboutToggle.init();
-
-  // Project modal for pop-out cards
-  ProjectModal.init();
-
-  // Mobile menu
+  // --- Interaction handlers (attach listeners; no forced layout) ---
+  EmailModal.init();
+  SmoothScroll.init();
   MobileMenu.init();
-
-  // Consolidated scroll handler
   ScrollHandler.init();
+
+  // --- Effects that force synchronous layout via getBoundingClientRect ---
+  // Deferred to after first paint so they don't extend the initial long task.
+  // They re-cache on document.fonts.ready, so positions stay accurate.
+  const initEffects = () => {
+    MagneticLetters.letterData = [];
+    MagneticLetters.init();
+    MobileTouchRepel.letterData = [];
+    MobileTouchRepel.letters = [];
+    MobileTouchRepel.init();
+    ParallaxLayers.init();
+    BreathingElements.init();
+    HoverEffects.init();
+    RandomDelays.init();
+  };
+  // Run just after the first paint (inside the preloader window, where the
+  // compositor-driven spinner hides any main-thread work) so the layout-
+  // forcing position caching never lands on the critical path or mid-scroll.
+  requestAnimationFrame(() => requestAnimationFrame(initEffects));
 });
 
 // === Mobile Menu ===

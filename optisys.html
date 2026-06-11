@@ -34,8 +34,11 @@
   <!-- Page-specific styles (built on the site's design tokens) -->
   <style>
     /* Header bar */
-    /* Above the edge-blur strips (z 9000) so header UI stays sharp */
-    .opti-header { position: fixed; top: 0; left: 0; right: 0; z-index: 9500; display: flex; justify-content: flex-end; align-items: center; padding: var(--space-sm) var(--space-md); }
+    /* Above the edge-blur strips (z 9000) so header UI stays sharp.
+       pointer-events: none so the full-width bar never swallows clicks
+       meant for elements under it (e.g. the back button). */
+    .opti-header { position: fixed; top: 0; left: 0; right: 0; z-index: 9500; display: flex; justify-content: flex-end; align-items: center; padding: var(--space-sm) var(--space-md); pointer-events: none; }
+    .opti-header > * { pointer-events: auto; }
     .opti-header-dl { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--black); text-decoration: none; border: 1px solid var(--black); padding: 0.55rem 1.2rem; transition: background-color 0.3s ease, color 0.3s ease; }
     .opti-header-dl:hover { background: var(--black); color: var(--white); }
 
@@ -89,6 +92,10 @@
 
   <!-- Scroll Progress -->
   <div class="scroll-progress"></div>
+
+  <!-- Edge blur (top/bottom transparency fade) -->
+  <div class="edge-blur edge-blur--top" aria-hidden="true"><div class="edge-blur-inner"></div></div>
+  <div class="edge-blur edge-blur--bottom" aria-hidden="true"><div class="edge-blur-inner"></div></div>
 
   <!-- Universal back button + page header -->
   <a href="index.html" class="back-button">← Deyan Todorov</a>

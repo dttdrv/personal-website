@@ -55,10 +55,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
@@ -531,30 +532,36 @@ button:active {
   border-color: var(--accent) !important;
 }
 
-/* === Edge Blur (subtle top/bottom transparency fade) === */
-body::before,
-body::after {
-  content: '';
+/* === Edge Blur (subtle top/bottom transparency fade) ===
+   Mask lives on the wrapper and backdrop-filter on the child:
+   combining both on one element drops the blur on Chrome Android. */
+.edge-blur {
   position: fixed;
   left: 0;
   right: 0;
   height: 48px;
   pointer-events: none;
   z-index: 9000;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
-body::before {
+.edge-blur--top {
   top: 0;
   -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
 }
 
-body::after {
+.edge-blur--bottom {
   bottom: 0;
   -webkit-mask-image: linear-gradient(to top, black 0%, transparent 100%);
   mask-image: linear-gradient(to top, black 0%, transparent 100%);
+}
+
+.edge-blur-inner {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transform: translateZ(0);
 }
 
 /* === Scroll Progress === */
@@ -1077,6 +1084,7 @@ a.project-card {
 }
 
 .project-card {
+  position: relative;
   background: transparent;
   border: 1px solid var(--gray);
   cursor: pointer;
@@ -1133,17 +1141,21 @@ a.project-card {
   color: var(--gray);
 }
 
+/* Overlays the card padding (absolute) so the hidden state reserves no space */
 .project-arrow {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
   font-size: 1.2rem;
   color: var(--gray);
   opacity: 0;
-  transform: translateY(5px);
+  transform: translate(-50%, 5px);
   transition: all 0.3s ease;
 }
 
 .project-card:hover .project-arrow {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
   color: var(--accent);
 }
 

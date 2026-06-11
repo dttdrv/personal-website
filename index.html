@@ -4,25 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Deyan Todorov - Personal portfolio showcasing work, photography, and projects.">
+  <meta name="description" content="Deyan Todorov - Personal portfolio showcasing work and projects.">
   <meta name="theme-color" content="#FFFFFF">
   <title>Deyan Todorov</title>
 
-  <!-- Preconnect to external domains -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Preconnect for Lenis (smooth scroll) -->
   <link rel="preconnect" href="https://unpkg.com">
 
-  <!-- Preload critical fonts -->
-  <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap"
-    as="style">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap"
-    rel="stylesheet">
+  <!-- Preload critical above-the-fold fonts (self-hosted) -->
+  <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Preload only hero image - carousel images stay lazy -->
+  <!-- Preload the profile image (only above-the-fold image) -->
   <link rel="preload" href="pictures/profile.jpg" as="image" fetchpriority="high">
+
+  <!-- Fonts (self-hosted, subsetted by unicode-range) -->
+  <link rel="stylesheet" href="fonts.css">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -65,7 +62,7 @@
     /* Dark mode preloader */
     @media (prefers-color-scheme: dark) {
       .preloader {
-        background: #0A0A0A;
+        background: #1c1c1c;
       }
 
       .preloader-spinner {
@@ -108,12 +105,8 @@
         <span class="mobile-nav-number">03</span>
         <span class="mobile-nav-label" data-i18n="nav.work">Work</span>
       </a>
-      <a href="#albums" class="mobile-nav-item" data-section="albums">
-        <span class="mobile-nav-number">04</span>
-        <span class="mobile-nav-label" data-i18n="nav.photography">Photography</span>
-      </a>
       <a href="#contact" class="mobile-nav-item" data-section="contact">
-        <span class="mobile-nav-number">05</span>
+        <span class="mobile-nav-number">04</span>
         <span class="mobile-nav-label" data-i18n="nav.contact">Contact</span>
       </a>
     </nav>
@@ -133,12 +126,8 @@
       <span class="nav-number">03</span>
       <span class="nav-label" data-i18n="nav.work">Work</span>
     </a>
-    <a href="#albums" class="nav-item" data-section="albums">
-      <span class="nav-number">04</span>
-      <span class="nav-label" data-i18n="nav.photography">Photography</span>
-    </a>
     <a href="#contact" class="nav-item" data-section="contact">
-      <span class="nav-number">05</span>
+      <span class="nav-number">04</span>
       <span class="nav-label" data-i18n="nav.contact">Contact</span>
     </a>
   </nav>
@@ -194,46 +183,6 @@
             stroke-linejoin="round" />
         </svg>
         <p data-i18n="modal.success">Message sent successfully!</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Project Modal (Fade → Line → Content) -->
-  <div class="project-modal" id="project-modal">
-    <div class="project-modal-backdrop"></div>
-
-    <!-- Top blur overlay (same as main page) -->
-    <div class="project-modal-blur"></div>
-
-    <!-- Close button (top-left arrow) -->
-    <button class="project-modal-close" aria-label="Close">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-    </button>
-
-    <!-- Content wrapper for centering -->
-    <div class="project-modal-wrapper" data-lenis-prevent>
-      <!-- Title ABOVE the line -->
-      <div class="project-modal-title-section">
-        <h2 class="project-modal-title" id="modal-project-title">Project Title</h2>
-      </div>
-
-      <!-- The horizontal accent line -->
-      <div class="project-modal-line"></div>
-
-      <!-- Content BELOW the line -->
-      <div class="project-modal-content-section">
-        <p class="project-modal-tagline" id="modal-project-tagline">Project tagline</p>
-
-        <!-- New: Image Container -->
-        <div class="project-modal-image-container" id="modal-project-image-container" style="display: none;">
-          <img src="" alt="" class="project-modal-image" id="modal-project-image">
-        </div>
-
-        <p class="project-modal-description" id="modal-project-description">Project description goes here.</p>
-        <div class="project-links-modal" id="modal-project-links"></div>
       </div>
     </div>
   </div>
@@ -301,27 +250,6 @@
             </p>
           </div>
 
-          <!-- Collapsible Extended Content -->
-          <div class="about-extended-wrapper">
-            <div class="about-extended collapsed" id="about-extended">
-              <p class="about-paragraph" data-i18n="about.p1"></p>
-              <p class="about-paragraph" data-i18n="about.p2"></p>
-            </div>
-
-            <!-- Bio Toggle: Plus → X -->
-            <button class="bio-toggle" id="see-more-toggle" aria-expanded="false">
-              <span class="bio-toggle-icon">
-                <span class="plus-h"></span>
-                <span class="plus-v"></span>
-              </span>
-            </button>
-          </div>
-
-          <div class="statement-annotation">
-            <span class="annotation-marker">*</span>
-            <span class="annotation-text" data-i18n="about.annotation">12th grade student preparing for psychology
-              studies</span>
-          </div>
         </div>
       </div>
     </section>
@@ -333,142 +261,61 @@
       </div>
 
       <div class="projects-grid">
-        <!-- In Progress -->
-        <div class="work-subsection" data-scroll-reveal data-delay="1">
-          <h3 class="subsection-label">In Progress</h3>
 
-          <article class="project-card" data-project="eptesicus-labs">
-            <div class="project-card-inner">
-              <div class="project-info">
-                <h3 class="project-name">Eptesicus Laboratories</h3>
-                <p class="project-brief">Research initiative</p>
-              </div>
-              <span class="project-arrow">→</span>
+        <a class="project-card" href="optisys.html" data-scroll-reveal>
+          <div class="project-card-inner">
+            <div class="project-info">
+              <span class="project-status project-status--working">Working</span>
+              <h3 class="project-name">optiSYS</h3>
+              <p class="project-brief">Native Windows system optimizer</p>
             </div>
-          </article>
-        </div>
+            <span class="project-arrow">→</span>
+          </div>
+        </a>
 
-        <!-- Completed -->
-        <div class="work-subsection" data-scroll-reveal data-delay="2">
-          <h3 class="subsection-label">Completed</h3>
-
-          <article class="project-card" data-project="schoolmap">
-            <div class="project-card-inner">
-              <div class="project-info">
-                <h3 class="project-name">SchoolMap</h3>
-                <p class="project-brief">Classroom-ready map tool</p>
-              </div>
-              <span class="project-arrow">→</span>
+        <a class="project-card" href="https://eptesicuslabs.com" target="_blank" rel="noopener" data-scroll-reveal>
+          <div class="project-card-inner">
+            <div class="project-info">
+              <span class="project-status project-status--working">Working</span>
+              <h3 class="project-name">Eptesicus Laboratories</h3>
+              <p class="project-brief">Research initiative</p>
             </div>
-          </article>
+            <span class="project-arrow">→</span>
+          </div>
+        </a>
 
-          <article class="project-card" data-project="bas-award">
-            <div class="project-card-inner">
-              <div class="project-info">
-                <h3 class="project-name" data-i18n="bas.title">Bulgarian Academy of Sciences</h3>
-                <p class="project-brief" data-i18n="bas.tagline">"Water for Peace" — 1st Place</p>
-              </div>
-              <span class="project-arrow">→</span>
-            </div>
-          </article>
-
-          <article class="project-card" data-project="collatz">
-            <div class="project-card-inner">
-              <div class="project-info">
-                <h3 class="project-name" data-i18n="collatz.title">Collatz Conjecture</h3>
-                <p class="project-brief" data-i18n="collatz.tagline">Research Paper</p>
-              </div>
-              <span class="project-arrow">→</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Room 5: Photography Albums -->
-    <section class="room room--albums" id="albums">
-      <div class="albums-header" data-scroll-reveal>
-        <h2 class="section-title" data-i18n="sections.photography">Photography</h2>
-      </div>
-
-      <p class="albums-note" data-scroll-reveal data-delay="1" data-i18n="albums.note">Mixed photography, curated as
-        yearly albums</p>
-
-      <!-- Album 2026 - Empty State -->
-      <div class="album" data-scroll-reveal data-delay="2">
-        <div class="album-label">
-          <span class="album-year">2026</span>
-        </div>
-        <div class="album-empty">
-          <p class="album-empty-text" data-i18n="albums.noPhotos">No photos yet.</p>
-        </div>
-      </div>
-
-      <!-- Album 2025 - Stacked Card Carousel -->
-      <div class="album" data-scroll-reveal data-delay="3">
-        <div class="album-label">
-          <span class="album-year">2025</span>
-        </div>
-
-        <div class="photo-carousel" id="photo-carousel">
-          <!-- Navigation Arrow Left -->
-          <button class="carousel-arrow carousel-arrow--left" aria-label="Previous photo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-          </button>
-
-          <!-- Stacked Cards Container -->
-          <div class="carousel-stack">
-            <div class="carousel-card" data-index="0" data-position="far-left">
-              <div class="card-image">
-                <img src="pictures/IMG_20250415_230725_326_edit_16243105548541.jpg" alt="Photo April 2025"
-                  loading="lazy" decoding="async">
-              </div>
-            </div>
-            <div class="carousel-card" data-index="1" data-position="left">
-              <div class="card-image">
-                <img src="pictures/IMG_20250419_235912.jpg" alt="Photo April 2025" loading="lazy" decoding="async">
-              </div>
-            </div>
-            <div class="carousel-card" data-index="2" data-position="center">
-              <div class="card-image">
-                <img src="pictures/IMG_20250710_095454~2 (1).jpg" alt="Photo July 2025" loading="lazy"
-                  decoding="async">
-              </div>
-            </div>
-            <div class="carousel-card" data-index="3" data-position="right">
-              <div class="card-image">
-                <img src="pictures/IMG_20250822_093038~2 (1).jpg" alt="Photo August 2025" loading="lazy"
-                  decoding="async">
-              </div>
-            </div>
-            <div class="carousel-card" data-index="4" data-position="far-right">
-              <div class="card-image">
-                <img src="pictures/IMG_20250925_175649_edit_41287785265446.jpg" alt="Photo September 2025"
-                  loading="lazy" decoding="async">
-              </div>
+        <article class="project-card project-card--soon" data-scroll-reveal>
+          <div class="project-card-inner">
+            <div class="project-info">
+              <span class="project-status project-status--working">Working</span>
+              <h3 class="project-name">PhoneCode</h3>
+              <p class="project-brief">OpenCode, for Android · repo soon</p>
             </div>
           </div>
+        </article>
 
-          <!-- Navigation Arrow Right -->
-          <button class="carousel-arrow carousel-arrow--right" aria-label="Next photo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-          </button>
-
-          <!-- Flowing Caption -->
-          <div class="carousel-caption">
-            <p class="caption-text" data-caption="0">Silhouette under foggy streetlight</p>
-            <p class="caption-text" data-caption="1">Ancient bell tower at night</p>
-            <p class="caption-text" data-caption="2">Tiger drinking from still water</p>
-            <p class="caption-text" data-caption="3">Mountain peaks through clouds</p>
-            <p class="caption-text" data-caption="4">Yellow chrysanthemums at market</p>
+        <a class="project-card" href="https://dzipobel.wiki" target="_blank" rel="noopener" data-scroll-reveal>
+          <div class="project-card-inner">
+            <div class="project-info">
+              <span class="project-status">Completed</span>
+              <h3 class="project-name">dzipobel.wiki</h3>
+              <p class="project-brief">Literature &amp; grammar library for the Bulgarian matura</p>
+            </div>
+            <span class="project-arrow">→</span>
           </div>
-        </div>
+        </a>
+
+        <a class="project-card" href="https://schoolmap.pages.dev" target="_blank" rel="noopener" data-scroll-reveal>
+          <div class="project-card-inner">
+            <div class="project-info">
+              <span class="project-status">Completed</span>
+              <h3 class="project-name">SchoolMap</h3>
+              <p class="project-brief">Classroom-ready map tool</p>
+            </div>
+            <span class="project-arrow">→</span>
+          </div>
+        </a>
+
       </div>
     </section>
 
@@ -479,15 +326,7 @@
       </div>
 
       <div class="contact-content" data-scroll-reveal>
-        <button class="contact-email" id="open-email-form">
-          <span class="email-word">deyan.todorov21</span>
-          <span class="email-at">@</span>
-          <span class="email-word">gmail.com</span>
-        </button>
-
-        <p class="contact-note" id="cv-link" data-i18n="contact.note">
-          CV available on <span class="cv-request">request</span>.
-        </p>
+        <button class="contact-cta" id="open-email-form" data-i18n="modal.title">Get in Touch</button>
 
         <p class="social-disclaimer" data-i18n="contact.socialDisclaimer">
           Not currently active on social media until 1.1.2027.
@@ -495,15 +334,11 @@
 
         <!-- Social Links - Minimal Text Style -->
         <div class="socials">
-          <a href="https://github.com/dttdrv" class="social-link" target="_blank" rel="noopener">GitHub</a>
-          <span class="social-divider">/</span>
-          <a href="https://facebook.com/dttdrv" class="social-link" target="_blank" rel="noopener">Facebook</a>
-          <span class="social-divider">/</span>
-          <a href="https://instagram.com/dttdrv" class="social-link" target="_blank" rel="noopener">Instagram</a>
-          <span class="social-divider">/</span>
-          <a href="https://x.com/dttdrv" class="social-link" target="_blank" rel="noopener">X/Twitter</a>
-          <span class="social-divider">/</span>
-          <a href="https://threads.net/@dttdrv" class="social-link" target="_blank" rel="noopener">Threads</a>
+          <a href="https://github.com/dttdrv" class="social-link" aria-label="GitHub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+          <a href="https://facebook.com/dttdrv" class="social-link" aria-label="Facebook" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg></a>
+          <a href="https://instagram.com/dttdrv" class="social-link" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
+          <a href="https://x.com/dttdrv" class="social-link" aria-label="X" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+          <a href="https://threads.net/@dttdrv" class="social-link" aria-label="Threads" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg></a>
         </div>
       </div>
 

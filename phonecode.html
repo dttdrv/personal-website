@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PhoneCode - a native Android AI coding agent that runs entirely on your phone.">
+  <meta name="theme-color" content="#FFFFFF">
+  <title>PhoneCode — Deyan Todorov</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Preload critical above-the-fold fonts (self-hosted) -->
+  <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Fonts (self-hosted) -->
+  <link rel="stylesheet" href="fonts.css">
+
+  <!-- Site styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Inline critical CSS for preloader (must be instant) -->
+  <style>
+    .preloader { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s; }
+    .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .preloader-spinner { width: 32px; height: 32px; border: 2px solid #E5E5E5; border-top-color: #0000FF; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-color-scheme: dark) { .preloader { background: #1c1c1c; } .preloader-spinner { border-color: #2a2a2a; border-top-color: #4466FF; } }
+  </style>
+
+  <!-- Page-specific styles (built on the site's design tokens) -->
+  <style>
+    .phone-header { position: fixed; top: 0; left: 0; right: 0; z-index: 9500; display: flex; justify-content: flex-end; align-items: center; padding: var(--space-sm) var(--space-md); pointer-events: none; }
+    .phone-header > * { pointer-events: auto; }
+    .phone-header-dl { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--black); text-decoration: none; border: 1px solid var(--black); padding: 0.55rem 1.2rem; transition: background-color 0.3s ease, color 0.3s ease; }
+    .phone-header-dl:hover { background: var(--black); color: var(--white); }
+
+    .room--phone-hero { align-items: center; text-align: center; }
+    .phone-byline { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--black); }
+    .phone-presents { font-family: var(--font-display); font-style: italic; font-size: 1.05rem; color: var(--gray); margin: 0.5rem 0 1.4rem; }
+    .phone-wordmark { font-family: var(--font-display); font-size: clamp(3.5rem, 11vw, 7rem); line-height: 0.9; letter-spacing: -0.01em; color: var(--black); margin-bottom: var(--space-md); }
+    .phone-wordmark .name-letter { display: inline-block; }
+    .phone-tagline { font-family: var(--font-display); font-style: italic; font-size: clamp(1.25rem, 3.2vw, 1.85rem); color: var(--gray); max-width: 28ch; line-height: 1.35; margin-top: var(--space-lg); }
+
+    .phone-statement { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.25; max-width: 18ch; margin: 0 auto var(--space-2xl); text-align: center; }
+    .phone-statement .accent { color: var(--accent); }
+    .phone-rows { max-width: 1080px; margin: 0 auto; display: grid; gap: var(--space-2xl); }
+    .phone-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
+    .phone-row--rev .phone-feature { order: 2; }
+    .phone-row--rev .phone-shot { order: 1; }
+    .phone-feature .num { font-size: 0.78rem; color: var(--gray); letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
+    .phone-feature .cap-name { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--black); display: block; margin-bottom: 0.5rem; }
+    .phone-feature .desc { color: var(--gray); font-size: 1.05rem; max-width: 34ch; }
+    .phone-shot { position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--gray-light); }
+    .phone-shot::after { content: ''; position: absolute; inset: 16px -16px -16px 16px; border: 1px solid var(--accent); z-index: -1; opacity: 0.4; }
+    .phone-shot .placeholder { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
+    @media (max-width: 760px) {
+      .phone-row { grid-template-columns: 1fr; gap: var(--space-md); }
+      .phone-row--rev .phone-feature, .phone-row--rev .phone-shot { order: initial; }
+    }
+
+    .phone-get { text-align: center; }
+    .phone-meta { color: var(--gray); font-size: 0.9rem; margin-bottom: var(--space-lg); }
+    .phone-dl { font-size: 1.4rem; color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 4px; transition: color 0.3s ease, border-color 0.3s ease; }
+    .phone-dl:hover { color: var(--accent); border-color: var(--accent); }
+    .phone-repo { margin-top: var(--space-md); }
+    .phone-repo a { font-size: 0.9rem; color: var(--gray); text-decoration: none; border-bottom: 1px solid var(--gray-light); padding-bottom: 2px; transition: color 0.3s ease, border-color 0.3s ease; }
+    .phone-repo a:hover { color: var(--accent); border-color: var(--accent); }
+  </style>
+</head>
+
+<body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-spinner"></div>
+  </div>
+
+  <!-- Scroll Progress -->
+  <div class="scroll-progress"></div>
+
+  <!-- Edge blur (top/bottom transparency fade) -->
+  <div class="edge-blur edge-blur--top" aria-hidden="true"><div class="edge-blur-inner"></div></div>
+  <div class="edge-blur edge-blur--bottom" aria-hidden="true"><div class="edge-blur-inner"></div></div>
+
+  <!-- Universal back button + page header -->
+  <a href="index.html" class="back-button">← Deyan Todorov</a>
+  <header class="phone-header">
+    <a href="https://github.com/dttdrv/phonecode/releases/latest/download/phonecode-0.1.6.apk" class="phone-header-dl" data-download>Download</a>
+  </header>
+
+  <!-- Ambient Floating Elements -->
+  <div class="ambient-layer">
+    <div class="ambient-orb ambient-orb--1"></div>
+    <div class="ambient-orb ambient-orb--2"></div>
+    <div class="ambient-orb ambient-orb--3"></div>
+    <div class="ambient-shape ambient-shape--1"></div>
+    <div class="ambient-shape ambient-shape--2"></div>
+  </div>
+
+  <main class="gallery">
+
+    <!-- Hero -->
+    <section class="room room--phone-hero" id="phone-top">
+      <div class="phone-hero-inner" data-scroll-reveal>
+        <p class="phone-byline">Deyan Todorov</p>
+        <p class="phone-presents">presents</p>
+        <h1 class="phone-wordmark" data-magnetic>
+          <span class="name-letter" data-letter>P</span><span class="name-letter" data-letter>h</span><span class="name-letter" data-letter>o</span><span class="name-letter" data-letter>n</span><span class="name-letter" data-letter>e</span><span class="name-letter" data-letter>C</span><span class="name-letter" data-letter>o</span><span class="name-letter" data-letter>d</span><span class="name-letter" data-letter>e</span>
+        </h1>
+        <p class="phone-tagline">An AI coding agent that runs entirely on your Android phone.</p>
+      </div>
+    </section>
+
+    <!-- What it does -->
+    <section class="room" id="phone-about">
+      <p class="phone-statement" data-scroll-reveal>Your code, <span class="accent">your keys, your phone.</span></p>
+      <div class="phone-rows">
+
+        <div class="phone-row" data-scroll-reveal>
+          <div class="phone-feature">
+            <span class="num">01</span>
+            <span class="cap-name">On-device agent</span>
+            <span class="desc">PhoneCode reads, writes, and edits files in project workspaces, runs git, searches the web, and calls the model provider you choose.</span>
+          </div>
+          <div class="phone-shot"><span class="placeholder">Agent loop</span></div>
+        </div>
+
+        <div class="phone-row phone-row--rev" data-scroll-reveal>
+          <div class="phone-feature">
+            <span class="num">02</span>
+            <span class="cap-name">Bring your own provider</span>
+            <span class="desc">Pick from OpenAI, Anthropic, OpenRouter, Google, xAI, Groq, DeepSeek, Mistral, Together, or sign in with ChatGPT. API keys live in the Android Keystore.</span>
+          </div>
+          <div class="phone-shot"><span class="placeholder">Provider list</span></div>
+        </div>
+
+        <div class="phone-row" data-scroll-reveal>
+          <div class="phone-feature">
+            <span class="num">03</span>
+            <span class="cap-name">Projects and chats</span>
+            <span class="desc">Each chat is its own project folder and git repository. Switch branches, commit snapshots, and push or pull from the chat.</span>
+          </div>
+          <div class="phone-shot"><span class="placeholder">Project workspace</span></div>
+        </div>
+
+        <div class="phone-row phone-row--rev" data-scroll-reveal>
+          <div class="phone-feature">
+            <span class="num">04</span>
+            <span class="cap-name">Privacy by construction</span>
+            <span class="desc">No backend, no telemetry, and no account. Crash logs stay local, export and import use a file you choose, and Auto Backup skips your secrets.</span>
+          </div>
+          <div class="phone-shot"><span class="placeholder">Local-only data</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Get PhoneCode -->
+    <section class="room" id="phone-get">
+      <div class="contact-header" data-scroll-reveal>
+        <h2 class="section-title">Get PhoneCode</h2>
+      </div>
+      <div class="phone-get" data-scroll-reveal>
+        <p class="phone-meta">Latest release · Android 8.0+ (arm64) · sideload APK</p>
+        <a class="phone-dl" href="https://github.com/dttdrv/phonecode/releases/latest/download/phonecode-0.1.6.apk" data-download>Download APK</a>
+        <p class="phone-repo"><a href="https://github.com/dttdrv/phonecode" target="_blank" rel="noopener">View the repo on GitHub</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="lenis.min.js" defer></script>
+  <script src="translations.js" defer></script>
+  <script src="script.js" defer></script>
+
+  <!-- Resolve the latest APK so the hardcoded fallback never goes stale -->
+  <script>
+    fetch('https://api.github.com/repos/dttdrv/phonecode/releases/latest')
+      .then(r => r.ok ? r.json() : null)
+      .then(rel => {
+        const asset = rel && rel.assets && rel.assets.find(a => a.name.endsWith('.apk'));
+        if (!asset) return;
+        document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
+      })
+      .catch(() => { /* fallback href already points at the current release */ });
+  </script>
+</body>
+
+</html>

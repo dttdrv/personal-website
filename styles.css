@@ -1087,14 +1087,13 @@ a.project-card {
   background: transparent;
   border: 1px solid var(--gray);
   cursor: pointer;
-  transition: border-color 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+  transition: border-color 0.3s var(--ease-out-expo);
   padding: calc(var(--space-lg) - 15px) var(--space-md);
   /* 15px shorter, add horizontal padding for side borders */
 }
 
 .project-card:hover {
   border-color: var(--accent);
-  transform: translateY(-2px);
 }
 
 .project-card--featured {

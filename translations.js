@@ -39,9 +39,8 @@ const TRANSLATIONS = {
       error: 'Error - Try Again',
       success: 'Message sent successfully!'
     },
-    footer: {
-      text: 'This is a website.'
-    },
+
+
   },
 
   // French
@@ -79,9 +78,8 @@ const TRANSLATIONS = {
       error: 'Erreur - Reessayez',
       success: 'Message envoye avec succes!'
     },
-    footer: {
-      text: 'Ceci est un site web.'
-    },
+
+
   },
 
   // Bulgarian (Cyrillic)
@@ -119,9 +117,8 @@ const TRANSLATIONS = {
       error: 'Грешка - Опитайте отново',
       success: 'Съобщението е изпратено успешно!'
     },
-    footer: {
-      text: 'Това е уебсайт.'
-    },
+
+
   },
 
   // Italian
@@ -159,9 +156,8 @@ const TRANSLATIONS = {
       error: 'Errore - Riprova',
       success: 'Messaggio inviato con successo!'
     },
-    footer: {
-      text: 'Questo e un sito web.'
-    },
+
+
   },
 
   // German
@@ -199,8 +195,7 @@ const TRANSLATIONS = {
       error: 'Fehler - Erneut versuchen',
       success: 'Nachricht erfolgreich gesendet!'
     },
-    footer: {
-      text: 'Dies ist eine Website.'
-    },
+
+
   }
 };

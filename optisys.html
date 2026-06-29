@@ -100,7 +100,7 @@
   <!-- Universal back button + page header -->
   <a href="index.html" class="back-button">← Deyan Todorov</a>
   <header class="opti-header">
-    <a href="https://github.com/dttdrv/optiSYS/releases/latest/download/optiSYS-1.0.0-setup.exe" class="opti-header-dl" data-download>Download</a>
+    <a href="https://github.com/dttdrv/optiSYS/releases/latest" class="opti-header-dl" data-download>Download</a>
   </header>
 
   <!-- Ambient Floating Elements -->
@@ -168,8 +168,8 @@
         <h2 class="section-title">Get optiSYS</h2>
       </div>
       <div class="opti-get" data-scroll-reveal>
-        <p class="opti-meta">Version 1.0 · Windows 10 (1809+) or 11 · free &amp; open source</p>
-        <a class="opti-dl" href="https://github.com/dttdrv/optiSYS/releases/latest/download/optiSYS-1.0.0-setup.exe" data-download>Download for Windows</a>
+        <p class="opti-meta">Latest release · Windows 10 (1809+) or 11 · free &amp; open source</p>
+        <a class="opti-dl" href="https://github.com/dttdrv/optiSYS/releases/latest" data-download>Download for Windows</a>
         <p class="opti-repo"><a href="https://github.com/dttdrv/optiSYS" target="_blank" rel="noopener">View the repo on GitHub</a></p>
       </div>
     </section>
@@ -181,16 +181,23 @@
   <script src="translations.js" defer></script>
   <script src="script.js" defer></script>
 
-  <!-- Resolve the latest setup.exe so the hardcoded fallback never goes stale -->
+  <!-- Resolve the latest release asset and version so the page stays current -->
   <script>
     fetch('https://api.github.com/repos/dttdrv/optiSYS/releases/latest')
       .then(r => r.ok ? r.json() : null)
       .then(rel => {
-        const asset = rel && rel.assets && rel.assets.find(a => a.name.endsWith('-setup.exe'));
-        if (!asset) return;
-        document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
+        if (!rel) return;
+        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('-setup.exe'));
+        if (asset) {
+          document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
+        }
+        const meta = document.querySelector('.opti-meta');
+        if (meta && rel.tag_name) {
+          const version = rel.tag_name.replace(/^v/, '');
+          meta.textContent = `Version ${version} · Windows 10 (1809+) or 11 · free & open source`;
+        }
       })
-      .catch(() => { /* fallback href already points at the current release */ });
+      .catch(() => { /* fallback href and text already point to the latest release */ });
   </script>
 </body>
 

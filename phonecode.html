@@ -80,7 +80,7 @@
   <!-- Universal back button + page header -->
   <a href="index.html" class="back-button">← Deyan Todorov</a>
   <header class="phone-header">
-    <a href="https://github.com/dttdrv/phonecode/releases/latest/download/phonecode-0.1.6.apk" class="phone-header-dl" data-download>Download</a>
+    <a href="https://github.com/dttdrv/phonecode/releases/latest" class="phone-header-dl" data-download>Download</a>
   </header>
 
   <!-- Ambient Floating Elements -->
@@ -150,7 +150,7 @@
       </div>
       <div class="phone-get" data-scroll-reveal>
         <p class="phone-meta">Latest release · Android 8.0+ (arm64) · sideload APK</p>
-        <a class="phone-dl" href="https://github.com/dttdrv/phonecode/releases/latest/download/phonecode-0.1.6.apk" data-download>Download APK</a>
+        <a class="phone-dl" href="https://github.com/dttdrv/phonecode/releases/latest" data-download>Download APK</a>
         <p class="phone-repo"><a href="https://github.com/dttdrv/phonecode" target="_blank" rel="noopener">View the repo on GitHub</a></p>
       </div>
     </section>
@@ -162,16 +162,23 @@
   <script src="translations.js" defer></script>
   <script src="script.js" defer></script>
 
-  <!-- Resolve the latest APK so the hardcoded fallback never goes stale -->
+  <!-- Resolve the latest release asset and version so the page stays current -->
   <script>
     fetch('https://api.github.com/repos/dttdrv/phonecode/releases/latest')
       .then(r => r.ok ? r.json() : null)
       .then(rel => {
-        const asset = rel && rel.assets && rel.assets.find(a => a.name.endsWith('.apk'));
-        if (!asset) return;
-        document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
+        if (!rel) return;
+        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('.apk'));
+        if (asset) {
+          document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
+        }
+        const meta = document.querySelector('.phone-meta');
+        if (meta && rel.tag_name) {
+          const version = rel.tag_name.replace(/^v/, '');
+          meta.textContent = `Version ${version} · Android 8.0+ (arm64) · sideload APK`;
+        }
       })
-      .catch(() => { /* fallback href already points at the current release */ });
+      .catch(() => { /* fallback href and text already point to the latest release */ });
   </script>
 </body>
 

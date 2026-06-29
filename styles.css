@@ -1283,15 +1283,6 @@ a.project-card {
   display: none;
 }
 
-.contact-footer {
-  position: absolute;
-  bottom: var(--space-lg);
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
-  color: var(--gray);
-}
-
 /* === Modal === */
 .modal {
   position: fixed;

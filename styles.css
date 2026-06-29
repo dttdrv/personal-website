@@ -522,7 +522,7 @@ button {
 }
 
 .back-button:hover {
-  color: var(--black);
+  color: var(--accent);
 }
 
 /* === Click Feedback (flash accent on press, revert on release) === */

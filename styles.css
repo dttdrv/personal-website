@@ -514,8 +514,8 @@ button {
   top: var(--space-sm);
   left: var(--space-md);
   z-index: 9500;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  font-size: 1.6rem;
+  line-height: 1;
   color: var(--gray);
   text-decoration: none;
   transition: color 0.3s ease;

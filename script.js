@@ -633,7 +633,9 @@ const EmailModal = {
     const subject = `Contact from Website: ${email}`;
     const body = `${message}\n\nFrom: ${email}`;
 
-    const mailtoLink = `mailto:deyan.todorov21@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const user = 'deyan.todorov21';
+    const domain = 'gmail.com';
+    const mailtoLink = `mailto:${user}@${domain}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     window.location.href = mailtoLink;
 

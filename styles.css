@@ -1148,22 +1148,23 @@ a.project-card {
   color: var(--gray);
 }
 
-/* Overlays the card padding (absolute) so the hidden state reserves no space */
+/* Small dot in the upper right corner, shown on hover */
 .project-arrow {
   position: absolute;
-  bottom: 0.6rem;
-  left: 50%;
-  font-size: 1.2rem;
-  color: var(--gray);
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
   opacity: 0;
-  transform: translate(-50%, 5px);
-  transition: all 0.3s ease;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .project-card:hover .project-arrow {
   opacity: 1;
-  transform: translate(-50%, 0);
-  color: var(--accent);
+  transform: scale(1);
 }
 
 @media (max-width: 768px) {

@@ -1148,30 +1148,6 @@ a.project-card {
   color: var(--gray);
 }
 
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.project-tag {
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gray);
-  border: 1px solid var(--gray-light);
-  padding: 0.25rem 0.6rem;
-  transition: border-color 0.3s ease, color 0.3s ease;
-}
-
-.project-card:hover .project-tag {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 /* Overlays the card padding (absolute) so the hidden state reserves no space */
 .project-arrow {
   position: absolute;

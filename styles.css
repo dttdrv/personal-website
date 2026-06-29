@@ -525,6 +525,14 @@ button {
   color: var(--accent);
 }
 
+:root[data-theme="dark"] .back-button {
+  color: var(--black);
+}
+
+:root[data-theme="dark"] .back-button:hover {
+  color: var(--accent);
+}
+
 /* === Click Feedback (flash accent on press, revert on release) === */
 a:active,
 button:active {

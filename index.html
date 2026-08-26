@@ -4,88 +4,235 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Deyan Todorov - Personal portfolio showcasing work and projects.">
-  <meta name="theme-color" content="#FFFFFF">
-  <title>Deyan Todorov</title>
+  <title>Deyan Todorov — Founder of Misul Computing • Systems &amp; Neural Architectures</title>
+  <meta name="description" content="Personal portfolio and research directory of Deyan Todorov, founder of Misul Computing. Systems engineering, Apple Silicon inference (Laplace), sparse attention (Monodratic), and neural architecture research.">
+  <meta name="keywords" content="Deyan Todorov, Misul Computing, Laplace, Monodratic, Transformerov, PhoneCode, optiSYS, AI Research, Apple Silicon Inference, Neural Architectures, Systems Engineering">
+  <meta name="author" content="Deyan Todorov">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://dttdrv.xyz/">
+  <link rel="alternate" hreflang="en" href="https://dttdrv.xyz/">
+  <link rel="alternate" hreflang="bg" href="https://dttdrv.xyz/">
+  <link rel="alternate" type="text/plain" href="https://dttdrv.xyz/llms.txt" title="LLM summary">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dttdrv.xyz/">
+  <meta property="og:site_name" content="Deyan Todorov">
+  <meta property="og:title" content="Deyan Todorov — Founder of Misul Computing">
+  <meta property="og:description" content="Personal portfolio and research index of Deyan Todorov: systems software, Apple Silicon inference engines, and cortical-inspired neural architectures.">
+  <meta property="og:image" content="https://dttdrv.xyz/pictures/profile.jpg">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="bg_BG">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dttdrv">
+  <meta name="twitter:creator" content="@dttdrv">
+  <meta name="twitter:title" content="Deyan Todorov — Founder of Misul Computing">
+  <meta name="twitter:description" content="Personal portfolio and research index of Deyan Todorov: systems software, Apple Silicon inference engines, and cortical-inspired neural architectures.">
+  <meta name="twitter:image" content="https://dttdrv.xyz/pictures/profile.jpg">
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Preload critical above-the-fold fonts (self-hosted) -->
   <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Preload the profile image (only above-the-fold image) -->
+  <!-- Preload the profile image (above-the-fold image) -->
   <link rel="preload" href="pictures/profile.jpg" as="image" fetchpriority="high">
 
-  <!-- Fonts (self-hosted, subsetted by unicode-range) -->
+  <!-- Fonts (self-hosted) -->
   <link rel="stylesheet" href="fonts.css">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=20260827">
 
-  <!-- Inline critical CSS for preloader (must be instant) -->
-  <style>
-    /* Preloader - Minimal clock spinner */
-    .preloader {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #FFFFFF;
-      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
-    }
-
-    .preloader.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .preloader-spinner {
-      width: 32px;
-      height: 32px;
-      border: 2px solid #E5E5E5;
-      border-top-color: #0000FF;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+  <!-- Structured Data: Schema.org Graph for Person, Organization, ItemLists, Software -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://dttdrv.xyz/#person",
+        "name": "Deyan Todorov",
+        "url": "https://dttdrv.xyz",
+        "image": "https://dttdrv.xyz/pictures/profile.jpg",
+        "jobTitle": "Founder & AI Systems Researcher",
+        "worksFor": {
+          "@type": "ResearchOrganization",
+          "@id": "https://misul.org/#organization",
+          "name": "Misul Computing",
+          "url": "https://misul.org"
+        },
+        "sameAs": [
+          "https://github.com/dttdrv",
+          "https://x.com/dttdrv"
+        ],
+        "knowsAbout": [
+          "Artificial Intelligence",
+          "Neural Network Architectures",
+          "Apple Silicon Optimization",
+          "SIMD Kernel Programming",
+          "Sparse Attention Mechanisms",
+          "Systems Engineering",
+          "On-Device AI"
+        ]
+      },
+      {
+        "@type": "ResearchOrganization",
+        "@id": "https://misul.org/#organization",
+        "name": "Misul Computing",
+        "url": "https://misul.org",
+        "founder": {
+          "@id": "https://dttdrv.xyz/#person"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sofia",
+          "addressCountry": "BG"
+        },
+        "description": "Independent AI research laboratory building machine intelligence from the principles of the brain."
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://dttdrv.xyz/#misul-projects",
+        "name": "Misul Computing Research Programs",
+        "description": "Core AI research programs and software developed at Misul Computing.",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "SoftwareSourceCode",
+              "name": "Laplace",
+              "description": "Apple Silicon inference engine targeting performance-per-joule with SIMD kernels, LaplaceKV bounded streaming, and SSD MoE streaming.",
+              "codeRepository": "https://github.com/Misul-Computing/Laplace",
+              "programmingLanguage": "C++",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Misul Agent",
+              "description": "Fast terminal coding harness and agent engine built in Zig and Cordis with dynamic runtime hooks.",
+              "url": "https://misul.org/agent",
+              "codeRepository": "https://github.com/Misul-Computing/Agent",
+              "applicationCategory": "DeveloperApplication",
+              "programmingLanguage": "Zig",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "ResearchProject",
+              "name": "Todorov",
+              "description": "Unified neural architecture research program for language, world state, and action in a shared latent process.",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@type": "SoftwareSourceCode",
+              "name": "Monodratic",
+              "description": "Content-routed sparse attention sequence mixer with formal proof bounds and associative recall.",
+              "codeRepository": "https://github.com/Misul-Computing/Monodratic",
+              "programmingLanguage": "Python",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@type": "ResearchProject",
+              "name": "Transformerov",
+              "description": "Hybrid MLX sequence model combining gated-delta recurrence and windowed attention.",
+              "programmingLanguage": "Python",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          }
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://dttdrv.xyz/#independent-projects",
+        "name": "Independent Projects",
+        "description": "Independent software systems and applications developed by Deyan Todorov.",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "PhoneCode",
+              "description": "On-device AI coding agent application for Android.",
+              "url": "https://dttdrv.xyz/phonecode.html",
+              "applicationCategory": "DeveloperApplication",
+              "operatingSystem": "Android",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "optiSYS",
+              "description": "Native Windows system optimizer and low-latency tuning utility.",
+              "url": "https://dttdrv.xyz/optisys.html",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Windows",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "WebApplication",
+              "name": "dzipobel.wiki",
+              "description": "Digital literature and grammar library for the Bulgarian state graduation exam (matura).",
+              "url": "https://dzipobel.wiki",
+              "applicationCategory": "EducationalApplication",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@type": "WebApplication",
+              "name": "SchoolMap",
+              "description": "Interactive classroom-ready geospatial mapping application.",
+              "url": "https://schoolmap.pages.dev",
+              "applicationCategory": "EducationalApplication",
+              "author": { "@id": "https://dttdrv.xyz/#person" }
+            }
+          }
+        ]
       }
-    }
+    ]
+  }
+  </script>
 
-    /* Dark mode preloader */
-    @media (prefers-color-scheme: dark) {
-      .preloader {
-        background: #1c1c1c;
-      }
-
-      .preloader-spinner {
-        border-color: #2a2a2a;
-        border-top-color: #4466FF;
-      }
-    }
-  </style>
 </head>
 
 <body>
-  <!-- Preloader -->
-  <div class="preloader" id="preloader">
-    <div class="preloader-spinner"></div>
-  </div>
-
-  <!-- Scroll Progress -->
+  <!-- Scroll Progress Bar -->
   <div class="scroll-progress"></div>
 
-  <!-- Edge blur (top/bottom transparency fade) -->
-  <div class="edge-blur edge-blur--top" aria-hidden="true"><div class="edge-blur-inner"></div></div>
-  <div class="edge-blur edge-blur--bottom" aria-hidden="true"><div class="edge-blur-inner"></div></div>
-
   <!-- Mobile Menu Button (Bottom-Right) -->
-  <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+  <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu-overlay">
     <span class="menu-line"></span>
     <span class="menu-line"></span>
     <span class="menu-line"></span>
@@ -93,7 +240,7 @@
 
   <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="mobile-menu-overlay">
-    <nav class="mobile-menu-nav">
+    <nav class="mobile-menu-nav" aria-label="Mobile navigation">
       <a href="#name" class="mobile-nav-item" data-section="name">
         <span class="mobile-nav-number">01</span>
         <span class="mobile-nav-label" data-i18n="nav.top">Top</span>
@@ -102,19 +249,23 @@
         <span class="mobile-nav-number">02</span>
         <span class="mobile-nav-label" data-i18n="nav.about">About</span>
       </a>
-      <a href="#work" class="mobile-nav-item" data-section="work">
+      <a href="#misul" class="mobile-nav-item" data-section="misul">
         <span class="mobile-nav-number">03</span>
-        <span class="mobile-nav-label" data-i18n="nav.work">Work</span>
+        <span class="mobile-nav-label" data-i18n="nav.misul">Misul Lab</span>
+      </a>
+      <a href="#projects" class="mobile-nav-item" data-section="projects">
+        <span class="mobile-nav-number">04</span>
+        <span class="mobile-nav-label" data-i18n="nav.projects">Projects</span>
       </a>
       <a href="#contact" class="mobile-nav-item" data-section="contact">
-        <span class="mobile-nav-number">04</span>
+        <span class="mobile-nav-number">05</span>
         <span class="mobile-nav-label" data-i18n="nav.contact">Contact</span>
       </a>
     </nav>
   </div>
 
-  <!-- Section Navigation (Bottom-Left) - Numbers only, labels on hover -->
-  <nav class="section-nav" id="section-nav">
+  <!-- Section Navigation (Bottom-Left) — Numbering & Location -->
+  <nav class="section-nav" id="section-nav" aria-label="Primary navigation">
     <a href="#name" class="nav-item active" data-section="name">
       <span class="nav-number">01</span>
       <span class="nav-label" data-i18n="nav.top">Top</span>
@@ -123,43 +274,38 @@
       <span class="nav-number">02</span>
       <span class="nav-label" data-i18n="nav.about">About</span>
     </a>
-    <a href="#work" class="nav-item" data-section="work">
+    <a href="#misul" class="nav-item" data-section="misul">
       <span class="nav-number">03</span>
-      <span class="nav-label" data-i18n="nav.work">Work</span>
+      <span class="nav-label" data-i18n="nav.misul">Misul Lab</span>
+    </a>
+    <a href="#projects" class="nav-item" data-section="projects">
+      <span class="nav-number">04</span>
+      <span class="nav-label" data-i18n="nav.projects">Projects</span>
     </a>
     <a href="#contact" class="nav-item" data-section="contact">
-      <span class="nav-number">04</span>
+      <span class="nav-number">05</span>
       <span class="nav-label" data-i18n="nav.contact">Contact</span>
     </a>
   </nav>
 
-  <!-- Ambient Floating Elements -->
-  <div class="ambient-layer">
-    <div class="ambient-orb ambient-orb--1"></div>
-    <div class="ambient-orb ambient-orb--2"></div>
-    <div class="ambient-orb ambient-orb--3"></div>
-    <div class="ambient-shape ambient-shape--1"></div>
-    <div class="ambient-shape ambient-shape--2"></div>
-  </div>
-
   <!-- Email Form Modal -->
-  <div class="modal" id="email-modal">
+  <div class="modal" id="email-modal" role="dialog" aria-modal="true" aria-labelledby="modal-heading-title" hidden>
     <div class="modal-backdrop"></div>
-    <div class="modal-content" data-lenis-prevent>
-      <button class="modal-close" aria-label="Close">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
       </button>
-      <h3 class="modal-title" data-i18n="modal.title">Get in Touch</h3>
+      <h3 class="modal-title" id="modal-heading-title" data-i18n="modal.title">Get in Touch</h3>
       <form class="contact-form" id="contact-form">
         <div class="form-group">
           <label for="form-name" data-i18n="modal.name">Name</label>
-          <input type="text" id="form-name" name="name" required>
+          <input type="text" id="form-name" name="name" required autocomplete="name">
         </div>
         <div class="form-group">
           <label for="email" data-i18n="modal.email">Email</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" required autocomplete="email">
         </div>
         <div class="form-group">
           <label for="subject" data-i18n="modal.subject">Subject</label>
@@ -171,29 +317,27 @@
         </div>
         <button type="submit" class="form-submit">
           <span data-i18n="modal.send">Send Message</span>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-              stroke-linejoin="round" />
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
       </form>
       <div class="form-success" style="display: none;">
-        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
           <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2" />
-          <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" />
+          <path d="M16 24L22 30L32 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         <p data-i18n="modal.success">Message sent successfully!</p>
       </div>
     </div>
   </div>
 
-  <!-- Gallery -->
+  <!-- Main Content Structure -->
   <main class="gallery">
 
-    <!-- Room 1: The Name -->
+    <!-- Room 1: The Name (Hero with Magnetic & Touch Repel Letters) -->
     <section class="room room--name" id="name">
-      <div class="name-container" data-parallax="0.1" data-scroll-reveal>
+      <div class="name-container">
         <h1 class="name" data-magnetic data-i18n-name="firstName">
           <span class="name-letter" data-letter>D</span>
           <span class="name-letter" data-letter>E</span>
@@ -211,141 +355,334 @@
           <span class="name-letter" data-letter>V</span>
         </h1>
       </div>
-
     </section>
 
     <!-- Room 2: About / The Statement -->
     <section class="room room--about" id="about">
-      <div class="about-header" data-scroll-reveal>
+      <div class="about-header">
         <h2 class="section-title" data-i18n="nav.about">About</h2>
       </div>
 
       <div class="about-container">
         <!-- Profile Image Area -->
-        <div class="about-visual" data-scroll-reveal>
+        <div class="about-visual">
           <div class="profile-frame">
-            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="eager"
-              fetchpriority="high" decoding="async">
+            <img src="pictures/profile.jpg" alt="Deyan Todorov" class="profile-image" loading="eager" fetchpriority="high" decoding="async">
             <div class="profile-accent"></div>
           </div>
         </div>
 
         <!-- Statement -->
-        <div class="about-content" data-scroll-animate>
-          <!-- Abstract: Work Philosophy -->
+        <div class="about-content">
           <div class="about-abstract">
             <p class="statement" data-i18n="about.statement">
-              <span class="word">I</span>
-              <span class="word">believe</span>
-              <span class="word">in</span>
-              <span class="word">doing</span>
-              <span class="word">a</span>
-              <span class="word">job</span>
-              <span class="word accent">100%</span>
-              <span class="word">or</span>
-              <span class="word">not</span>
-              <span class="word">doing</span>
-              <span class="word">it</span>
-              <span class="word">at</span>
-              <span class="word">all.</span>
+              I believe in doing a job <span class="accent">100%</span> or not doing it at all.
             </p>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room 3: Misul Computing Research Suite -->
+    <section class="room room--misul" id="misul">
+      <div class="section-content-wrapper">
+        <div class="section-intro-block section-intro-block--centered">
+          <h2 class="section-title section-title--large">
+            <a href="https://misul.org" target="_blank" rel="noopener" class="misul-title-link">
+              <span data-i18n="misul.heading">Misul Computing</span>
+              <span class="title-arrow" aria-hidden="true">↗</span>
+            </a>
+          </h2>
+          <p class="section-intro" data-i18n="misul.intro">
+            I am the founder and lead researcher at Misul Computing, an independent AI research lab in Sofia, Bulgaria. We build machine intelligence based on brain principles. At Misul I am currently working on the following projects:
+          </p>
+        </div>
+
+        <!-- Clean Editorial Expandable List for Misul Research Programs -->
+        <div class="drawers-container">
+
+          <!-- Laplace Drawer -->
+          <article class="drawer-item" id="drawer-item-laplace">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-laplace" id="drawer-trigger-laplace">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="misul.laplace.title">Laplace</h3>
+                <span class="drawer-brief" data-i18n="misul.laplace.brief">Apple Silicon inference engine with high speed and low power draw</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-laplace" role="region" aria-labelledby="drawer-trigger-laplace">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="misul.laplace.desc">
+                  An inference engine built from scratch for Apple Silicon. Runs large language models directly on Mac hardware using custom SIMD kernels, Metal acceleration, and smart memory streaming to maximize speed and efficiency.
+                </p>
+                <div class="drawer-actions">
+                  <a href="https://github.com/Misul-Computing/Laplace" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewCode">View Code</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Misul Agent Drawer -->
+          <article class="drawer-item" id="drawer-item-agent">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-agent" id="drawer-trigger-agent">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="misul.agent.title">Misul Agent</h3>
+                <span class="drawer-brief" data-i18n="misul.agent.brief">Zig and Cordis based terminal agent harness</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-agent" role="region" aria-labelledby="drawer-trigger-agent">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="misul.agent.desc">
+                  A fast terminal coding harness and agent engine built in Zig and Cordis, featuring dynamic runtime hooks, lightweight tool routing, and direct system execution.
+                </p>
+                <div class="drawer-actions">
+                  <a href="https://misul.org/agent" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewSite">Visit Docs</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a href="https://github.com/Misul-Computing/Agent" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewCode">GitHub</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Todorov Drawer -->
+          <article class="drawer-item" id="drawer-item-todorov">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-todorov" id="drawer-trigger-todorov">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="misul.todorov.title">Todorov</h3>
+                <span class="drawer-brief" data-i18n="misul.todorov.brief">Unified neural architecture for language, state tracking, and action</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-todorov" role="region" aria-labelledby="drawer-trigger-todorov">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="misul.todorov.desc">
+                  A research project to build one neural model that handles language understanding, world state tracking, and physical actions in a single shared representation.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Monodratic Drawer -->
+          <article class="drawer-item" id="drawer-item-monodratic">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-monodratic" id="drawer-trigger-monodratic">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="misul.monodratic.title">Monodratic</h3>
+                <span class="drawer-brief" data-i18n="misul.monodratic.brief">Content-routed sparse attention sequence mixer</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-monodratic" role="region" aria-labelledby="drawer-trigger-monodratic">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="misul.monodratic.desc">
+                  An open-source attention mechanism that selects only relevant tokens during processing, reducing memory usage while keeping strong recall capabilities.
+                </p>
+                <div class="drawer-actions">
+                  <a href="https://misul.org/monodratic/" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewReport">Read Report</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a href="https://github.com/Misul-Computing/Monodratic/blob/main/output/pdf/monodratic_proof.pdf" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewPaper">PDF Paper</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a href="https://github.com/Misul-Computing/Monodratic" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewCode">GitHub</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Transformerov Drawer -->
+          <article class="drawer-item" id="drawer-item-transformerov">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-transformerov" id="drawer-trigger-transformerov">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="misul.transformerov.title">Transformerov</h3>
+                <span class="drawer-brief" data-i18n="misul.transformerov.brief">Hybrid sequence model combining local attention and recurrent memory</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-transformerov" role="region" aria-labelledby="drawer-trigger-transformerov">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="misul.transformerov.desc">
+                  A hybrid model implemented in Apple MLX that merges windowed attention for local detail with recurrent state for long-term memory.
+                </p>
+              </div>
+            </div>
+          </article>
 
         </div>
       </div>
     </section>
 
-    <!-- Room 3: Work -->
-    <section class="room room--works" id="work">
-      <div class="works-header" data-scroll-reveal>
-        <h2 class="section-title" data-i18n="sections.work">Work</h2>
-      </div>
+    <!-- Room 4: Independent Projects -->
+    <section class="room room--projects" id="projects">
+      <div class="section-content-wrapper">
+        <div class="section-intro-block section-intro-block--centered">
+          <h2 class="section-title section-title--large" data-i18n="projects.heading">Independent Projects</h2>
+          <p class="section-intro" data-i18n="projects.intro">
+            Selected standalone applications, native systems software, and digital infrastructure projects:
+          </p>
+        </div>
 
-      <div class="projects-grid">
+        <!-- Clean Editorial Expandable List for Independent Applications -->
+        <div class="drawers-container">
 
-        <a class="project-card project-card--featured" href="https://misul.org" target="_blank" rel="noopener" data-scroll-reveal>
-          <div class="project-card-inner">
-            <div class="project-info">
-              <span class="project-status project-status--working">Working</span>
-              <h3 class="project-name">Misul Computing</h3>
-              <p class="project-brief">Laboratory for Cortical Intelligence</p>
+          <!-- PhoneCode Drawer -->
+          <article class="drawer-item" id="drawer-item-phonecode">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-phonecode" id="drawer-trigger-phonecode">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="projects.phonecode.title">PhoneCode</h3>
+                <span class="drawer-brief" data-i18n="projects.phonecode.brief">On-device AI coding agent for Android</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-phonecode" role="region" aria-labelledby="drawer-trigger-phonecode">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="projects.phonecode.desc">
+                  A native Android app that lets you edit and manage code repositories directly on your phone, with support for local and cloud models and zero telemetry.
+                </p>
+                <div class="drawer-actions">
+                  <a href="phonecode.html" class="drawer-link-btn">
+                    <span data-i18n="ui.viewSite">Product Page</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <span class="project-arrow"></span>
-          </div>
-        </a>
+          </article>
 
-        <a class="project-card" href="optisys.html" data-scroll-reveal>
-          <div class="project-card-inner">
-            <div class="project-info">
-              <span class="project-status project-status--working">Working</span>
-              <h3 class="project-name">optiSYS</h3>
-              <p class="project-brief">Native Windows system optimizer</p>
+          <!-- optiSYS Drawer -->
+          <article class="drawer-item" id="drawer-item-optisys">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-optisys" id="drawer-trigger-optisys">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="projects.optisys.title">optiSYS</h3>
+                <span class="drawer-brief" data-i18n="projects.optisys.brief">Native Windows system optimizer and latency tuner</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-optisys" role="region" aria-labelledby="drawer-trigger-optisys">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="projects.optisys.desc">
+                  A lightweight Windows utility that tunes system responsiveness, network buffers, and background scheduling without bloat or telemetry.
+                </p>
+                <div class="drawer-actions">
+                  <a href="optisys.html" class="drawer-link-btn">
+                    <span data-i18n="ui.viewSite">Product Page</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <span class="project-arrow"></span>
-          </div>
-        </a>
+          </article>
 
-        <a class="project-card" href="phonecode.html" data-scroll-reveal>
-          <div class="project-card-inner">
-            <div class="project-info">
-              <span class="project-status project-status--working">Working</span>
-              <h3 class="project-name">PhoneCode</h3>
-              <p class="project-brief">On-device AI coding agent for Android</p>
+          <!-- dzipobel.wiki Drawer -->
+          <article class="drawer-item" id="drawer-item-dzipobel">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-dzipobel" id="drawer-trigger-dzipobel">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="projects.dzipobel.title">dzipobel.wiki</h3>
+                <span class="drawer-brief" data-i18n="projects.dzipobel.brief">Open digital library for Bulgarian literature and grammar</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-dzipobel" role="region" aria-labelledby="drawer-trigger-dzipobel">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="projects.dzipobel.desc">
+                  A fast open educational archive providing curated analyses, grammar guides, and reference material for Bulgarian state matriculation exams.
+                </p>
+                <div class="drawer-actions">
+                  <a href="https://dzipobel.wiki" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewSite">Visit Site</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <span class="project-arrow"></span>
-          </div>
-        </a>
+          </article>
 
-        <a class="project-card" href="https://dzipobel.wiki" target="_blank" rel="noopener" data-scroll-reveal>
-          <div class="project-card-inner">
-            <div class="project-info">
-              <span class="project-status">Completed</span>
-              <h3 class="project-name">dzipobel.wiki</h3>
-              <p class="project-brief">Literature &amp; grammar library for the Bulgarian matura</p>
+          <!-- SchoolMap Drawer -->
+          <article class="drawer-item" id="drawer-item-schoolmap">
+            <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-schoolmap" id="drawer-trigger-schoolmap">
+              <div class="drawer-trigger-left">
+                <h3 class="drawer-title" data-i18n="projects.schoolmap.title">SchoolMap</h3>
+                <span class="drawer-brief" data-i18n="projects.schoolmap.brief">Interactive mapping tool for classroom projection</span>
+              </div>
+              <div class="drawer-trigger-right">
+                <span class="drawer-indicator" aria-hidden="true">+</span>
+              </div>
+            </button>
+            <div class="drawer-expandable" id="drawer-content-schoolmap" role="region" aria-labelledby="drawer-trigger-schoolmap">
+              <div class="drawer-content-inner">
+                <p class="drawer-desc" data-i18n="projects.schoolmap.desc">
+                  A fast geospatial mapping tool designed for classroom geography lessons and interactive educational exercises.
+                </p>
+                <div class="drawer-actions">
+                  <a href="https://schoolmap.pages.dev" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="ui.viewSite">Visit App</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
             </div>
-            <span class="project-arrow"></span>
-          </div>
-        </a>
+          </article>
 
-        <a class="project-card" href="https://schoolmap.pages.dev" target="_blank" rel="noopener" data-scroll-reveal>
-          <div class="project-card-inner">
-            <div class="project-info">
-              <span class="project-status">Completed</span>
-              <h3 class="project-name">SchoolMap</h3>
-              <p class="project-brief">Classroom-ready map tool</p>
-            </div>
-            <span class="project-arrow"></span>
-          </div>
-        </a>
-
+        </div>
       </div>
     </section>
 
-    <!-- Room 6: Contact -->
+    <!-- Room 5: Contact -->
     <section class="room room--contact" id="contact">
-      <div class="contact-header" data-scroll-reveal>
+      <div class="contact-header">
         <h2 class="section-title" data-i18n="sections.contact">Contact</h2>
       </div>
 
-      <div class="contact-content" data-scroll-reveal>
-        <button class="contact-cta" id="open-email-form" data-i18n="modal.title">Get in Touch</button>
+      <div class="contact-content">
+        <a href="mailto:deyan@misul.org" class="contact-email-link">deyan@misul.org</a>
 
-        <!-- Social Links - Minimal Text Style -->
+        <!-- Social Links (GitHub and X only) -->
         <div class="socials">
-          <a href="https://github.com/dttdrv" class="social-link" aria-label="GitHub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+          <a href="https://github.com/dttdrv" class="social-link" aria-label="GitHub" target="_blank" rel="noopener" title="GitHub (@dttdrv)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </a>
 
-          <a href="https://x.com/dttdrv" class="social-link" aria-label="X" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+          <a href="https://x.com/dttdrv" class="social-link" aria-label="X" target="_blank" rel="noopener" title="X (@dttdrv)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+          </a>
         </div>
       </div>
-
     </section>
 
   </main>
 
-  <!-- Scripts with defer for non-blocking loading -->
-  <script src="lenis.min.js" defer></script>
-  <script src="translations.js?v=2" defer></script>
-  <script src="script.js?v=2" defer></script>
+  <!-- Scripts with defer for non-blocking execution -->
+  <script src="translations.js?v=20260827" defer></script>
+  <script src="script.js?v=20260827" defer></script>
 </body>
 
 </html>

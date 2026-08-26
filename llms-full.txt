@@ -1,0 +1,101 @@
+# Deyan Todorov — Full Technical Context & Dossier
+
+This document provides exhaustive, factual context regarding Deyan Todorov, his research lab Misul Computing, and his active engineering codebases.
+
+---
+
+## 1. Biographic and Professional Summary
+
+- **Identity**: Deyan Todorov
+- **Affiliation**: Founder & Lead Researcher at Misul Computing
+- **Base**: Sofia, Bulgaria
+- **Core Focus**: Cortical-inspired AI architectures, systems software engineering, inference optimization on Apple Silicon, and developer tooling.
+- **Official Domains**: `https://dttdrv.xyz` (Personal), `https://misul.org` (Lab)
+- **Primary Contacts**: `deyan@misul.org`
+- **Code Repositories**:
+  - Personal: `https://github.com/dttdrv`
+  - Lab: `https://github.com/Misul-Computing`
+
+---
+
+## 2. Misul Computing Research Suite
+
+Misul Computing is an independent AI research lab in Sofia, Bulgaria. The lab builds machine intelligence from the principles of the brain: how it perceives, predicts, learns, and gives rise to mind. It designs new architectures from first principles rather than scaling existing methods.
+
+### 2.1 Laplace
+- **Scope**: Inference engine built from scratch exclusively for Apple Silicon.
+- **Repository**: `https://github.com/Misul-Computing/Laplace`
+- **Core differentiator**: Target perf-per-watt (tokens per joule on laptop battery), not raw server throughput.
+- **Architectural features**:
+  - Custom NEON + DOTPROD + I8MM SIMD matmul kernels for common GGUF quantizations with scalar fallback.
+  - Power-aware thread count and QoS policy with automatic battery and AC power modes.
+  - **LaplaceKV**: K8/V6 sealed tiles, mutable FP32 tail, grouped-query attention, and SSD-backed streaming for bounded KV memory. At 65K context: 17.5 MiB active KV RAM vs 408 MiB resident 4-bit (23.3x active RAM reduction); 1.50 ms streamed attention (25% faster); 2.21x raw packed compression vs FP16.
+  - **LaplaceMoE SSD streaming**: Runs MoE models larger than RAM by streaming expert weights on demand with a bounded resident set.
+  - Speculative decoding: prompt-lookup and Jacobi-iteration lookahead.
+  - Metal GPU backend with function-constant-specialized dequant kernels.
+- **Model families supported**: Gemma 4 (MoE, hybrid attention, GeGLU), Llama 2/3, Mistral, Qwen2/Qwen2.5/Qwen3 dense, Qwen3-Next (hybrid attention + Gated DeltaNet), Phi-3 / Phi-3-mini.
+
+### 2.2 Misul Agent
+- **Scope**: High-performance terminal coding harness and agent engine.
+- **Architecture & Implementation**: Built with Zig and Cordis, featuring zero-overhead tool routing, dynamic runtime hooks, and direct system integration.
+- **Distribution**: Direct binary execution via curl installer (`misul.org/agent`).
+- **Repository**: `https://github.com/Misul-Computing/Agent`
+- **Design philosophy**: Adapt the agent to workflows with dynamic runtime hooks, low-overhead native execution, and modular tool harnesses.
+
+### 2.3 Todorov
+- **Scope**: Long-term research program for a single neural machine learning language, world state, and action in a shared latent process.
+- **Status**: Active theoretical and experimental research program. Code repository pending release.
+- **Architecture**: Modular decomposition into three strictly bounded roles:
+  1. *Routed selected-set attention*: Exact nonlocal associative recall (Monodratic).
+  2. *Recurrent state*: Cheap within-sequence world tracking (Transformerov / Gated-Delta).
+  3. *Token-local feature mixing*: Position-wise transformations without owning recall or state.
+- **Validation**: Evidence-bounded integration proving that disabling either module impacts only its assigned capability, preserving explicit dense controls.
+
+### 2.4 Monodratic
+- **Scope**: Open-source SSA-style (Sparse Self-Attention) causal sequence mixer and mathematical proof paper.
+- **Repository**: `https://github.com/Misul-Computing/Monodratic`
+- **Key principles**:
+  - Content-routed sparse attention: local windowed blocks plus a bounded set of earlier blocks selected by post-RoPE content routing.
+  - Exact causal softmax computed over selected source tokens (no approximation error on the chosen subset).
+  - OpenTM-PHI product-posting index with bounded causal posting lists.
+- **Empirical validation (10 July 2026 report)**:
+  - Associative-recall accuracy: 0.9909 mean, 0.9805 minimum over 3 seeds (routed width 2 of 5).
+  - Minimum margin over local-only attention: 0.7070.
+  - Selected-mask oracle error: 1.91 × 10^-6 maximum. Zero posting overflow.
+  - 431 passed unit and integration tests.
+
+### 2.5 Transformerov
+- **Scope**: Hybrid sequence model implemented in Apple MLX on Apple Silicon.
+- **Status**: Active experimental research model. Code repository pending release.
+- **Mechanism**:
+  - Combines windowed local attention with a numerically stable chunkwise gated-delta recurrent state.
+  - Integrates sovereign autoregressive token prediction with a next-latent prediction objective (`nextlat`), preventing posterior collapse of the world model under language loss.
+  - Demonstrates grounded multimodal sensor tracking and imagination test benchmarks.
+
+---
+
+## 3. Independent Projects
+
+### 3.1 PhoneCode
+- **Platform**: Android (Native).
+- **Function**: On-device AI coding agent executing local neural models directly on mobile hardware. Provides private offline editing, repository inspection, and automated code transformations.
+
+### 3.2 optiSYS
+- **Platform**: Windows (Native x64/ARM64).
+- **Function**: High-performance system optimizer and latency tuner. Reconfigures Windows scheduler heuristics, TCP/IP stack parameters, and memory page compression without background bloat or analytics telemetry.
+
+### 3.3 dzipobel.wiki
+- **Platform**: Web (High-speed static knowledge graph).
+- **Function**: Curated literature and Bulgarian grammar repository for high-school students preparing for the state matriculation exams (DZI).
+
+### 3.4 SchoolMap
+- **Platform**: Web (Cloudflare Pages).
+- **Function**: Fast interactive classroom projection mapping software built for dynamic geographic education.
+
+---
+
+## 4. Design & Engineering Standards
+
+- **Curvature**: G3 squircle geometry using modern CSS `corner-shape: squircle` with SVG clip-path fallback.
+- **Performance**: Strict avoidance of forced layout thrashing; 100% GPU-composited animations; sub-200ms tactile feedback.
+- **Open Standards**: Fully compatible with Schema.org JSON-LD, OpenAPI, and LLM web-indexing protocols.

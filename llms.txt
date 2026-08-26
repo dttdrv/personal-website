@@ -1,0 +1,36 @@
+# Deyan Todorov
+
+> Deyan Todorov is a systems and machine learning researcher and engineer based in Sofia, Bulgaria. He is the founder and lead researcher of Misul Computing, an independent AI research lab building machine intelligence from the principles of the brain.
+
+## Key Facts
+
+- **Name**: Deyan Todorov
+- **Role**: Founder, Misul Computing
+- **Location**: Sofia, Bulgaria
+- **Personal Website**: https://dttdrv.xyz
+- **Lab Website**: https://misul.org
+- **GitHub**: https://github.com/dttdrv
+- **Misul GitHub**: https://github.com/Misul-Computing
+- **Email**: deyan@misul.org
+- **X / Twitter**: https://x.com/dttdrv
+
+## Misul Computing Research Suite
+
+Misul Computing is an independent AI research lab founded by Deyan Todorov. It designs neural architectures from first principles rather than scaling standard transformers.
+
+- [Laplace](https://github.com/Misul-Computing/Laplace): Apple Silicon inference engine optimized for performance-per-joule. Features NEON/I8MM SIMD kernels, LaplaceKV memory streaming (23.3x active RAM reduction at 65K context), and SSD-streamed MoE execution. Source repository: https://github.com/Misul-Computing/Laplace.
+- [Misul Agent](https://misul.org/agent): Fast terminal coding harness and agent engine built in Zig and Cordis with dynamic runtime hooks. Source repository: https://github.com/Misul-Computing/Agent.
+- **Todorov**: Research program for unified neural machine learning across language, world state, and action in a shared latent process (research in progress; code repository pending release).
+- [Monodratic](https://misul.org/monodratic/): Content-routed causal sparse attention sequence mixer with post-RoPE routing, bounded causal postings, and exact softmax. Source repository: https://github.com/Misul-Computing/Monodratic.
+- **Transformerov**: Hybrid sequence model in MLX on Apple Silicon combining windowed attention with gated-delta recurrence and next-latent objectives (research in progress; code repository pending release).
+
+## Independent Projects
+
+- [PhoneCode](https://dttdrv.xyz/phonecode.html): On-device native AI coding assistant for Android running local neural models without cloud dependencies.
+- [optiSYS](https://dttdrv.xyz/optisys.html): Native Windows system optimizer tuning system responsiveness, network stack buffers, and process scheduling without bloat.
+- [dzipobel.wiki](https://dzipobel.wiki): Digital literature and grammar educational repository for Bulgarian state high school examinations.
+- [SchoolMap](https://schoolmap.pages.dev): Interactive classroom mapping application for geographic curriculum visualization.
+
+## Detailed LLM Context
+
+For exhaustive technical dossiers, benchmark figures, mathematical definitions, and architectural evidence, see [llms-full.txt](https://dttdrv.xyz/llms-full.txt).

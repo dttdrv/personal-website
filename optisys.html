@@ -4,200 +4,313 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="optiSYS - a native Windows system optimizer by Deyan Todorov. Keeps your PC quick and your connection smooth, quietly.">
+  <meta name="description" content="optiSYS — Native Windows system optimizer by Deyan Todorov. Keeps your PC responsive and connection stable quietly in the background.">
   <meta name="theme-color" content="#FFFFFF">
   <title>optiSYS — Deyan Todorov</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-  <!-- Preload critical above-the-fold fonts (self-hosted) -->
+  <!-- Preload critical fonts & icon -->
   <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/inter-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-
-  <!-- Preload the app icon (above the fold) -->
   <link rel="preload" href="pictures/optisys-icon.png" as="image" fetchpriority="high">
 
-  <!-- Fonts (self-hosted) -->
+  <!-- Fonts & Styles -->
   <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css?v=20260827">
 
-  <!-- Site styles -->
-  <link rel="stylesheet" href="styles.css?v=6">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "optiSYS",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "UtilitiesApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Deyan Todorov",
+      "url": "https://dttdrv.xyz"
+    },
+    "description": "Native Windows system optimizer that tunes system responsiveness, network latency, and background scheduling without bloat or telemetry."
+  }
+  </script>
 
-  <!-- Inline critical CSS for preloader (must be instant) -->
+  <!-- Page-specific styles -->
   <style>
-    .preloader { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; background: #FFFFFF; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s; }
-    .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .preloader-spinner { width: 32px; height: 32px; border: 2px solid #E5E5E5; border-top-color: #0000FF; border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (prefers-color-scheme: dark) { .preloader { background: #1c1c1c; } .preloader-spinner { border-color: #2a2a2a; border-top-color: #4466FF; } }
-  </style>
-
-  <!-- Page-specific styles (built on the site's design tokens) -->
-  <style>
-    /* Header bar */
-    /* Above the edge-blur strips (z 9000) so header UI stays sharp.
-       pointer-events: none so the full-width bar never swallows clicks
-       meant for elements under it (e.g. the back button). */
-    .opti-header { position: fixed; top: 0; left: 0; right: 0; z-index: 9500; display: flex; justify-content: flex-end; align-items: center; padding: var(--space-sm) var(--space-md); pointer-events: none; }
-    .opti-header > * { pointer-events: auto; }
-    .opti-header-dl { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--black); text-decoration: none; border: 1px solid var(--black); padding: 0.55rem 1.2rem; transition: background-color 0.3s ease, color 0.3s ease; }
-    .opti-header-dl:hover { background: var(--black); color: var(--white); }
-
-    /* Hero — stacked byline */
-    .room--opti-hero { align-items: center; text-align: center; }
-    .opti-byline { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--black); }
-    .opti-presents { font-family: var(--font-display); font-style: italic; font-size: 1.05rem; color: var(--gray); margin: 0.5rem 0 1.4rem; }
-    .opti-wordmark { font-family: var(--font-display); font-size: clamp(3.5rem, 11vw, 7rem); line-height: 0.9; letter-spacing: -0.01em; color: var(--black); margin-bottom: var(--space-md); }
-    .opti-wordmark .name-letter { display: inline-block; }
-    .opti-icon { width: 150px; height: 150px; }
-    .opti-tagline { font-family: var(--font-display); font-style: italic; font-size: clamp(1.25rem, 3.2vw, 1.85rem); color: var(--gray); max-width: 28ch; line-height: 1.35; margin-top: var(--space-lg); }
-
-    /* Showcase — each feature beside its screenshot, alternating sides */
-    .opti-statement { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.25; max-width: 16ch; margin: 0 auto var(--space-2xl); text-align: center; }
-    .opti-statement .accent { color: var(--accent); }
-    .opti-rows { max-width: 1080px; margin: 0 auto; display: grid; gap: var(--space-2xl); }
-    .opti-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
-    .opti-row--rev .opti-feature { order: 2; }
-    .opti-row--rev .opti-shot { order: 1; }
-    .opti-feature .num { font-size: 0.78rem; color: var(--gray); letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
-    .opti-feature .cap-name { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--black); display: block; margin-bottom: 0.5rem; }
-    .opti-feature .desc { color: var(--gray); font-size: 1.05rem; max-width: 34ch; }
-    .opti-shot { position: relative; }
-    .opti-shot img { width: 100%; height: auto; display: block; }
-    .opti-shot::after { content: ''; position: absolute; inset: 16px -16px -16px 16px; border: 1px solid var(--accent); z-index: -1; opacity: 0.4; }
-    @media (max-width: 760px) {
-      .opti-row { grid-template-columns: 1fr; gap: var(--space-md); }
-      .opti-row--rev .opti-feature, .opti-row--rev .opti-shot { order: initial; }
+    .room--opti-hero {
+      align-items: center;
+      text-align: center;
+      padding-top: var(--space-2xl);
     }
 
-    /* Get */
-    .opti-get { text-align: center; }
-    .opti-meta { color: var(--gray); font-size: 0.9rem; margin-bottom: var(--space-lg); }
-    .opti-dl { font-size: 1.4rem; color: var(--black); text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 4px; transition: color 0.3s ease, border-color 0.3s ease; }
-    .opti-dl:hover { color: var(--accent); border-color: var(--accent); }
-    .opti-repo { margin-top: var(--space-md); }
-    .opti-repo a { font-size: 0.9rem; color: var(--gray); text-decoration: none; border-bottom: 1px solid var(--gray-light); padding-bottom: 2px; transition: color 0.3s ease, border-color 0.3s ease; }
-    .opti-repo a:hover { color: var(--accent); border-color: var(--accent); }
+    .opti-byline {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.35rem;
+    }
 
-    @media (max-width: 760px) {
-      .opti-showcase { grid-template-columns: 1fr; gap: var(--space-lg); }
+    .opti-presents {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--gray);
+      margin-bottom: 1.25rem;
+    }
+
+    .opti-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 12vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      margin-bottom: var(--space-md);
+      display: flex;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .opti-icon {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      display: block;
+      border-radius: var(--radius-squircle);
+    }
+
+    .opti-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 1.85rem);
+      color: var(--gray-dark);
+      max-width: 32ch;
+      line-height: 1.35;
+      margin-top: var(--space-lg);
+    }
+
+    .opti-statement {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1.2;
+      max-width: 18ch;
+      margin: 0 auto var(--space-2xl);
+      text-align: center;
+    }
+
+    .opti-statement .accent {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .opti-rows {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2xl);
+    }
+
+    .opti-row {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+
+    .opti-row--rev .opti-feature {
+      order: 2;
+    }
+
+    .opti-row--rev .opti-shot {
+      order: 1;
+    }
+
+    .opti-feature .num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .opti-feature .cap-name {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+      color: var(--black);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .opti-feature .desc {
+      color: var(--gray-dark);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 34ch;
+    }
+
+    .opti-shot {
+      position: relative;
+      border-radius: var(--radius-squircle);
+      overflow: hidden;
+      border: 1px solid var(--gray-light);
+      background: var(--surface);
+    }
+
+    .opti-shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .opti-get {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .opti-meta {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .opti-repo a {
+      font-size: 0.92rem;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .opti-repo a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .opti-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+      .opti-row--rev .opti-feature,
+      .opti-row--rev .opti-shot {
+        order: initial;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- Preloader -->
-  <div class="preloader" id="preloader">
-    <div class="preloader-spinner"></div>
-  </div>
-
   <!-- Scroll Progress -->
   <div class="scroll-progress"></div>
 
-  <!-- Edge blur (top/bottom transparency fade) -->
-  <div class="edge-blur edge-blur--top" aria-hidden="true"><div class="edge-blur-inner"></div></div>
-  <div class="edge-blur edge-blur--bottom" aria-hidden="true"><div class="edge-blur-inner"></div></div>
-
-  <!-- Universal back button + page header -->
-  <a href="index.html" class="back-button">‹</a>
+  <!-- Universal Back Button + Header -->
+  <a href="index.html" class="back-button" aria-label="Back to Portfolio">‹</a>
   <header class="opti-header">
     <a href="https://github.com/dttdrv/optiSYS/releases/latest" class="opti-header-dl" data-download>Download</a>
   </header>
-
-  <!-- Ambient Floating Elements -->
-  <div class="ambient-layer">
-    <div class="ambient-orb ambient-orb--1"></div>
-    <div class="ambient-orb ambient-orb--2"></div>
-    <div class="ambient-orb ambient-orb--3"></div>
-    <div class="ambient-shape ambient-shape--1"></div>
-    <div class="ambient-shape ambient-shape--2"></div>
-  </div>
 
   <main class="gallery">
 
     <!-- Hero -->
     <section class="room room--opti-hero" id="opti-top">
-      <div class="opti-hero-inner" data-scroll-reveal>
+      <div class="opti-hero-inner">
         <p class="opti-byline">Deyan Todorov</p>
         <p class="opti-presents">presents</p>
         <h1 class="opti-wordmark" data-magnetic>
           <span class="name-letter" data-letter>o</span><span class="name-letter" data-letter>p</span><span class="name-letter" data-letter>t</span><span class="name-letter" data-letter>i</span><span class="name-letter" data-letter>S</span><span class="name-letter" data-letter>Y</span><span class="name-letter" data-letter>S</span>
         </h1>
-        <img class="opti-icon" src="pictures/optisys-icon.png" alt="optiSYS icon" decoding="async">
-        <p class="opti-tagline">Keeps your PC quick and your connection smooth — quietly, in the background.</p>
+        <img class="opti-icon" src="pictures/optisys-icon.png" alt="optiSYS application icon" decoding="async">
+        <p class="opti-tagline">Keeps your PC responsive and your connection smooth — quietly in the background.</p>
       </div>
     </section>
 
-    <!-- What it does — features beside screenshots -->
+    <!-- Features -->
     <section class="room" id="opti-about">
-      <p class="opti-statement" data-scroll-reveal>One switch. <span class="accent">Nothing to set up.</span></p>
+      <p class="opti-statement">One switch. <span class="accent">Nothing to configure.</span></p>
       <div class="opti-rows">
 
-        <div class="opti-row" data-scroll-reveal>
+        <div class="opti-row">
           <div class="opti-feature">
             <span class="num">01</span>
             <span class="cap-name">Memory</span>
-            <span class="desc">Frees up memory when things get tight, so your PC stays responsive.</span>
+            <p class="desc">Frees cached memory when system RAM pressure rises, keeping your computer responsive under heavy load.</p>
           </div>
-          <div class="opti-shot"><img src="pictures/optisys-memory.png" alt="optiSYS memory dashboard" loading="lazy" decoding="async"></div>
+          <div class="opti-shot">
+            <img src="pictures/optisys-memory.png" alt="optiSYS memory optimization dashboard" loading="lazy" decoding="async">
+          </div>
         </div>
 
-        <div class="opti-row opti-row--rev" data-scroll-reveal>
+        <div class="opti-row opti-row--rev">
           <div class="opti-feature">
             <span class="num">02</span>
             <span class="cap-name">Battery</span>
-            <span class="desc">When you unplug, it eases back background work to stretch the charge — never overriding the power mode you've set.</span>
+            <p class="desc">Reduces background polling when unplugged to extend battery runtime without altering your Windows power settings.</p>
           </div>
-          <div class="opti-shot"><img src="pictures/optisys-battery.png" alt="optiSYS efficiency dashboard" loading="lazy" decoding="async"></div>
+          <div class="opti-shot">
+            <img src="pictures/optisys-battery.png" alt="optiSYS power efficiency settings" loading="lazy" decoding="async">
+          </div>
         </div>
 
-        <div class="opti-row" data-scroll-reveal>
+        <div class="opti-row">
           <div class="opti-feature">
             <span class="num">03</span>
             <span class="cap-name">Wi-Fi</span>
-            <span class="desc">Smooths out the brief stutters Windows causes checking Wi-Fi in the background.</span>
+            <p class="desc">Stabilizes network latency by suppressing background Wi-Fi scanning during active connections.</p>
           </div>
-          <div class="opti-shot"><img src="pictures/optisys-wifi.png" alt="optiSYS settings" loading="lazy" decoding="async"></div>
+          <div class="opti-shot">
+            <img src="pictures/optisys-wifi.png" alt="optiSYS network settings" loading="lazy" decoding="async">
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Get optiSYS -->
+    <!-- Download Section -->
     <section class="room" id="opti-get">
-      <div class="contact-header" data-scroll-reveal>
+      <div class="contact-header">
         <h2 class="section-title">Get optiSYS</h2>
       </div>
-      <div class="opti-get" data-scroll-reveal>
-        <p class="opti-meta">Latest release · Windows 10 (1809+) or 11 · free &amp; open source</p>
-        <a class="opti-dl" href="https://github.com/dttdrv/optiSYS/releases/latest" data-download>Download for Windows</a>
-        <p class="opti-repo"><a href="https://github.com/dttdrv/optiSYS" target="_blank" rel="noopener">View the repo on GitHub</a></p>
+      <div class="opti-get">
+        <p class="opti-meta">Windows 10 (1809+) or 11 · Free &amp; open source</p>
+        <a class="opti-dl-btn" href="https://github.com/dttdrv/optiSYS/releases/latest" data-download>Download for Windows</a>
+        <p class="opti-repo">
+          <a href="https://github.com/dttdrv/optiSYS" target="_blank" rel="noopener">View source code on GitHub →</a>
+        </p>
       </div>
     </section>
 
   </main>
 
   <!-- Scripts -->
-  <script src="lenis.min.js" defer></script>
   <script src="translations.js?v=2" defer></script>
   <script src="script.js?v=2" defer></script>
 
-  <!-- Resolve the latest release asset and version so the page stays current -->
+  <!-- GitHub Release Dynamic Resolution -->
   <script>
     fetch('https://api.github.com/repos/dttdrv/optiSYS/releases/latest')
       .then(r => r.ok ? r.json() : null)
       .then(rel => {
         if (!rel) return;
-        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('-setup.exe'));
+        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('-setup.exe') || a.name.endsWith('.exe'));
         if (asset) {
           document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
         }
         const meta = document.querySelector('.opti-meta');
         if (meta && rel.tag_name) {
           const version = rel.tag_name.replace(/^v/, '');
-          meta.textContent = `Version ${version} · Windows 10 (1809+) or 11 · free & open source`;
+          meta.textContent = `Version ${version} · Windows 10 (1809+) or 11 · Free & open source`;
         }
       })
-      .catch(() => { /* fallback href and text already point to the latest release */ });
+      .catch(() => {});
   </script>
 </body>
 

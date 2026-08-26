@@ -8,7 +8,7 @@
   <title>PhoneCode Terms of Service — Deyan Todorov</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=20260826">
   <style>
     .legal { width: min(760px, calc(100% - 2.5rem)); margin: 0 auto; padding: 8rem 0 7rem; position: relative; z-index: 2; }
     .legal h1 { font-family: var(--font-display); font-size: clamp(2.7rem, 8vw, 5rem); line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 1rem; }
@@ -22,38 +22,48 @@
   <a href="phonecode.html" class="back-button" aria-label="Back to PhoneCode">‹</a>
   <main class="legal">
     <h1>PhoneCode Terms of Service</h1>
-    <p class="date">Last updated 10 July 2026</p>
+    <p class="date">Last updated 13 July 2026</p>
     <p>These Terms govern your use of PhoneCode, an on-device AI coding client published by Deyan Todorov. By installing or using PhoneCode, you agree to these Terms. If you do not agree, do not use the app.</p>
 
     <h2>1. The service</h2>
-    <p>PhoneCode lets an AI agent work with code and files on your device. It can use a permanent app workspace, access folders you explicitly link, run commands, use Git, search the web, connect to tools, and install software inside an optional Linux environment. PhoneCode does not include an AI model or developer-operated backend. You connect your own third-party provider. There is no PhoneCode account.</p>
+    <p>PhoneCode lets an AI agent work with code and files on your device. It can use a permanent app workspace, access folders you explicitly link, run commands, use Git, search the web, connect to tools, and install software inside the local Linux environment.</p>
+    <p>PhoneCode does not include an AI model or a general-purpose developer-operated backend. You connect a supported or custom third-party AI provider using your own account, sign-in, or API key. The developer operates only a narrowly scoped endpoint for AI-output reports you deliberately submit. There is no PhoneCode account.</p>
 
-    <h2>2. Third-party services and charges</h2>
-    <p>Your relationship with each AI provider, Git host, search service, package repository, MCP server, and custom endpoint is governed by that service's terms and privacy policy. You are responsible for credentials, account security, eligibility, limits, and any fees charged by those services.</p>
+    <h2>2. Third-party accounts and charges</h2>
+    <p>Your relationship with each AI provider, Git host, search service, package repository, MCP server, and custom endpoint is governed by that service's terms and privacy policy. You are responsible for your credentials, account security, eligibility, usage limits, and any fees charged by those services.</p>
+    <p>PhoneCode stores credentials with Android Keystore-backed encryption. If your device is lost or compromised, revoke the affected credentials with the provider.</p>
 
-    <h2>3. Agent access and responsibility</h2>
-    <p>Depending on your settings and approvals, the agent can read, create, modify, rename, or delete files; run commands and installed software; make network requests; and perform Git operations, including remote changes. AI output and tool actions can be wrong, insecure, destructive, or unexpected. Review important changes, use version control, keep appropriate backups, and supervise automatic access.</p>
+    <h2>3. Agent access and your responsibility</h2>
+    <p>Depending on your settings and approvals, the agent can read, create, modify, rename, or delete files; run commands and installed software; make network requests; and perform Git operations, including changes to remote repositories. A linked folder remains accessible until you unlink it or revoke Android's grant.</p>
+    <p>AI output and tool actions can be wrong, incomplete, insecure, destructive, or unexpected. Review important changes, use version control, keep appropriate backups, and do not grant automatic access you are not prepared to supervise. You are responsible for instructions you give, permissions you grant, code you run or publish, remote actions performed through your accounts, and resulting provider charges.</p>
 
     <h2>4. Acceptable use</h2>
-    <p>You may not use PhoneCode to violate the law, infringe another person's rights, gain unauthorized access, distribute malware, or abuse a third-party service. You must have the right to use and transmit every file, credential, repository, prompt, and other item you provide.</p>
+    <p>You may not use PhoneCode to violate the law, infringe another person's rights, gain unauthorized access, distribute malware, or abuse a third-party service. You must have the right to use and transmit every file, credential, repository, prompt, and other item you provide to the app.</p>
 
-    <h2>5. Output and installed software</h2>
-    <p>PhoneCode does not verify or guarantee generated output. Output may contain errors, vulnerabilities, incompatible code, or material subject to third-party rights. Software installed in the optional Linux environment comes from third parties. You are responsible for testing output, choosing package sources, reviewing licenses, and evaluating security.</p>
+    <h2>5. AI output and software installation</h2>
+    <p>PhoneCode does not verify or guarantee generated output. Output may contain errors, vulnerabilities, incompatible code, or material subject to third-party rights or licenses. Test and review it before relying on it.</p>
+    <p>Software installed in the local Linux environment comes from third parties and may run build or lifecycle scripts. You are responsible for choosing package sources, reviewing licenses, and evaluating security. PRoot is a compatibility layer, not a VM or security sandbox. Installed software can access directories mounted into the environment and use PhoneCode's network access. PhoneCode does not guarantee that a package is safe, available, or compatible.</p>
 
-    <h2>6. Privacy and age</h2>
-    <p>The <a href="phonecode-privacy.html">PhoneCode Privacy Policy</a> explains data handling. PhoneCode is not directed to children under 13. If you are under the age of majority where you live, use it only with a parent or guardian's involvement. You must meet each connected service's age requirements.</p>
+    <h2>6. Privacy</h2>
+    <p>The <a href="phonecode-privacy.html">PhoneCode Privacy Policy</a> explains local storage, linked-folder access, AI-output reports, third-party transfers, retention, security, and deletion. It forms part of these Terms.</p>
 
-    <h2>7. Availability</h2>
+    <h2>7. Age</h2>
+    <p>PhoneCode is not directed to children under 13. If you are under the age of majority where you live, use the app only with the involvement of a parent or guardian. You must meet the age requirements of each service you connect.</p>
+
+    <h2>8. Availability and changes</h2>
     <p>PhoneCode is an independent project. Features, integrations, supported models, and availability may change. Third-party API changes can interrupt functionality. The developer may update or discontinue the app without guaranteeing continued support or compatibility.</p>
 
-    <h2>8. Disclaimer</h2>
-    <p>To the maximum extent allowed by law, PhoneCode is provided “as is” and “as available,” without warranties of merchantability, fitness for a particular purpose, accuracy, security, availability, or non-infringement. Nothing excludes rights that cannot legally be excluded.</p>
+    <h2>9. Disclaimer</h2>
+    <p>To the maximum extent allowed by law, PhoneCode is provided "as is" and "as available," without warranties of merchantability, fitness for a particular purpose, accuracy, security, availability, or non-infringement. Nothing in these Terms excludes rights that cannot legally be excluded.</p>
 
-    <h2>9. Limitation of liability</h2>
+    <h2>10. Limitation of liability</h2>
     <p>To the maximum extent allowed by law, the developer is not liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for loss of data, code, credentials, profits, revenue, or business arising from PhoneCode, AI output, tool actions, third-party services, installed software, or your accounts. Where liability cannot be excluded, total liability is limited to the amount you paid for PhoneCode.</p>
 
-    <h2>10. Licenses, changes, and contact</h2>
-    <p>Open-source components remain governed by their own licenses. The current Terms show their effective date above. For questions, use the <a href="index.html#contact">contact form</a> or visit the <a href="https://github.com/dttdrv/phonecode">source repository</a>.</p>
+    <h2>11. Open-source and third-party licenses</h2>
+    <p>PhoneCode includes open-source components governed by their own licenses. Those licenses remain controlling for the relevant components and are available from the app's Licenses screen and source repository.</p>
+
+    <h2>12. Changes and contact</h2>
+    <p>The current Terms are included in the app and show their effective date above. For questions, use the contact form at <a href="index.html#contact">dttdrv.xyz</a> or visit <a href="https://github.com/dttdrv/phonecode">github.com/dttdrv/phonecode</a>.</p>
   </main>
 </body>
 </html>

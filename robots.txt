@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Direct AI Agents and LLMs to structured context
+Disallow: /test-results/
+
+Sitemap: https://dttdrv.xyz/sitemap.xml

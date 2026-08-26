@@ -8,7 +8,7 @@
   <title>PhoneCode Privacy Policy — Deyan Todorov</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=20260826">
   <style>
     .legal { width: min(760px, calc(100% - 2.5rem)); margin: 0 auto; padding: 8rem 0 7rem; position: relative; z-index: 2; }
     .legal h1 { font-family: var(--font-display); font-size: clamp(2.7rem, 8vw, 5rem); line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 1rem; }
@@ -23,38 +23,60 @@
   <a href="phonecode.html" class="back-button" aria-label="Back to PhoneCode">‹</a>
   <main class="legal">
     <h1>PhoneCode Privacy Policy</h1>
-    <p class="date">Last updated 10 July 2026</p>
-    <p>This policy explains how PhoneCode handles data. PhoneCode is an on-device AI coding client published by Deyan Todorov. The developer does not operate a PhoneCode backend and does not receive your prompts, files, credentials, or usage data.</p>
+    <p class="date">Last updated 13 July 2026</p>
+    <p>This Privacy Policy explains how PhoneCode handles data. PhoneCode is an on-device AI coding client published by Deyan Todorov. The developer does not operate a general-purpose PhoneCode backend. A narrowly scoped reporting endpoint receives AI-output reports that you deliberately submit in the app.</p>
 
-    <h2>1. Data stored on your device</h2>
-    <p>PhoneCode stores API keys, Git credentials, and third-party sign-in tokens with Android Keystore-backed encryption. If secure storage is unavailable, PhoneCode does not save credentials. It also stores projects, workspace files, linked-folder references, chat history, configuration, settings, and any optional Linux packages you install.</p>
-    <p>Android cloud backup is disabled. Manual exports contain supported chats and settings, are not encrypted, and do not contain credentials.</p>
+    <h2>1. Data PhoneCode keeps on your device</h2>
+    <p>PhoneCode stores the following locally so the app can work:</p>
+    <ul>
+      <li>API keys, Git credentials, and third-party sign-in tokens, encrypted with the Android Keystore. If secure storage is unavailable, PhoneCode does not save credentials.</li>
+      <li>Projects, workspace files, linked-folder references, chat history, provider configuration, and app settings.</li>
+      <li>A bundled Alpine Linux environment and packages installed by you or the agent.</li>
+    </ul>
+    <p>Android cloud backup is disabled for PhoneCode. You can create a manual export of supported chats and settings. Manual exports are not encrypted, so store and share them carefully. They do not contain API keys or sign-in credentials.</p>
 
     <h2>2. Files and photos you choose</h2>
-    <p>PhoneCode can access a file, photo, or folder only after you select it through Android's system picker. A linked folder remains accessible until you unlink it, revoke access, clear app data, or uninstall PhoneCode. According to your settings and instructions, the agent may read, create, change, rename, or delete content within that folder.</p>
-    <p>Files remain on your device unless you direct the agent to send relevant content to an AI provider, Git host, search service, MCP server, or another destination.</p>
+    <p>PhoneCode can access files or photos only after you select them through Android's system picker. If you link a folder, Android grants PhoneCode continuing access to that folder until you unlink it, revoke access in system settings, clear the app's data, or uninstall the app. The agent may read, create, change, rename, or delete content within a linked folder according to your permission setting and instructions.</p>
+    <p>Files remain on your device unless you ask the agent to send relevant content to an AI provider, Git host, search service, or another destination. Review linked-folder access and agent permission settings before allowing automatic changes.</p>
 
-    <h2>3. Services you choose</h2>
-    <p>PhoneCode does not contain an AI model. The app sends your prompt and necessary context directly to the provider you select. This may include text, source code, attachments, tool results, and content the agent reads from an app workspace or linked folder. You may connect a supported provider, ChatGPT, a Git host, or a custom endpoint. Credentials are sent only to authenticate with the service they belong to.</p>
-    <p>The selected service's privacy policy, retention rules, and terms apply once it receives data. These transfers are optional and initiated by features you choose. The developer cannot access or delete data held by those services.</p>
+    <h2>3. Data sent to services you choose</h2>
+    <p>PhoneCode does not contain an AI model. When you use the agent, the app sends your prompt and the context needed for the request directly from your device to the AI provider you selected. This may include text, source code, attached photos or files, tool results, and content the agent reads from a workspace or linked folder.</p>
+    <p>You may connect services such as OpenAI or ChatGPT, Anthropic, OpenRouter, OpenCode Zen or Go, Google, xAI, DeepSeek, Mistral, a custom provider, or a Git host. PhoneCode sends credentials only to authenticate with the service they belong to. The selected service's privacy policy, retention rules, and terms apply once it receives data. The developer cannot access or delete data held by those services.</p>
+    <p>These transfers are optional and initiated by features you choose. Do not send confidential, personal, or regulated information unless you are authorized to do so and accept the receiving service's practices.</p>
 
     <h2>4. Other network requests</h2>
-    <p>Depending on the features you use, PhoneCode may connect to Git hosts, DuckDuckGo or a model's search service, models.dev for public model metadata, Alpine Linux package repositories, and MCP or custom servers you configure. Prompts and workspace files are not included when refreshing metadata from models.dev. Receiving services can see normal network information such as your IP address.</p>
+    <p>Depending on the features you use, PhoneCode may connect directly to:</p>
+    <ul>
+      <li>Git hosts to clone, fetch, pull, or push repositories.</li>
+      <li>DuckDuckGo or a model provider's search service for searches requested by you or the agent.</li>
+      <li>models.dev to refresh public provider and model metadata. Prompts and workspace files are not included in this request.</li>
+      <li>Alpine Linux repositories and package sources used by <code>apk</code>, <code>pip</code>, <code>npm</code>, or other tools when you or the agent installs software.</li>
+      <li>MCP servers or custom endpoints you configure.</li>
+      <li>dttdrv.xyz when you deliberately submit an AI-output report.</li>
+    </ul>
+    <p>The receiving service can see normal network information such as your IP address and request metadata. Its own privacy policy applies.</p>
 
-    <h2>5. Developer collection</h2>
-    <p>PhoneCode contains no advertising SDK, analytics, telemetry, or remote crash reporting. The developer does not receive or sell personal data from the app. User-directed transfers to third-party services are described above.</p>
+    <h2>5. Data the developer collects</h2>
+    <p>PhoneCode contains no advertising SDK, analytics, telemetry, or remote crash-reporting service. The developer does not sell personal data from the app.</p>
+    <p>If you choose Report AI response and tap Send, PhoneCode sends the selected category, an optional note you write, the app version, and the platform to dttdrv.xyz. It never attaches the AI response, your prompt, files, credentials, tool activity, chat history, provider or model identifiers, or a device identifier. Reports are stored in a private Cloudflare D1 database and are used to investigate harmful output and improve filtering and moderation. Reports older than 90 days are deleted during subsequent report processing.</p>
+    <p>To limit abuse, the reporting endpoint converts the connecting IP address into a salted hash that changes daily and stores that hash with a request counter and timestamps. It does not store the raw IP address. Rate-limit records older than 48 hours are deleted during subsequent report processing. Cloudflare processes ordinary network and edge request metadata as the hosting provider under its own terms and privacy practices.</p>
 
     <h2>6. Security</h2>
-    <p>Credentials use Android Keystore-backed encryption and are excluded from exports. Connections use HTTPS where supported. Custom endpoints and software installed by the agent are under your control and may have different security properties. Revoke provider credentials if you believe they were exposed.</p>
+    <p>Credentials are stored using Android Keystore-backed encryption and are excluded from manual exports. Network connections use HTTPS where supported by the service. Custom endpoints and software installed in the local development environment are under your control and may have different security properties. PRoot provides Linux compatibility, not a VM or security sandbox. Installed software can access the workspace and runtime directories mounted into that environment and can use PhoneCode's network access. No security measure is perfect; protect your device and revoke provider credentials if you believe they were exposed.</p>
 
     <h2>7. Retention and deletion</h2>
-    <p>Local data remains until you delete it in PhoneCode, clear app storage, or uninstall the app. Unlinking a folder removes saved access but does not delete the folder. To access or delete data held by a third party, use that service's controls. PhoneCode has no account of its own.</p>
+    <p>Local data remains until you delete it in PhoneCode, clear the app's storage, or uninstall the app. Unlinking a folder removes PhoneCode's saved access but does not delete that folder. Uninstalling PhoneCode does not delete remote repositories, provider records, third-party accounts, or a report you already submitted.</p>
+    <p>A successful report displays a reference you can include in an early-deletion or other privacy request to the developer.</p>
+    <p>To access or delete data held by an AI provider, Git host, search service, package source, or MCP server, use that service's account and privacy controls. PhoneCode has no account of its own, so there is no PhoneCode account to delete.</p>
 
     <h2>8. Children</h2>
-    <p>PhoneCode is not directed to children under 13. You must also meet the age requirements of every service you connect.</p>
+    <p>PhoneCode is not directed to children under 13. Users must also meet the age requirements of every third-party service they connect.</p>
 
-    <h2>9. Changes and contact</h2>
-    <p>This policy may change as PhoneCode changes. For privacy questions, use the <a href="index.html#contact">contact form</a>. You can also visit the <a href="https://github.com/dttdrv/phonecode">source repository</a>.</p>
+    <h2>9. Changes</h2>
+    <p>This policy may change as PhoneCode changes. The current policy is included in the app and will show a new date when updated.</p>
+
+    <h2>10. Contact</h2>
+    <p>For privacy questions, use the contact form at <a href="index.html#contact">dttdrv.xyz</a>. Product information is available at <a href="phonecode.html">dttdrv.xyz/phonecode</a>, and source code is available at <a href="https://github.com/dttdrv/phonecode">github.com/dttdrv/phonecode</a>.</p>
   </main>
 </body>
 </html>

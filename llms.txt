@@ -1,6 +1,6 @@
 # Deyan Todorov
 
-> Deyan Todorov is a systems and machine learning researcher and engineer based in Sofia, Bulgaria. He is the founder and lead researcher of Misul, an independent AI research lab building machine intelligence from the principles of the brain.
+> Deyan Todorov is a systems and machine learning researcher and engineer based in Sofia, Bulgaria. He is the founder and lead researcher of Misul, an independent AI research lab building machine intelligence from the principles of the brain. He is a contributor to Khronos MoltenVK, including a Vulkan ray tracing port to macOS.
 
 ## Key Facts
 
@@ -11,6 +11,7 @@
 - **Lab Website**: https://misul.org
 - **GitHub**: https://github.com/dttdrv
 - **Misul GitHub**: https://github.com/MisulOrg
+- **Open source**: Contributor to Khronos MoltenVK
 - **Email**: deyan@misul.org
 - **X / Twitter**: https://x.com/dttdrv
 
@@ -31,7 +32,12 @@ Misul is an independent AI research lab founded by Deyan Todorov. It designs neu
 
 ## Open Source Contributions
 
-- [MoltenVK](https://github.com/KhronosGroup/MoltenVK): Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal. The in-review patch is https://github.com/KhronosGroup/MoltenVK/pull/2771. Three other pull requests are already merged (`#2776`, `#2788`, `#2790`).
+Contributor to Khronos MoltenVK, the Vulkan implementation on Apple platforms. Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal.
+
+- [#2771 Ray tracing](https://github.com/KhronosGroup/MoltenVK/pull/2771): in-review patch implementing Vulkan ray tracing on macOS
+- [#2776 Sampler min/max](https://github.com/KhronosGroup/MoltenVK/pull/2776): merged
+- [#2788 Indexed indirect](https://github.com/KhronosGroup/MoltenVK/pull/2788): merged
+- [#2790 Non-indexed indirect](https://github.com/KhronosGroup/MoltenVK/pull/2790): merged
 
 ## Detailed LLM Context
 

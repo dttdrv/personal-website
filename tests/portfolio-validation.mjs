@@ -58,7 +58,10 @@ const requiredKeys = [
   'opensource.moltenvk.title',
   'opensource.moltenvk.brief',
   'opensource.moltenvk.desc',
-  'opensource.moltenvk.pr'
+  'opensource.moltenvk.pr2771',
+  'opensource.moltenvk.pr2776',
+  'opensource.moltenvk.pr2788',
+  'opensource.moltenvk.pr2790'
 ];
 
 function getNested(obj, keyPath) {
@@ -163,6 +166,11 @@ assert.ok(!indexHtml.includes('drawer-item-agent'), 'index.html must not include
 assert.ok(!indexHtml.includes('misul.org/agent'), 'index.html must not link misul.org/agent');
 assert.ok(indexHtml.includes('Porting Vulkan ray tracing to macOS'), 'index.html must headline the MoltenVK ray tracing port');
 assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2771'), 'index.html must link MoltenVK pull request 2771');
-assert.ok(indexHtml.includes('opensource.moltenvk.pr'), 'index.html must expose the MoltenVK ray tracing PR action');
+assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2776'), 'index.html must link MoltenVK pull request 2776');
+assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2788'), 'index.html must link MoltenVK pull request 2788');
+assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2790'), 'index.html must link MoltenVK pull request 2790');
+assert.ok(!indexHtml.includes('href="https://github.com/KhronosGroup/MoltenVK"'), 'index.html must not link the MoltenVK repo from the drawer');
+assert.ok(indexHtml.includes('opensource.moltenvk.pr2771'), 'index.html must expose the MoltenVK ray tracing PR action');
+assert.ok(indexHtml.includes('Contributor to Khronos MoltenVK'), 'index.html must name Khronos MoltenVK as contributor work');
 
 console.log('✔ HTML & Schema.org JSON-LD graph validation passed.');

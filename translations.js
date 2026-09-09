@@ -82,12 +82,15 @@ const TRANSLATIONS = {
     },
     opensource: {
       heading: 'Open Source Contributions',
-      intro: 'Work on public graphics infrastructure, including a Vulkan ray tracing port to macOS:',
+      intro: 'Contributor to Khronos MoltenVK, the Vulkan implementation on Apple platforms:',
       moltenvk: {
         title: 'MoltenVK',
         brief: 'Porting Vulkan ray tracing to macOS',
-        desc: 'A large in-review MoltenVK patch that implements Vulkan ray tracing on macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal. Three other pull requests are already merged.',
-        pr: 'Ray Tracing PR'
+        desc: 'Contributor to Khronos MoltenVK. The in-review patch ports Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal.',
+        pr2771: '#2771 Ray tracing',
+        pr2776: '#2776 Sampler min/max',
+        pr2788: '#2788 Indexed indirect',
+        pr2790: '#2790 Non-indexed indirect'
       }
     },
     sections: {
@@ -176,12 +179,15 @@ const TRANSLATIONS = {
     },
     opensource: {
       heading: 'Приноси с отворен код',
-      intro: 'Работа по публична графична инфраструктура, включително портиране на Vulkan ray tracing към macOS:',
+      intro: 'Принос към Khronos MoltenVK, реализацията на Vulkan върху платформите на Apple:',
       moltenvk: {
         title: 'MoltenVK',
         brief: 'Портиране на Vulkan ray tracing към macOS',
-        desc: 'Голяма заявка към MoltenVK в преглед, която реализира Vulkan ray tracing на macOS, като пренася ray query, acceleration structures и ray tracing pipelines върху Metal. Три други заявки вече са приети.',
-        pr: 'Ray Tracing PR'
+        desc: 'Принос към Khronos MoltenVK. Заявката в преглед портира Vulkan ray tracing към macOS, като пренася ray query, acceleration structures и ray tracing pipelines върху Metal.',
+        pr2771: '#2771 Ray tracing',
+        pr2776: '#2776 Sampler min/max',
+        pr2788: '#2788 Indexed indirect',
+        pr2790: '#2790 Non-indexed indirect'
       }
     },
     sections: {
@@ -270,12 +276,15 @@ const TRANSLATIONS = {
     },
     opensource: {
       heading: 'Contributions open source',
-      intro: 'Travail sur l’infrastructure graphique publique, dont un port de Vulkan ray tracing vers macOS :',
+      intro: 'Contributeur à Khronos MoltenVK, l’implémentation Vulkan sur les plateformes Apple :',
       moltenvk: {
         title: 'MoltenVK',
         brief: 'Portage de Vulkan ray tracing vers macOS',
-        desc: 'Un correctif MoltenVK de grande envergure en revue qui implémente Vulkan ray tracing sur macOS en projetant ray query, acceleration structures et pipelines de ray tracing sur Metal. Trois autres pull requests sont déjà fusionnées.',
-        pr: 'PR ray tracing'
+        desc: 'Contributeur à Khronos MoltenVK. Le correctif en revue porte Vulkan ray tracing vers macOS en projetant ray query, acceleration structures et pipelines de ray tracing sur Metal.',
+        pr2771: '#2771 Ray tracing',
+        pr2776: '#2776 Sampler min/max',
+        pr2788: '#2788 Indexed indirect',
+        pr2790: '#2790 Non-indexed indirect'
       }
     },
     sections: {
@@ -364,12 +373,15 @@ const TRANSLATIONS = {
     },
     opensource: {
       heading: 'Contributi open source',
-      intro: 'Lavoro su infrastruttura grafica pubblica, incluso un port di Vulkan ray tracing su macOS:',
+      intro: 'Contributore a Khronos MoltenVK, l’implementazione Vulkan sulle piattaforme Apple:',
       moltenvk: {
         title: 'MoltenVK',
         brief: 'Porting di Vulkan ray tracing su macOS',
-        desc: 'Una patch MoltenVK di grande portata in revisione che implementa Vulkan ray tracing su macOS mappando ray query, acceleration structures e pipeline di ray tracing su Metal. Altre tre pull request sono già unite.',
-        pr: 'PR ray tracing'
+        desc: 'Contributore a Khronos MoltenVK. La patch in revisione porta Vulkan ray tracing su macOS mappando ray query, acceleration structures e pipeline di ray tracing su Metal.',
+        pr2771: '#2771 Ray tracing',
+        pr2776: '#2776 Sampler min/max',
+        pr2788: '#2788 Indexed indirect',
+        pr2790: '#2790 Non-indexed indirect'
       }
     },
     sections: {
@@ -458,12 +470,15 @@ const TRANSLATIONS = {
     },
     opensource: {
       heading: 'Open-Source-Beiträge',
-      intro: 'Arbeit an öffentlicher Grafikinfrastruktur, einschließlich eines Vulkan-Raytracing-Ports auf macOS:',
+      intro: 'Beiträge zu Khronos MoltenVK, der Vulkan-Implementierung auf Apple-Plattformen:',
       moltenvk: {
         title: 'MoltenVK',
         brief: 'Portierung von Vulkan-Raytracing auf macOS',
-        desc: 'Ein umfangreicher MoltenVK-Patch in Review, der Vulkan-Raytracing auf macOS umsetzt, indem Ray Query, Acceleration Structures und Raytracing-Pipelines auf Metal abgebildet werden. Drei weitere Pull Requests sind bereits gemerged.',
-        pr: 'Ray-Tracing-PR'
+        desc: 'Beiträge zu Khronos MoltenVK. Der Patch in Review portiert Vulkan-Raytracing auf macOS, indem Ray Query, Acceleration Structures und Raytracing-Pipelines auf Metal abgebildet werden.',
+        pr2771: '#2771 Ray tracing',
+        pr2776: '#2776 Sampler min/max',
+        pr2788: '#2788 Indexed indirect',
+        pr2790: '#2790 Non-indexed indirect'
       }
     },
     sections: {

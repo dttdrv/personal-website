@@ -207,7 +207,7 @@
         "@type": "ItemList",
         "@id": "https://dttdrv.xyz/#open-source",
         "name": "Open Source Contributions",
-        "description": "Work on public graphics infrastructure, including a Vulkan ray tracing port to macOS.",
+        "description": "Contributions to Khronos MoltenVK, including a Vulkan ray tracing port to macOS.",
         "itemListElement": [
           {
             "@type": "ListItem",
@@ -215,7 +215,7 @@
             "item": {
               "@type": "SoftwareSourceCode",
               "name": "MoltenVK",
-              "description": "Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal inside MoltenVK.",
+              "description": "Contributor to Khronos MoltenVK. In-review pull request 2771 ports Vulkan ray tracing to macOS. Merged pull requests 2776, 2788, and 2790.",
               "codeRepository": "https://github.com/KhronosGroup/MoltenVK",
               "programmingLanguage": "Objective-C++",
               "contributor": { "@id": "https://dttdrv.xyz/#person" }
@@ -636,7 +636,7 @@
         <div class="section-intro-block section-intro-block--centered">
           <h2 class="section-title section-title--large" data-i18n="opensource.heading">Open Source Contributions</h2>
           <p class="section-intro" data-i18n="opensource.intro">
-            Work on public graphics infrastructure, including a Vulkan ray tracing port to macOS:
+            Contributor to Khronos MoltenVK, the Vulkan implementation on Apple platforms:
           </p>
         </div>
 
@@ -657,15 +657,23 @@
             <div class="drawer-expandable" id="drawer-content-moltenvk" role="region" aria-labelledby="drawer-trigger-moltenvk">
               <div class="drawer-content-inner">
                 <p class="drawer-desc" data-i18n="opensource.moltenvk.desc">
-                  A large in-review MoltenVK patch that implements Vulkan ray tracing on macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal. Three other pull requests are already merged.
+                  Contributor to Khronos MoltenVK. The in-review patch ports Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal.
                 </p>
                 <div class="drawer-actions">
-                  <a href="https://github.com/KhronosGroup/MoltenVK" target="_blank" rel="noopener" class="drawer-link-btn">
-                    <span data-i18n="ui.viewCode">GitHub</span>
+                  <a href="https://github.com/KhronosGroup/MoltenVK/pull/2771" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="opensource.moltenvk.pr2771">#2771 Ray tracing</span>
                     <span class="link-arrow" aria-hidden="true">→</span>
                   </a>
-                  <a href="https://github.com/KhronosGroup/MoltenVK/pull/2771" target="_blank" rel="noopener" class="drawer-link-btn">
-                    <span data-i18n="opensource.moltenvk.pr">Ray Tracing PR</span>
+                  <a href="https://github.com/KhronosGroup/MoltenVK/pull/2776" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="opensource.moltenvk.pr2776">#2776 Sampler min/max</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a href="https://github.com/KhronosGroup/MoltenVK/pull/2788" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="opensource.moltenvk.pr2788">#2788 Indexed indirect</span>
+                    <span class="link-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a href="https://github.com/KhronosGroup/MoltenVK/pull/2790" target="_blank" rel="noopener" class="drawer-link-btn">
+                    <span data-i18n="opensource.moltenvk.pr2790">#2790 Non-indexed indirect</span>
                     <span class="link-arrow" aria-hidden="true">→</span>
                   </a>
                 </div>
@@ -702,7 +710,7 @@
   </main>
 
   <!-- Scripts with defer for non-blocking execution -->
-  <script src="translations.js?v=20260910b" defer></script>
+  <script src="translations.js?v=20260910c" defer></script>
   <script src="script.js?v=20260827" defer></script>
 </body>
 

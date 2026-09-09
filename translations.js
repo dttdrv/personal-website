@@ -13,6 +13,7 @@ const TRANSLATIONS = {
       about: 'About',
       misul: 'Misul Lab',
       projects: 'Projects',
+      opensource: 'Open Source',
       contact: 'Contact'
     },
     ui: {
@@ -26,42 +27,33 @@ const TRANSLATIONS = {
       viewReport: 'View Report',
       viewPackage: 'View Package',
       viewSite: 'Visit Site',
+      inProgress: 'In Progress',
       statusResearch: 'Research',
       statusActive: 'Active',
       statusShipped: 'Shipped'
     },
     about: {
-      role: 'Founder of Misul Computing • Systems & Neural Architectures',
+      role: 'Founder of Misul • Systems & Neural Architectures',
       statement: 'I believe in doing a job 100% or not doing it at all.'
     },
     misul: {
-      heading: 'Misul Computing',
+      heading: 'Misul',
       role: 'Founder & Lead Researcher',
-      intro: 'I am the founder and lead researcher at Misul Computing, an independent AI research lab in Sofia, Bulgaria. We build machine intelligence based on brain principles. At Misul I am currently working on the following projects:',
+      intro: 'I am the founder and lead researcher at Misul, an independent AI research lab in Sofia, Bulgaria. We build machine intelligence based on brain principles. At Misul I am currently working on the following projects:',
       laplace: {
         title: 'Laplace',
         brief: 'Apple Silicon inference engine with high speed and low power draw',
         desc: 'An inference engine built from scratch for Apple Silicon. Runs large language models directly on Mac hardware using custom SIMD kernels, Metal acceleration, and smart memory streaming to maximize speed and efficiency.'
       },
-      agent: {
-        title: 'Misul Agent',
-        brief: 'Zig and Cordis based terminal agent harness',
-        desc: 'A fast terminal coding harness and agent engine built in Zig and Cordis, featuring dynamic runtime hooks, lightweight tool routing, and direct system execution.'
-      },
-      todorov: {
-        title: 'Todorov',
-        brief: 'Unified neural architecture for language, state tracking, and action',
-        desc: 'A research project to build one neural model that handles language understanding, world state tracking, and physical actions in a single shared representation.'
+      interlace: {
+        title: 'Interlace',
+        brief: 'Shared architecture for language and iterative computation',
+        desc: 'A neural backbone that reuses its layers across computation steps, combining content-selected attention and gated delta memory.'
       },
       monodratic: {
         title: 'Monodratic',
         brief: 'Content-routed sparse attention sequence mixer',
         desc: 'An open-source attention mechanism that selects only relevant tokens during processing, reducing memory usage while keeping strong recall capabilities.'
-      },
-      transformerov: {
-        title: 'Transformerov',
-        brief: 'Hybrid sequence model combining local attention and recurrent memory',
-        desc: 'A hybrid model implemented in Apple MLX that merges windowed attention for local detail with recurrent state for long-term memory.'
       }
     },
     projects: {
@@ -88,6 +80,16 @@ const TRANSLATIONS = {
         desc: 'A fast geospatial mapping tool designed for classroom geography lessons and interactive educational exercises.'
       }
     },
+    opensource: {
+      heading: 'Open Source Contributions',
+      intro: 'Work on public graphics infrastructure, including a Vulkan ray tracing port to macOS:',
+      moltenvk: {
+        title: 'MoltenVK',
+        brief: 'Porting Vulkan ray tracing to macOS',
+        desc: 'A large in-review MoltenVK patch that implements Vulkan ray tracing on macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal. Three other pull requests are already merged.',
+        pr: 'Ray Tracing PR'
+      }
+    },
     sections: {
       work: 'Work',
       contact: 'Contact'
@@ -105,6 +107,7 @@ const TRANSLATIONS = {
       about: 'За мен',
       misul: 'Misul Лаборатория',
       projects: 'Проекти',
+      opensource: 'Отворен код',
       contact: 'Контакт'
     },
     ui: {
@@ -118,42 +121,33 @@ const TRANSLATIONS = {
       viewReport: 'Преглед на доклад',
       viewPackage: 'Преглед на пакет',
       viewSite: 'Посети сайта',
+      inProgress: 'В процес',
       statusResearch: 'Изследване',
       statusActive: 'Активен',
       statusShipped: 'Издаден'
     },
     about: {
-      role: 'Основател на Misul Computing • Системен софтуер и невронни архитектури',
+      role: 'Основател на Misul • Системен софтуер и невронни архитектури',
       statement: 'Вярвам в това да свърша работата на 100% или да не я правя изобщо.'
     },
     misul: {
-      heading: 'Misul Computing',
+      heading: 'Misul',
       role: 'Основател и главен изследовател',
-      intro: 'Аз съм основател и водещ изследовател в Misul Computing – независима лаборатория за изкуствен интелект в София, изграждаща машинен интелект въз основа на принципите на мозъка. В Misul в момента разработвам следните проекти:',
+      intro: 'Аз съм основател и водещ изследовател в Misul – независима лаборатория за изкуствен интелект в София, изграждаща машинен интелект въз основа на принципите на мозъка. В Misul в момента разработвам следните проекти:',
       laplace: {
         title: 'Laplace',
         brief: 'Двигател за невронни изчисления върху Apple Silicon с висока скорост и ниска консумация',
         desc: 'Двигател за изкуствен интелект, изграден от нулата за Apple Silicon. Стартира големи езикови модели директно на Mac с персонализирани SIMD ядра, Metal ускорение и оптимизирано управление на паметта.'
       },
-      agent: {
-        title: 'Misul Agent',
-        brief: 'Терминален агент за програмиране, изграден със Zig и Cordis',
-        desc: 'Бърза терминална работна среда и агент за програмиране, разработен на Zig и Cordis, с динамични куки и директна системна интеграция.'
-      },
-      todorov: {
-        title: 'Todorov',
-        brief: 'Единна невронна архитектура за език, състояние и действие',
-        desc: 'Изследователски проект за невронна система, която съчетава езиково разбиране, проследяване на състоянието на света и действия в един споделен модел.'
+      interlace: {
+        title: 'Interlace',
+        brief: 'Споделена архитектура за език и итеративни изчисления',
+        desc: 'Невронна основа, която преизползва слоевете си през стъпки на изчисление, съчетавайки селективно внимание и gated delta памет.'
       },
       monodratic: {
         title: 'Monodratic',
         brief: 'Селективно разредено внимание с маршрутизиране по съдържание',
         desc: 'Отворен механизъм за внимание, който избира само най-важните токени при обработка, намалявайки използваната памет и изчислителните ресурси.'
-      },
-      transformerov: {
-        title: 'Transformerov',
-        brief: 'Хибриден модел за Apple Silicon с локално внимание и рекурентна памет',
-        desc: 'Хибриден модел, разработен в Apple MLX, който съчетава прозоречно локално внимание с рекурентно състояние за дългосрочна памет.'
       }
     },
     projects: {
@@ -180,6 +174,16 @@ const TRANSLATIONS = {
         desc: 'Бърз географски инструмент, предназначен за интерактивни уроци и картографски упражнения в училище.'
       }
     },
+    opensource: {
+      heading: 'Приноси с отворен код',
+      intro: 'Работа по публична графична инфраструктура, включително портиране на Vulkan ray tracing към macOS:',
+      moltenvk: {
+        title: 'MoltenVK',
+        brief: 'Портиране на Vulkan ray tracing към macOS',
+        desc: 'Голяма заявка към MoltenVK в преглед, която реализира Vulkan ray tracing на macOS, като пренася ray query, acceleration structures и ray tracing pipelines върху Metal. Три други заявки вече са приети.',
+        pr: 'Ray Tracing PR'
+      }
+    },
     sections: {
       work: 'Работа',
       contact: 'Контакт'
@@ -197,6 +201,7 @@ const TRANSLATIONS = {
       about: 'À propos',
       misul: 'Labo Misul',
       projects: 'Projets',
+      opensource: 'Open source',
       contact: 'Contact'
     },
     ui: {
@@ -210,42 +215,33 @@ const TRANSLATIONS = {
       viewReport: 'Voir rapport',
       viewPackage: 'Voir package',
       viewSite: 'Visiter le site',
+      inProgress: 'En cours',
       statusResearch: 'Recherche',
       statusActive: 'Actif',
       statusShipped: 'Publié'
     },
     about: {
-      role: 'Fondateur de Misul Computing • Systèmes & Architectures Neurales',
+      role: 'Fondateur de Misul • Systèmes & Architectures Neurales',
       statement: 'Je crois qu’il faut faire un travail à 100% ou ne pas le faire du tout.'
     },
     misul: {
-      heading: 'Misul Computing',
+      heading: 'Misul',
       role: 'Fondateur & Chercheur Principal',
-      intro: 'Fondateur et chercheur principal chez Misul Computing, laboratoire indépendant de recherche en IA.',
+      intro: 'Fondateur et chercheur principal chez Misul, laboratoire indépendant de recherche en IA.',
       laplace: {
         title: 'Laplace',
         brief: 'Moteur d’inférence pour Apple Silicon',
         desc: 'Moteur d’inférence LLM optimisé pour Apple Silicon.'
       },
-      agent: {
-        title: 'Misul Agent',
-        brief: 'Harnais d’agent de terminal en Zig et Cordis',
-        desc: 'Harnais de codage en terminal rapide conçu en Zig et Cordis avec intégration système directe.'
-      },
-      todorov: {
-        title: 'Todorov',
-        brief: 'Architecture neurale unifiée',
-        desc: 'Programme de recherche pour un modèle unifié.'
+      interlace: {
+        title: 'Interlace',
+        brief: 'Architecture partagée pour le langage et le calcul itératif',
+        desc: 'Backbone neuronal qui réutilise ses couches à chaque étape, combinant attention sélectionnée par contenu et mémoire delta à portes.'
       },
       monodratic: {
         title: 'Monodratic',
         brief: 'Mélangeur d’attention clairsemée',
         desc: 'Mécanisme d’attention clairsemée routé par contenu.'
-      },
-      transformerov: {
-        title: 'Transformerov',
-        brief: 'Modèle hybride MLX',
-        desc: 'Modèle de séquence hybride combinant attention locale et récurrence.'
       }
     },
     projects: {
@@ -272,6 +268,16 @@ const TRANSLATIONS = {
         desc: 'Application cartographique pour la projection en classe.'
       }
     },
+    opensource: {
+      heading: 'Contributions open source',
+      intro: 'Travail sur l’infrastructure graphique publique, dont un port de Vulkan ray tracing vers macOS :',
+      moltenvk: {
+        title: 'MoltenVK',
+        brief: 'Portage de Vulkan ray tracing vers macOS',
+        desc: 'Un correctif MoltenVK de grande envergure en revue qui implémente Vulkan ray tracing sur macOS en projetant ray query, acceleration structures et pipelines de ray tracing sur Metal. Trois autres pull requests sont déjà fusionnées.',
+        pr: 'PR ray tracing'
+      }
+    },
     sections: {
       work: 'Travaux',
       contact: 'Contact'
@@ -289,6 +295,7 @@ const TRANSLATIONS = {
       about: 'Chi sono',
       misul: 'Misul Lab',
       projects: 'Progetti',
+      opensource: 'Open source',
       contact: 'Contatto'
     },
     ui: {
@@ -302,42 +309,33 @@ const TRANSLATIONS = {
       viewReport: 'Vedi report',
       viewPackage: 'Vedi pacchetto',
       viewSite: 'Visita sito',
+      inProgress: 'In corso',
       statusResearch: 'Ricerca',
       statusActive: 'Attivo',
       statusShipped: 'Rilasciato'
     },
     about: {
-      role: 'Fondatore di Misul Computing • Sistemi & Architetture Neurali',
+      role: 'Fondatore di Misul • Sistemi & Architetture Neurali',
       statement: 'Credo nel fare un lavoro al 100% o nel non farlo affatto.'
     },
     misul: {
-      heading: 'Misul Computing',
+      heading: 'Misul',
       role: 'Fondatore & Ricercatore Principale',
-      intro: 'Fondatore e ricercatore principale di Misul Computing.',
+      intro: 'Fondatore e ricercatore principale di Misul.',
       laplace: {
         title: 'Laplace',
         brief: 'Motore di inferenza per Apple Silicon',
         desc: 'Motore di inferenza per modelli linguistici su Apple Silicon.'
       },
-      agent: {
-        title: 'Misul Agent',
-        brief: 'Harness per agente da terminale in Zig e Cordis',
-        desc: 'Harness di programmazione da terminale scritto in Zig e Cordis ad alte prestazioni.'
-      },
-      todorov: {
-        title: 'Todorov',
-        brief: 'Architettura neurale unificata',
-        desc: 'Programma di ricerca per un modello condiviso.'
+      interlace: {
+        title: 'Interlace',
+        brief: 'Architettura condivisa per linguaggio e calcolo iterativo',
+        desc: 'Backbone neurale che riutilizza i propri strati a ogni passo, combinando attenzione selezionata per contenuto e memoria delta a gate.'
       },
       monodratic: {
         title: 'Monodratic',
         brief: 'Attenzione sparsa per sequenze',
         desc: 'Meccanismo open source per attenzione selettiva.'
-      },
-      transformerov: {
-        title: 'Transformerov',
-        brief: 'Modello sequenziale ibrido MLX',
-        desc: 'Modello ibrido con attenzione locale e memoria ricorrente.'
       }
     },
     projects: {
@@ -364,6 +362,16 @@ const TRANSLATIONS = {
         desc: 'Strumento geografico per lezioni scolastiche.'
       }
     },
+    opensource: {
+      heading: 'Contributi open source',
+      intro: 'Lavoro su infrastruttura grafica pubblica, incluso un port di Vulkan ray tracing su macOS:',
+      moltenvk: {
+        title: 'MoltenVK',
+        brief: 'Porting di Vulkan ray tracing su macOS',
+        desc: 'Una patch MoltenVK di grande portata in revisione che implementa Vulkan ray tracing su macOS mappando ray query, acceleration structures e pipeline di ray tracing su Metal. Altre tre pull request sono già unite.',
+        pr: 'PR ray tracing'
+      }
+    },
     sections: {
       work: 'Lavori',
       contact: 'Contatto'
@@ -381,6 +389,7 @@ const TRANSLATIONS = {
       about: 'Über mich',
       misul: 'Misul Lab',
       projects: 'Projekte',
+      opensource: 'Open Source',
       contact: 'Kontakt'
     },
     ui: {
@@ -394,42 +403,33 @@ const TRANSLATIONS = {
       viewReport: 'Bericht ansehen',
       viewPackage: 'Paket ansehen',
       viewSite: 'Website besuchen',
+      inProgress: 'In Arbeit',
       statusResearch: 'Forschung',
       statusActive: 'Aktiv',
       statusShipped: 'Veröffentlicht'
     },
     about: {
-      role: 'Gründer von Misul Computing • Systeme & Neurale Architekturen',
+      role: 'Gründer von Misul • Systeme & Neurale Architekturen',
       statement: 'Ich glaube daran, eine Aufgabe zu 100% zu erledigen oder gar nicht.'
     },
     misul: {
-      heading: 'Misul Computing',
+      heading: 'Misul',
       role: 'Gründer & Leitender Forscher',
-      intro: 'Gründer und leitender Forscher bei Misul Computing.',
+      intro: 'Gründer und leitender Forscher bei Misul.',
       laplace: {
         title: 'Laplace',
         brief: 'Inferenz-Engine für Apple Silicon',
         desc: 'Inferenz-Engine für LLMs direkt auf Apple Silicon.'
       },
-      agent: {
-        title: 'Misul Agent',
-        brief: 'Terminal-Agent-Harness auf Basis von Zig und Cordis',
-        desc: 'Schneller Terminal-Coding-Harness und Agenten-Engine in Zig und Cordis mit dynamischen Hooks.'
-      },
-      todorov: {
-        title: 'Todorov',
-        brief: 'Einheitliche neuronale Architektur',
-        desc: 'Forschungsprogramm für ein vereinheitlichtes Modell.'
+      interlace: {
+        title: 'Interlace',
+        brief: 'Gemeinsame Architektur für Sprache und iterative Berechnung',
+        desc: 'Neuronales Rückgrat, das seine Schichten über Berechnungsschritte wiederverwendet und inhaltsselektierte Aufmerksamkeit mit gated-delta Speicher verbindet.'
       },
       monodratic: {
         title: 'Monodratic',
         brief: 'Sparse-Attention-Sequenzmischer',
         desc: 'Open-Source-Aufmerksamkeitsmechanismus mit gezieltem Routing.'
-      },
-      transformerov: {
-        title: 'Transformerov',
-        brief: 'Hybrides MLX-Sequenzmodell',
-        desc: 'Hybrides Sequenzmodell mit lokaler Aufmerksamkeit und rekurrentem Speicher.'
       }
     },
     projects: {
@@ -454,6 +454,16 @@ const TRANSLATIONS = {
         title: 'SchoolMap',
         brief: 'Interaktives Kartenwerkzeug für den Unterricht',
         desc: 'Geografische Web-App für den Unterricht an Schulen.'
+      }
+    },
+    opensource: {
+      heading: 'Open-Source-Beiträge',
+      intro: 'Arbeit an öffentlicher Grafikinfrastruktur, einschließlich eines Vulkan-Raytracing-Ports auf macOS:',
+      moltenvk: {
+        title: 'MoltenVK',
+        brief: 'Portierung von Vulkan-Raytracing auf macOS',
+        desc: 'Ein umfangreicher MoltenVK-Patch in Review, der Vulkan-Raytracing auf macOS umsetzt, indem Ray Query, Acceleration Structures und Raytracing-Pipelines auf Metal abgebildet werden. Drei weitere Pull Requests sind bereits gemerged.',
+        pr: 'Ray-Tracing-PR'
       }
     },
     sections: {

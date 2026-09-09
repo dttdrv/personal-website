@@ -24,6 +24,7 @@ const requiredKeys = [
   'nav.about',
   'nav.misul',
   'nav.projects',
+  'nav.opensource',
   'nav.contact',
   'about.role',
   'about.statement',
@@ -33,18 +34,12 @@ const requiredKeys = [
   'misul.laplace.title',
   'misul.laplace.brief',
   'misul.laplace.desc',
-  'misul.agent.title',
-  'misul.agent.brief',
-  'misul.agent.desc',
-  'misul.todorov.title',
-  'misul.todorov.brief',
-  'misul.todorov.desc',
+  'misul.interlace.title',
+  'misul.interlace.brief',
+  'misul.interlace.desc',
   'misul.monodratic.title',
   'misul.monodratic.brief',
   'misul.monodratic.desc',
-  'misul.transformerov.title',
-  'misul.transformerov.brief',
-  'misul.transformerov.desc',
   'projects.heading',
   'projects.phonecode.title',
   'projects.phonecode.brief',
@@ -57,7 +52,13 @@ const requiredKeys = [
   'projects.dzipobel.desc',
   'projects.schoolmap.title',
   'projects.schoolmap.brief',
-  'projects.schoolmap.desc'
+  'projects.schoolmap.desc',
+  'opensource.heading',
+  'opensource.intro',
+  'opensource.moltenvk.title',
+  'opensource.moltenvk.brief',
+  'opensource.moltenvk.desc',
+  'opensource.moltenvk.pr'
 ];
 
 function getNested(obj, keyPath) {
@@ -79,17 +80,29 @@ console.log('✔ Translations validation passed (all keys present in en & bg).')
 const llmsPath = path.join(ROOT, 'llms.txt');
 assert.ok(fs.existsSync(llmsPath), 'llms.txt must exist');
 const llmsContent = fs.readFileSync(llmsPath, 'utf8');
-assert.ok(llmsContent.includes('Misul Computing'), 'llms.txt must mention Misul Computing');
+assert.ok(llmsContent.includes('Misul'), 'llms.txt must mention Misul');
 assert.ok(llmsContent.includes('Laplace'), 'llms.txt must mention Laplace');
+assert.ok(llmsContent.includes('Interlace'), 'llms.txt must mention Interlace');
 assert.ok(llmsContent.includes('Monodratic'), 'llms.txt must mention Monodratic');
+assert.ok(llmsContent.includes('github.com/MisulOrg'), 'llms.txt must use the MisulOrg GitHub org');
+assert.ok(llmsContent.includes('Vulkan ray tracing'), 'llms.txt must state the MoltenVK Vulkan ray tracing port');
+assert.ok(llmsContent.includes('macOS'), 'llms.txt must mention macOS for the MoltenVK ray tracing port');
+assert.ok(llmsContent.includes('pull/2771'), 'llms.txt must link MoltenVK pull request 2771');
+assert.ok(!llmsContent.includes('Misul Agent'), 'llms.txt must not mention Misul Agent');
+assert.ok(!llmsContent.includes('misul.org/agent'), 'llms.txt must not link misul.org/agent');
 assert.ok(llmsContent.includes('llms-full.txt'), 'llms.txt must reference llms-full.txt');
 
 const llmsFullPath = path.join(ROOT, 'llms-full.txt');
 assert.ok(fs.existsSync(llmsFullPath), 'llms-full.txt must exist');
 const llmsFullContent = fs.readFileSync(llmsFullPath, 'utf8');
 assert.ok(llmsFullContent.includes('LaplaceKV'), 'llms-full.txt must describe LaplaceKV');
-assert.ok(llmsFullContent.includes('Transformerov'), 'llms-full.txt must describe Transformerov');
+assert.ok(llmsFullContent.includes('Interlace'), 'llms-full.txt must describe Interlace');
+assert.ok(llmsFullContent.includes('MoltenVK'), 'llms-full.txt must describe MoltenVK');
+assert.ok(llmsFullContent.includes('Vulkan ray tracing'), 'llms-full.txt must describe the Vulkan ray tracing port');
+assert.ok(llmsFullContent.includes('#2771'), 'llms-full.txt must lead MoltenVK with pull request 2771');
 assert.ok(llmsFullContent.includes('PhoneCode'), 'llms-full.txt must describe PhoneCode');
+assert.ok(!llmsFullContent.includes('Misul Agent'), 'llms-full.txt must not mention Misul Agent');
+assert.ok(!llmsFullContent.includes('MisulOrg/Terminal'), 'llms-full.txt must not mention the Terminal agent repo');
 console.log('✔ LLM documentation files validation passed.');
 
 // 3. Validate robots.txt and sitemap.xml
@@ -121,17 +134,16 @@ assert.ok(graphTypes.some(t => t.includes('Person')), 'JSON-LD must define Perso
 assert.ok(graphTypes.some(t => t.includes('ResearchOrganization')), 'JSON-LD must define ResearchOrganization');
 assert.ok(graphTypes.some(t => t.includes('ItemList')), 'JSON-LD must define ItemList');
 
-// Verify all 9 project drawers exist in index.html
+// Verify remaining project drawers exist in index.html
 const drawerIds = [
   'drawer-item-laplace',
-  'drawer-item-agent',
-  'drawer-item-todorov',
+  'drawer-item-interlace',
   'drawer-item-monodratic',
-  'drawer-item-transformerov',
   'drawer-item-phonecode',
   'drawer-item-optisys',
   'drawer-item-dzipobel',
-  'drawer-item-schoolmap'
+  'drawer-item-schoolmap',
+  'drawer-item-moltenvk'
 ];
 
 for (const id of drawerIds) {
@@ -141,5 +153,16 @@ for (const id of drawerIds) {
 // Verify accessibility attributes are present
 assert.ok(indexHtml.includes('aria-expanded="false"'), 'index.html must include aria-expanded on drawer triggers');
 assert.ok(indexHtml.includes('role="region"'), 'index.html must include role="region" on drawer expandables');
+assert.ok(indexHtml.includes('https://misul.org/Interlace'), 'index.html must link Interlace report at misul.org/Interlace');
+assert.ok(indexHtml.includes('https://github.com/MisulOrg/Interlace/blob/main/paper/interlace.pdf'), 'index.html must link the Interlace PDF paper');
+assert.ok(indexHtml.includes('https://github.com/MisulOrg/Interlace"'), 'index.html must link the Interlace GitHub repo');
+assert.ok(!indexHtml.includes('Misul-Computing'), 'index.html must not use the retired Misul-Computing GitHub org');
+assert.ok(!indexHtml.includes('drawer-item-todorov'), 'index.html must not include the Todorov drawer');
+assert.ok(!indexHtml.includes('drawer-item-transformerov'), 'index.html must not include the Transformerov drawer');
+assert.ok(!indexHtml.includes('drawer-item-agent'), 'index.html must not include the Misul Agent drawer');
+assert.ok(!indexHtml.includes('misul.org/agent'), 'index.html must not link misul.org/agent');
+assert.ok(indexHtml.includes('Porting Vulkan ray tracing to macOS'), 'index.html must headline the MoltenVK ray tracing port');
+assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2771'), 'index.html must link MoltenVK pull request 2771');
+assert.ok(indexHtml.includes('opensource.moltenvk.pr'), 'index.html must expose the MoltenVK ray tracing PR action');
 
 console.log('✔ HTML & Schema.org JSON-LD graph validation passed.');

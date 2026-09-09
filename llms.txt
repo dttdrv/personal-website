@@ -1,28 +1,26 @@
 # Deyan Todorov
 
-> Deyan Todorov is a systems and machine learning researcher and engineer based in Sofia, Bulgaria. He is the founder and lead researcher of Misul Computing, an independent AI research lab building machine intelligence from the principles of the brain.
+> Deyan Todorov is a systems and machine learning researcher and engineer based in Sofia, Bulgaria. He is the founder and lead researcher of Misul, an independent AI research lab building machine intelligence from the principles of the brain.
 
 ## Key Facts
 
 - **Name**: Deyan Todorov
-- **Role**: Founder, Misul Computing
+- **Role**: Founder, Misul
 - **Location**: Sofia, Bulgaria
 - **Personal Website**: https://dttdrv.xyz
 - **Lab Website**: https://misul.org
 - **GitHub**: https://github.com/dttdrv
-- **Misul GitHub**: https://github.com/Misul-Computing
+- **Misul GitHub**: https://github.com/MisulOrg
 - **Email**: deyan@misul.org
 - **X / Twitter**: https://x.com/dttdrv
 
-## Misul Computing Research Suite
+## Misul Research Suite
 
-Misul Computing is an independent AI research lab founded by Deyan Todorov. It designs neural architectures from first principles rather than scaling standard transformers.
+Misul is an independent AI research lab founded by Deyan Todorov. It designs neural architectures from first principles rather than scaling standard transformers.
 
-- [Laplace](https://github.com/Misul-Computing/Laplace): Apple Silicon inference engine optimized for performance-per-joule. Features NEON/I8MM SIMD kernels, LaplaceKV memory streaming (23.3x active RAM reduction at 65K context), and SSD-streamed MoE execution. Source repository: https://github.com/Misul-Computing/Laplace.
-- [Misul Agent](https://misul.org/agent): Fast terminal coding harness and agent engine built in Zig and Cordis with dynamic runtime hooks. Source repository: https://github.com/Misul-Computing/Agent.
-- **Todorov**: Research program for unified neural machine learning across language, world state, and action in a shared latent process (research in progress; code repository pending release).
-- [Monodratic](https://misul.org/monodratic/): Content-routed causal sparse attention sequence mixer with post-RoPE routing, bounded causal postings, and exact softmax. Source repository: https://github.com/Misul-Computing/Monodratic.
-- **Transformerov**: Hybrid sequence model in MLX on Apple Silicon combining windowed attention with gated-delta recurrence and next-latent objectives (research in progress; code repository pending release).
+- [Laplace](https://github.com/MisulOrg/Laplace): Apple Silicon inference engine optimized for performance-per-joule. Features NEON/I8MM SIMD kernels, LaplaceKV memory streaming (23.3x active RAM reduction at 65K context), and SSD-streamed MoE execution. Source repository: https://github.com/MisulOrg/Laplace.
+- [Interlace](https://misul.org/Interlace): Shared architecture for language and iterative computation. Combines content-selected attention, gated delta memory, and bounded rational features in a backbone that reuses its layers across computation steps. Paper: https://github.com/MisulOrg/Interlace/blob/main/paper/interlace.pdf. Source repository: https://github.com/MisulOrg/Interlace.
+- [Monodratic](https://misul.org/monodratic/): Content-routed causal sparse attention sequence mixer with post-RoPE routing, bounded causal postings, and exact softmax. Source repository: https://github.com/MisulOrg/Monodratic.
 
 ## Independent Projects
 
@@ -30,6 +28,10 @@ Misul Computing is an independent AI research lab founded by Deyan Todorov. It d
 - [optiSYS](https://dttdrv.xyz/optisys.html): Native Windows system optimizer tuning system responsiveness, network stack buffers, and process scheduling without bloat.
 - [dzipobel.wiki](https://dzipobel.wiki): Digital literature and grammar educational repository for Bulgarian state high school examinations.
 - [SchoolMap](https://schoolmap.pages.dev): Interactive classroom mapping application for geographic curriculum visualization.
+
+## Open Source Contributions
+
+- [MoltenVK](https://github.com/KhronosGroup/MoltenVK): Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal. The in-review patch is https://github.com/KhronosGroup/MoltenVK/pull/2771. Three other pull requests are already merged (`#2776`, `#2788`, `#2790`).
 
 ## Detailed LLM Context
 

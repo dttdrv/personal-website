@@ -540,9 +540,10 @@ button {
   font-style: italic;
 }
 
-/* === Room 3 & 4: Misul & Independent Projects (Clean Editorial Lists) === */
+/* === Room 3, 4 & 5: Misul, Independent Projects, Open Source (Clean Editorial Lists) === */
 .room--misul,
-.room--projects {
+.room--projects,
+.room--opensource {
   padding: clamp(3.5rem, 6vw, 5.5rem) var(--space-md);
   align-items: center;
 }

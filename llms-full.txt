@@ -23,17 +23,17 @@ This document provides exhaustive, factual context regarding Deyan Todorov, his 
 Misul is an independent AI research lab in Sofia, Bulgaria. The lab builds machine intelligence from the principles of the brain: how it perceives, predicts, learns, and gives rise to mind. It designs new architectures from first principles rather than scaling existing methods.
 
 ### 2.1 Laplace
-- **Scope**: Inference engine built from scratch exclusively for Apple Silicon.
+- **Scope**: Apple Silicon inference engine in active alpha.
 - **Repository**: `https://github.com/MisulOrg/Laplace`
-- **Core differentiator**: Target perf-per-watt (tokens per joule on laptop battery), not raw server throughput.
-- **Architectural features**:
-  - Custom NEON + DOTPROD + I8MM SIMD matmul kernels for common GGUF quantizations with scalar fallback.
-  - Power-aware thread count and QoS policy with automatic battery and AC power modes.
-  - **LaplaceKV**: K8/V6 sealed tiles, mutable FP32 tail, grouped-query attention, and SSD-backed streaming for bounded KV memory. At 65K context: 17.5 MiB active KV RAM vs 408 MiB resident 4-bit (23.3x active RAM reduction); 1.50 ms streamed attention (25% faster); 2.21x raw packed compression vs FP16.
-  - **LaplaceMoE SSD streaming**: Runs MoE models larger than RAM by streaming expert weights on demand with a bounded resident set.
-  - Speculative decoding: prompt-lookup and Jacobi-iteration lookahead.
-  - Metal GPU backend with function-constant-specialized dequant kernels.
-- **Model families supported**: Gemma 4 (MoE, hybrid attention, GeGLU), Llama 2/3, Mistral, Qwen2/Qwen2.5/Qwen3 dense, Qwen3-Next (hybrid attention + Gated DeltaNet), Phi-3 / Phi-3-mini.
+- **Architecture**: A shared model compiler. Operations and tensor storage are described separately, then lowered into native Metal execution programs so one execution path can serve compatible layouts and stored precisions.
+- **What runs today**:
+  - Local terminal chat with streamed replies and conversation state inside a session.
+  - One-shot generation from a prompt or file, GGUF inspection, and separate prefill/decode timing.
+  - Shared Metal execution for compatible dense models, including mixed stored precisions and tied embedding/output weights.
+  - Embedding, projection, bias, normalization, activation, rotary position, and causal or sliding grouped-query attention.
+- **Known limits**: Recurrent and routed expert operations have semantic representations, but the shared compiler does not yet lower them. Complete universality is a development goal. Numerical and generation parity with llama.cpp is not claimed. Package and device coverage is still being qualified.
+- **Historical work**: CPU kernels, LaplaceKV cache experiments, and earlier MoE-streaming designs live under `research/` and are not the current product contract.
+- **Docs**: `docs/support.md`, `docs/architecture.md`.
 
 ### 2.2 Interlace
 - **Scope**: Shared architecture for language and iterative computation.
@@ -58,19 +58,22 @@ Misul is an independent AI research lab in Sofia, Bulgaria. The lab builds machi
   - Content-routed sparse attention: local windowed blocks plus a bounded set of earlier blocks selected by post-RoPE content routing.
   - Exact causal softmax computed over selected source tokens (no approximation error on the chosen subset).
   - OpenTM-PHI product-posting index with bounded causal posting lists.
-- **Empirical validation (10 July 2026 report)**:
-  - Associative-recall accuracy: 0.9909 mean, 0.9805 minimum over 3 seeds (routed width 2 of 5).
-  - Minimum margin over local-only attention: 0.7070.
-  - Selected-mask oracle error: 1.91 × 10^-6 maximum. Zero posting overflow.
-  - 431 passed unit and integration tests.
+- **Published results** (repository README and `results/mqar.json`):
+  - Associative recall: 763 of 768 correct, 99.35% mean accuracy, 98.05% minimum across three seeds.
+  - Counterfactuals: 768 of 768 for the all-eligible donor and target-forced R2; 739 of 768 for all-eligible attention using the sparse-trained weights.
+  - Routing: 753 of 768 final-layer target-block hits, non-bypass execution, zero overflow.
+  - Learned-R2 selected-mask oracle: 1.43 × 10^-6 maximum absolute error.
+  - Packed routing: 0.993 fitted timing exponent from 4,096 to 32,768 tokens on four CPU threads.
+- **Not claimed**: natural-language quality, asymptotic linear construction, or fused-kernel speed. `results/verification.json` records 15 passing pytest tests.
 
 ---
 
 ## 3. Independent Projects
 
 ### 3.1 PhoneCode
-- **Platform**: Android (Native).
-- **Function**: On-device AI coding agent executing local neural models directly on mobile hardware. Provides private offline editing, repository inspection, and automated code transformations.
+- **Platform**: Android (Native), Android 8.0+ arm64.
+- **Function**: On-device coding agent that edits local workspaces and git repositories on the phone. It talks to chosen model providers (OpenAI, Anthropic, OpenRouter, Google, xAI, DeepSeek, Mistral, or a custom endpoint) from the device, with no intermediary proxy, no telemetry, and no account requirement.
+- **Product page**: `https://dttdrv.xyz/phonecode.html`
 
 ### 3.2 optiSYS
 - **Platform**: Windows (Native x64/ARM64).
@@ -89,19 +92,14 @@ Misul is an independent AI research lab in Sofia, Bulgaria. The lab builds machi
 ## 4. Open Source Contributions
 
 ### 4.1 MoltenVK
-- **Scope**: Porting Vulkan ray tracing to macOS inside MoltenVK, the Khronos Vulkan Portability implementation over Apple Metal.
-- **Repository**: `https://github.com/KhronosGroup/MoltenVK`
-- **Primary work**: `#2771` implements Vulkan ray tracing on macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal (`VK_KHR_acceleration_structure`, `VK_KHR_ray_query`, `VK_KHR_ray_tracing_pipeline`).
-- **Merged pull requests**:
-  - `#2776` Add native sampler min/max filtering
-  - `#2788` Avoid repeated state finalization for indexed indirect draws
-  - `#2790` Avoid redundant non-indexed indirect draw finalization
+- **Scope**: Contributor to Khronos MoltenVK, the Vulkan implementation on Apple platforms. Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal.
+- **Pull requests**:
+  - `#2771` Ray tracing (`VK_KHR_acceleration_structure`, `VK_KHR_ray_query`, `VK_KHR_ray_tracing_pipeline`) — in review: `https://github.com/KhronosGroup/MoltenVK/pull/2771`
+  - `#2776` Native sampler min/max filtering — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2776`
+  - `#2788` Avoid repeated state finalization for indexed indirect draws — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2788`
+  - `#2790` Avoid redundant non-indexed indirect draw finalization — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2790`
 
 ---
 
-## 5. Design & Engineering Standards
 
-- **Curvature**: G3 squircle geometry using modern CSS `corner-shape: squircle` with SVG clip-path fallback.
-- **Performance**: Strict avoidance of forced layout thrashing; 100% GPU-composited animations; sub-200ms tactile feedback.
-- **Open Standards**: Fully compatible with Schema.org JSON-LD, OpenAPI, and LLM web-indexing protocols.
 

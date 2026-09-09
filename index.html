@@ -75,7 +75,7 @@
           "Artificial Intelligence",
           "Neural Network Architectures",
           "Apple Silicon Optimization",
-          "SIMD Kernel Programming",
+          "Inference Compilation",
           "Sparse Attention Mechanisms",
           "Vulkan",
           "Metal",
@@ -111,7 +111,7 @@
             "item": {
               "@type": "SoftwareSourceCode",
               "name": "Laplace",
-              "description": "Apple Silicon inference engine targeting performance-per-joule with SIMD kernels, LaplaceKV bounded streaming, and SSD MoE streaming.",
+              "description": "Apple Silicon inference engine that compiles declared model operations and tensor storage into native Metal execution.",
               "codeRepository": "https://github.com/MisulOrg/Laplace",
               "programmingLanguage": "C++",
               "author": { "@id": "https://dttdrv.xyz/#person" }
@@ -157,7 +157,7 @@
             "item": {
               "@type": "SoftwareApplication",
               "name": "PhoneCode",
-              "description": "On-device AI coding agent application for Android.",
+              "description": "On-device Android coding agent that edits local workspaces and connects to chosen model providers without a proxy.",
               "url": "https://dttdrv.xyz/phonecode.html",
               "applicationCategory": "DeveloperApplication",
               "operatingSystem": "Android",
@@ -416,7 +416,7 @@
             <button class="drawer-trigger" aria-expanded="false" aria-controls="drawer-content-laplace" id="drawer-trigger-laplace">
               <div class="drawer-trigger-left">
                 <h3 class="drawer-title" data-i18n="misul.laplace.title">Laplace</h3>
-                <span class="drawer-brief" data-i18n="misul.laplace.brief">Apple Silicon inference engine with high speed and low power draw</span>
+                <span class="drawer-brief" data-i18n="misul.laplace.brief">Apple Silicon inference compiler over Metal</span>
               </div>
               <div class="drawer-trigger-right">
                 <span class="drawer-indicator" aria-hidden="true">+</span>
@@ -425,7 +425,7 @@
             <div class="drawer-expandable" id="drawer-content-laplace" role="region" aria-labelledby="drawer-trigger-laplace">
               <div class="drawer-content-inner">
                 <p class="drawer-desc" data-i18n="misul.laplace.desc">
-                  An inference engine built from scratch for Apple Silicon. Runs large language models directly on Mac hardware using custom SIMD kernels, Metal acceleration, and smart memory streaming to maximize speed and efficiency.
+                  A Metal-native inference compiler for Apple Silicon. Compatible dense models compile from declared operations and tensor storage into a persistent GPU session. Recurrent and routed expert execution is still being built.
                 </p>
                 <div class="drawer-actions">
                   <a href="https://github.com/MisulOrg/Laplace" target="_blank" rel="noopener" class="drawer-link-btn">
@@ -710,7 +710,7 @@
   </main>
 
   <!-- Scripts with defer for non-blocking execution -->
-  <script src="translations.js?v=20260910c" defer></script>
+  <script src="translations.js?v=20260910d" defer></script>
   <script src="script.js?v=20260827" defer></script>
 </body>
 

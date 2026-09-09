@@ -42,8 +42,8 @@ const TRANSLATIONS = {
       intro: 'I am the founder and lead researcher at Misul, an independent AI research lab in Sofia, Bulgaria. We build machine intelligence based on brain principles. At Misul I am currently working on the following projects:',
       laplace: {
         title: 'Laplace',
-        brief: 'Apple Silicon inference engine with high speed and low power draw',
-        desc: 'An inference engine built from scratch for Apple Silicon. Runs large language models directly on Mac hardware using custom SIMD kernels, Metal acceleration, and smart memory streaming to maximize speed and efficiency.'
+        brief: 'Apple Silicon inference compiler over Metal',
+        desc: 'A Metal-native inference compiler for Apple Silicon. Compatible dense models compile from declared operations and tensor storage into a persistent GPU session. Recurrent and routed expert execution is still being built.'
       },
       interlace: {
         title: 'Interlace',
@@ -139,8 +139,8 @@ const TRANSLATIONS = {
       intro: 'Аз съм основател и водещ изследовател в Misul – независима лаборатория за изкуствен интелект в София, изграждаща машинен интелект въз основа на принципите на мозъка. В Misul в момента разработвам следните проекти:',
       laplace: {
         title: 'Laplace',
-        brief: 'Двигател за невронни изчисления върху Apple Silicon с висока скорост и ниска консумация',
-        desc: 'Двигател за изкуствен интелект, изграден от нулата за Apple Silicon. Стартира големи езикови модели директно на Mac с персонализирани SIMD ядра, Metal ускорение и оптимизирано управление на паметта.'
+        brief: 'Компилатор за инференс върху Apple Silicon чрез Metal',
+        desc: 'Metal-нативен компилатор за инференс върху Apple Silicon. Съвместими плътни модели се компилират от обявени операции и тензорно съхранение в постоянна GPU сесия. Рекурентното и routed expert изпълнение все още се изгражда.'
       },
       interlace: {
         title: 'Interlace',
@@ -236,8 +236,8 @@ const TRANSLATIONS = {
       intro: 'Fondateur et chercheur principal chez Misul, laboratoire indépendant de recherche en IA.',
       laplace: {
         title: 'Laplace',
-        brief: 'Moteur d’inférence pour Apple Silicon',
-        desc: 'Moteur d’inférence LLM optimisé pour Apple Silicon.'
+        brief: 'Compilateur d’inférence Apple Silicon sur Metal',
+        desc: 'Compilateur d’inférence natif Metal pour Apple Silicon. Les modèles dense compatibles compilent les opérations déclarées et le stockage des tenseurs en une session GPU persistante. L’exécution récurrente et routed expert est encore en cours.'
       },
       interlace: {
         title: 'Interlace',
@@ -333,8 +333,8 @@ const TRANSLATIONS = {
       intro: 'Fondatore e ricercatore principale di Misul.',
       laplace: {
         title: 'Laplace',
-        brief: 'Motore di inferenza per Apple Silicon',
-        desc: 'Motore di inferenza per modelli linguistici su Apple Silicon.'
+        brief: 'Compilatore di inferenza Apple Silicon su Metal',
+        desc: 'Compilatore di inferenza nativo Metal per Apple Silicon. I modelli dense compatibili compilano operazioni dichiarate e storage dei tensori in una sessione GPU persistente. L’esecuzione ricorrente e routed expert è ancora in costruzione.'
       },
       interlace: {
         title: 'Interlace',
@@ -430,8 +430,8 @@ const TRANSLATIONS = {
       intro: 'Gründer und leitender Forscher bei Misul.',
       laplace: {
         title: 'Laplace',
-        brief: 'Inferenz-Engine für Apple Silicon',
-        desc: 'Inferenz-Engine für LLMs direkt auf Apple Silicon.'
+        brief: 'Apple-Silicon-Inferenzcompiler über Metal',
+        desc: 'Metal-nativer Inferenzcompiler für Apple Silicon. Kompatible dichte Modelle kompilieren deklarierte Operationen und Tensor-Speicher in eine persistente GPU-Session. Rekurrente und Routed-Expert-Ausführung wird noch gebaut.'
       },
       interlace: {
         title: 'Interlace',

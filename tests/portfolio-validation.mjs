@@ -88,6 +88,10 @@ assert.ok(llmsContent.includes('Laplace'), 'llms.txt must mention Laplace');
 assert.ok(llmsContent.includes('Interlace'), 'llms.txt must mention Interlace');
 assert.ok(llmsContent.includes('Monodratic'), 'llms.txt must mention Monodratic');
 assert.ok(llmsContent.includes('github.com/MisulOrg'), 'llms.txt must use the MisulOrg GitHub org');
+assert.ok(llmsContent.includes('native Metal'), 'llms.txt must describe current Laplace Metal compilation');
+assert.ok(!llmsContent.includes('LaplaceKV'), 'llms.txt must not present retired LaplaceKV as current');
+assert.ok(!llmsContent.includes('23.3x'), 'llms.txt must not cite retired LaplaceKV compression figures');
+assert.ok(!llmsContent.includes('without cloud dependencies'), 'llms.txt must not claim PhoneCode has no cloud model path');
 assert.ok(llmsContent.includes('Khronos MoltenVK'), 'llms.txt must name Khronos MoltenVK');
 assert.ok(llmsContent.includes('Vulkan ray tracing'), 'llms.txt must state the MoltenVK Vulkan ray tracing port');
 assert.ok(llmsContent.includes('macOS'), 'llms.txt must mention macOS for the MoltenVK ray tracing port');
@@ -102,7 +106,14 @@ assert.ok(llmsContent.includes('llms-full.txt'), 'llms.txt must reference llms-f
 const llmsFullPath = path.join(ROOT, 'llms-full.txt');
 assert.ok(fs.existsSync(llmsFullPath), 'llms-full.txt must exist');
 const llmsFullContent = fs.readFileSync(llmsFullPath, 'utf8');
-assert.ok(llmsFullContent.includes('LaplaceKV'), 'llms-full.txt must describe LaplaceKV');
+assert.ok(llmsFullContent.includes('native Metal'), 'llms-full.txt must describe current Laplace Metal execution');
+assert.ok(llmsFullContent.includes('research/'), 'llms-full.txt must mark earlier Laplace runtimes as historical');
+assert.ok(llmsFullContent.includes('LaplaceKV'), 'llms-full.txt must name LaplaceKV only as historical research');
+assert.ok(!llmsFullContent.includes('23.3x'), 'llms-full.txt must not cite retired LaplaceKV compression figures as current');
+assert.ok(!llmsFullContent.includes('Gemma 4'), 'llms-full.txt must not list retired Laplace model-family claims as current');
+assert.ok(!llmsFullContent.includes('431 passed'), 'llms-full.txt must not cite a stale Monodratic test count');
+assert.ok(llmsFullContent.includes('99.35%'), 'llms-full.txt must use the published Monodratic recall mean');
+assert.ok(!llmsFullContent.includes('OpenAPI'), 'llms-full.txt must not claim an OpenAPI document that does not exist');
 assert.ok(llmsFullContent.includes('Interlace'), 'llms-full.txt must describe Interlace');
 assert.ok(llmsFullContent.includes('MoltenVK'), 'llms-full.txt must describe MoltenVK');
 assert.ok(llmsFullContent.includes('Vulkan ray tracing'), 'llms-full.txt must describe the Vulkan ray tracing port');
@@ -176,5 +187,7 @@ assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2790
 assert.ok(!indexHtml.includes('href="https://github.com/KhronosGroup/MoltenVK"'), 'index.html must not link the MoltenVK repo from the drawer');
 assert.ok(indexHtml.includes('opensource.moltenvk.pr2771'), 'index.html must expose the MoltenVK ray tracing PR action');
 assert.ok(indexHtml.includes('Contributor to Khronos MoltenVK'), 'index.html must name Khronos MoltenVK as contributor work');
+assert.ok(!indexHtml.includes('LaplaceKV'), 'index.html must not present retired LaplaceKV as current');
+assert.ok(!indexHtml.includes('SIMD kernels'), 'index.html must not describe current Laplace as a SIMD kernel engine');
 
 console.log('✔ HTML & Schema.org JSON-LD graph validation passed.');

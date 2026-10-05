@@ -1,0 +1,138 @@
+:root {
+  color-scheme: light dark;
+  --paper: #FFFFFF;
+  --ink: #0E0E0E;
+  --muted: #767676;
+  --base: rgb(0 0 0 / 0.17);
+  --accent: #0000FF;
+
+  --display: 'Instrument Serif', Georgia, serif;
+  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* one letter size for the whole strand; every measure on the page is a multiple of it */
+  --size: clamp(13px, 0.55vw + 10px, 18px);
+  --read-at: 87%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #101010;
+    --ink: #F5F5F5;
+    --muted: #8A8A8A;
+    --base: rgb(255 255 255 / 0.17);
+    --accent: #4D79FF;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--paper); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font: 500 var(--size)/1.75 var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
+  font-variant-ligatures: none;
+}
+
+a { color: inherit; text-decoration: none; }
+h1, h2 { font: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* the reading height: two small marks at the edges of the screen */
+body::after {
+  content: '';
+  position: fixed;
+  inset: var(--read-at) 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0 0.9rem, transparent 0.9rem calc(100% - 0.9rem), var(--accent) calc(100% - 0.9rem));
+  pointer-events: none;
+}
+
+/* === Top bar === */
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  background: linear-gradient(var(--paper) 55%, transparent);
+}
+.bar nav { display: flex; gap: clamp(0.7rem, 2.2vw, 1.6rem); overflow-x: auto; scrollbar-width: none; }
+.bar a { color: var(--ink); transition: color 150ms; }
+.bar a:hover { color: var(--accent); }
+.bar nav a::before { content: '>'; }
+
+/* === The strand === */
+.fill, .row { white-space: pre; overflow: hidden; }
+.fill { font: inherit; color: var(--base); }
+.row { display: block; }
+.b { color: var(--base); }
+.g { color: var(--ink); transition: color 300ms; }
+.row:not(.read) .g { color: var(--base); }
+/* once a line is read, the strand around it steps back so the words stand clear */
+.row.read .b { opacity: 0.4; transition: opacity 400ms; }
+.n { font-weight: 700; }
+.t { font-weight: 700; color: var(--accent); }
+a.g { text-decoration: underline; text-decoration-color: var(--base); text-underline-offset: 0.25em; transition: color 150ms, text-decoration-color 150ms; }
+.read a.g:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.row:not(.read) a.g { text-decoration: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* before the script runs, and without it, the text is simply readable */
+.gene > :is(h2, p):not(:has(.row)), .gene figcaption:not(:has(.row)) { padding: 0.8em 1rem; max-width: 64ch; white-space: normal; letter-spacing: 0.02em; }
+
+/* === Hero: the name in its own type, laid over the strand === */
+.hero { position: relative; }
+.name {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font: 400 clamp(4.2rem, 16.5vw, 19.5rem)/0.85 var(--display);
+  letter-spacing: -0.03em;
+  user-select: none;
+  pointer-events: none;
+  text-shadow: 0 0 0.35em var(--paper), 0 0 0.1em var(--paper);
+}
+.name b { display: block; font-weight: 400; font-size: 1.48em; }
+/* a one-word name, such as a project's, takes the size of the larger line */
+.name:not(:has(b)) { font-size: clamp(4.4rem, 19vw, 24rem); }
+/* a letter still passing through bases; its width is already the real letter's */
+.letter { display: inline-block; text-align: center; transition: color 200ms; }
+.letter.unread { color: var(--base); }
+
+/* === Figures set in the strand === */
+.gene figure { display: block; }
+
+/* === Leaving a page: what is not strand fades while the strand recomputes === */
+.name { transition: opacity 180ms; }
+.leaving .name { opacity: 0; }
+
+@media (max-width: 520px) {
+  /* the name is already the whole first screen */
+  .bar > a { display: none; }
+  .bar { font-size: 0.8rem; letter-spacing: 0; }
+  .bar nav { width: 100%; justify-content: space-between; gap: 0.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+@media print {
+  .bar, .fill, .b, body::after { display: none; }
+  .name { position: static; }
+}

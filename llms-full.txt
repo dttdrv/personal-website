@@ -70,6 +70,14 @@ Misul is an independent AI research lab in Sofia, Bulgaria. The lab builds machi
 
 ## 3. Independent Projects
 
+### 3.0 Epigenesis
+- **Scope**: Universal DNA translation compiler targeting Development Module IR (version 1.5, Python 3.11+, standard library only, Apache-2.0).
+- **Repository**: `https://github.com/dttdrv/epigenesis`
+- **Pipeline**: DNA source language, grammar frontend, typed source bundle with profile-native IR, validated caller-supplied interpretation, target-bound lowering, Development Module IR, sealed compilation bundle.
+- **Sources**: Raw IUPAC, FASTA, streaming reference FASTA, GenBank, and GFF3 are built in. Other DNA-bearing grammars enter through digest-pinned external frontends with separate validators.
+- **Experimental consumers**: A neural-fate example that reproduces the published Pax6/Olig2/Nkx2.2 models of Balaskas et al. 2012 and Panovska-Griffiths et al. 2013 from an artificial 512-base parameter recipe; a local neural construction example; coding-consequence and DNA-binding examples.
+- **Not claimed**: A validated natural-genome-to-brain model remains an open research objective. The measured reporter and binding predictors failed their scientific acceptance criteria; those results are preserved.
+
 ### 3.1 PhoneCode
 - **Platform**: Android (Native), Android 8.0+ arm64.
 - **Function**: On-device coding agent that edits local workspaces and git repositories on the phone. It talks to chosen model providers (OpenAI, Anthropic, OpenRouter, Google, xAI, DeepSeek, Mistral, or a custom endpoint) from the device, with no intermediary proxy, no telemetry, and no account requirement.
@@ -95,6 +103,11 @@ Misul is an independent AI research lab in Sofia, Bulgaria. The lab builds machi
 - **Scope**: Contributor to Khronos MoltenVK, the Vulkan implementation on Apple platforms. Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal.
 - **Pull requests**:
   - `#2771` Ray tracing (`VK_KHR_acceleration_structure`, `VK_KHR_ray_query`, `VK_KHR_ray_tracing_pipeline`) — in review: `https://github.com/KhronosGroup/MoltenVK/pull/2771`
+  - `#2842` Add VK_EXT_mesh_shader support — in review: `https://github.com/KhronosGroup/MoltenVK/pull/2842`
+  - `#2837` Skip redundant work when rebinding unchanged descriptor sets — in review: `https://github.com/KhronosGroup/MoltenVK/pull/2837`
+  - `#2820` Correct tessellation patch counts and indexed-indirect command layout — in review: `https://github.com/KhronosGroup/MoltenVK/pull/2820`
+  - `#2843` Use specialization constant values for array sizes in shader interfaces — in review: `https://github.com/KhronosGroup/MoltenVK/pull/2843`
+  - `#2819` Preserve execution dependencies across Metal encoders — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2819`
   - `#2776` Native sampler min/max filtering — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2776`
   - `#2788` Avoid repeated state finalization for indexed indirect draws — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2788`
   - `#2790` Avoid redundant non-indexed indirect draw finalization — merged: `https://github.com/KhronosGroup/MoltenVK/pull/2790`

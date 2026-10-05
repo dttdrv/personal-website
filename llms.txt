@@ -25,6 +25,7 @@ Misul is an independent AI research lab founded by Deyan Todorov. It designs neu
 
 ## Independent Projects
 
+- [Epigenesis](https://github.com/dttdrv/epigenesis): Universal DNA translation compiler targeting Development Module IR, with experimental consumers for neural mechanisms and developmental construction. A validated natural-genome-to-brain model remains an open research objective. Apache-2.0.
 - [PhoneCode](https://dttdrv.xyz/phonecode.html): Native Android coding agent that edits local workspaces and talks to chosen model providers from the device, with no proxy and no telemetry.
 - [optiSYS](https://dttdrv.xyz/optisys.html): Native Windows system optimizer tuning system responsiveness, network stack buffers, and process scheduling without bloat.
 - [dzipobel.wiki](https://dzipobel.wiki): Digital literature and grammar educational repository for Bulgarian state high school examinations.
@@ -34,10 +35,15 @@ Misul is an independent AI research lab founded by Deyan Todorov. It designs neu
 
 Contributor to Khronos MoltenVK, the Vulkan implementation on Apple platforms. Porting Vulkan ray tracing to macOS by mapping ray query, acceleration structures, and ray tracing pipelines onto Metal.
 
-- [#2771 Ray tracing](https://github.com/KhronosGroup/MoltenVK/pull/2771): in-review patch implementing Vulkan ray tracing on macOS
-- [#2776 Sampler min/max](https://github.com/KhronosGroup/MoltenVK/pull/2776): merged
-- [#2788 Indexed indirect](https://github.com/KhronosGroup/MoltenVK/pull/2788): merged
+- [#2771 Ray tracing](https://github.com/KhronosGroup/MoltenVK/pull/2771): in review, implements Vulkan ray tracing on macOS
+- [#2842 Mesh shaders](https://github.com/KhronosGroup/MoltenVK/pull/2842): in review, adds VK_EXT_mesh_shader
+- [#2837 Descriptor sets](https://github.com/KhronosGroup/MoltenVK/pull/2837): in review
+- [#2820 Tessellation](https://github.com/KhronosGroup/MoltenVK/pull/2820): in review
+- [#2843 Specialization constants](https://github.com/KhronosGroup/MoltenVK/pull/2843): in review
+- [#2819 Encoder dependencies](https://github.com/KhronosGroup/MoltenVK/pull/2819): merged
 - [#2790 Non-indexed indirect](https://github.com/KhronosGroup/MoltenVK/pull/2790): merged
+- [#2788 Indexed indirect](https://github.com/KhronosGroup/MoltenVK/pull/2788): merged
+- [#2776 Sampler min/max](https://github.com/KhronosGroup/MoltenVK/pull/2776): merged
 
 ## Detailed LLM Context
 

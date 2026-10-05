@@ -11,12 +11,9 @@
 
   <!-- Preload critical fonts & screenshot -->
   <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/inter-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="pictures/phonecode-screen.png" as="image" fetchpriority="high">
-
-  <!-- Fonts & Styles -->
   <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="styles.css?v=20260827">
+  <link rel="stylesheet" href="home/home.css">
+  <link rel="modulepreload" href="home/main.js">
 
   <script type="application/ld+json">
   {
@@ -39,259 +36,51 @@
   }
   </script>
 
-  <!-- Page-specific styles -->
-  <style>
-    .room--phone-hero {
-      align-items: center;
-      text-align: center;
-      padding-top: var(--space-2xl);
-    }
-
-    .phone-byline {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--gray);
-      margin-bottom: 0.35rem;
-    }
-
-    .phone-presents {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 1.15rem;
-      color: var(--gray);
-      margin-bottom: 1.25rem;
-    }
-
-    .phone-wordmark {
-      font-family: var(--font-display);
-      font-size: clamp(4rem, 12vw, 8rem);
-      line-height: 0.9;
-      letter-spacing: -0.02em;
-      color: var(--black);
-      margin-bottom: var(--space-md);
-      display: flex;
-      justify-content: center;
-      user-select: none;
-    }
-
-    .phone-tagline {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(1.3rem, 3vw, 1.85rem);
-      color: var(--gray-dark);
-      max-width: 30ch;
-      line-height: 1.35;
-      margin-top: var(--space-md);
-    }
-
-    .phone-statement {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      line-height: 1.2;
-      max-width: 20ch;
-      margin: 0 auto var(--space-2xl);
-      text-align: center;
-    }
-
-    .phone-statement .accent {
-      color: var(--accent);
-      font-style: italic;
-    }
-
-    .phone-showcase {
-      max-width: 320px;
-      margin: 0 auto var(--space-2xl);
-      border-radius: var(--radius-squircle);
-      overflow: hidden;
-      border: 1px solid var(--gray-light);
-      background: var(--surface);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
-    }
-
-    .phone-screenshot {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .phone-features {
-      max-width: 920px;
-      width: 100%;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-xl) var(--space-lg);
-    }
-
-    .phone-feature .num {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-
-    .phone-feature .cap-name {
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 2.8vw, 2.1rem);
-      color: var(--black);
-      display: block;
-      margin-bottom: 0.65rem;
-    }
-
-    .phone-feature .desc {
-      color: var(--gray-dark);
-      font-size: 1.02rem;
-      line-height: 1.65;
-    }
-
-    @media (max-width: 768px) {
-      .phone-features {
-        grid-template-columns: 1fr;
-        gap: var(--space-lg);
-      }
-    }
-
-    .phone-get {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-md);
-    }
-
-    .phone-meta {
-      color: var(--gray);
-      font-size: 0.95rem;
-    }
-
-    .phone-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-top: var(--space-xs);
-    }
-
-    .phone-links a {
-      font-size: 0.92rem;
-      color: var(--gray);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .phone-links a:hover {
-      color: var(--accent);
-      text-decoration: underline;
-    }
-  </style>
 </head>
 
 <body>
-  <!-- Scroll Progress -->
-  <div class="scroll-progress"></div>
-
-  <!-- Universal Back Button + Header -->
-  <a href="index.html" class="back-button" aria-label="Back to Portfolio">‹</a>
-  <header class="phone-header">
-    <a href="https://github.com/dttdrv/phonecode/releases/latest" class="phone-header-dl" data-download>Download APK</a>
+  <header class="bar">
+    <a href="index.html">Deyan Todorov</a>
+    <nav aria-label="Sections">
+      <a href="#what">what it does</a>
+      <a href="#get">get it</a>
+    </nav>
   </header>
 
-  <main class="gallery">
-
-    <!-- Hero -->
-    <section class="room room--phone-hero" id="phone-top">
-      <div class="phone-hero-inner">
-        <p class="phone-byline">Deyan Todorov</p>
-        <p class="phone-presents">presents</p>
-        <h1 class="phone-wordmark" data-magnetic>
-          <span class="name-letter" data-letter>P</span><span class="name-letter" data-letter>h</span><span class="name-letter" data-letter>o</span><span class="name-letter" data-letter>n</span><span class="name-letter" data-letter>e</span><span class="name-letter" data-letter>C</span><span class="name-letter" data-letter>o</span><span class="name-letter" data-letter>d</span><span class="name-letter" data-letter>e</span>
-        </h1>
-        <p class="phone-tagline">An AI coding agent that runs entirely on your Android device.</p>
-      </div>
+  <main class="strand">
+    <section class="hero" id="top">
+      <pre class="fill" data-screen="0.86" aria-hidden="true"></pre>
+      <h1 class="name"><span>PhoneCode</span></h1>
     </section>
 
-    <!-- What it does -->
-    <section class="room" id="phone-about">
-      <p class="phone-statement">Your code, <span class="accent">your keys, your phone.</span></p>
-
-      <div class="phone-showcase">
-        <img class="phone-screenshot" src="pictures/phonecode-screen.png" alt="PhoneCode mobile interface" loading="lazy" decoding="async">
-      </div>
-
-      <div class="phone-features">
-
-        <div class="phone-feature">
-          <span class="num">01</span>
-          <span class="cap-name">On-device agent</span>
-          <p class="desc">PhoneCode reads, writes, and edits files in local workspaces, runs git commands, and interacts directly with language models without intermediary proxy servers.</p>
-        </div>
-
-        <div class="phone-feature">
-          <span class="num">02</span>
-          <span class="cap-name">Model provider choice</span>
-          <p class="desc">Connect to OpenAI, Anthropic, OpenRouter, Google, xAI, DeepSeek, Mistral, or custom endpoints. API keys are stored securely in the hardware-backed Android Keystore.</p>
-        </div>
-
-        <div class="phone-feature">
-          <span class="num">03</span>
-          <span class="cap-name">Isolated workspaces</span>
-          <p class="desc">Each task runs in its own git repository folder. Create branches, inspect diffs, and commit snapshots directly from the chat interface.</p>
-        </div>
-
-        <div class="phone-feature">
-          <span class="num">04</span>
-          <span class="cap-name">Private by design</span>
-          <p class="desc">No analytics, no telemetry, and no account requirements. Your workspace files remain strictly within Android scoped storage on your device.</p>
-        </div>
-
-      </div>
+    <section class="gene">
+      <p>A coding agent that runs on your Android phone.</p>
+      <p class="links"><a href="https://github.com/dttdrv/phonecode/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/phonecode" data-asset=".apk">Download APK</a></p>
     </section>
 
-    <!-- Get PhoneCode -->
-    <section class="room" id="phone-get">
-      <div class="contact-header">
-        <h2 class="section-title">Get PhoneCode</h2>
-      </div>
-      <div class="phone-get">
-        <p class="phone-meta">Latest release · Android 8.0+ (arm64) · Sideload APK</p>
-        <a class="phone-dl-btn" href="https://github.com/dttdrv/phonecode/releases/latest" data-download>Download APK</a>
-        <div class="phone-links">
-          <a href="https://github.com/dttdrv/phonecode" target="_blank" rel="noopener">View source code on GitHub →</a>
-          <a href="https://ko-fi.com/dttdrv" target="_blank" rel="noopener">Support development on Ko-fi →</a>
-          <div>
-            <a href="phonecode-privacy.html">Privacy Policy</a> · <a href="phonecode-terms.html">Terms of Service</a>
-          </div>
-        </div>
-      </div>
+    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
+
+    <section class="gene" id="what">
+      <h2>What it does</h2>
+      <p class="entry"><b>On-device agent</b> It reads and edits files in a folder on your phone and runs git there. It talks to the model directly from the phone.</p>
+      <p class="entry"><b>Model choice</b> It works with OpenAI, Anthropic, OpenRouter, Google, xAI, DeepSeek, Mistral or your own endpoint, and your keys stay in the Android Keystore.</p>
+      <p class="entry"><b>Workspaces</b> Every task gets its own git repo. You can branch, read the diff and commit from the chat.</p>
+      <p class="entry"><b>Private</b> It collects nothing and does not need an account. Your files stay in Android scoped storage on the phone.</p>
     </section>
 
+    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
+
+    <section class="gene" id="get">
+      <h2>Get PhoneCode</h2>
+      <p data-release="dttdrv/phonecode" data-version="Version {version} · Android 8.0+ (arm64) · Sideload APK">Latest release · Android 8.0+ (arm64) · Sideload APK</p>
+      <p class="links"><a href="https://github.com/dttdrv/phonecode/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/phonecode" data-asset=".apk">Download APK</a> <a href="https://github.com/dttdrv/phonecode" target="_blank" rel="noopener">Source code</a> <a href="https://ko-fi.com/dttdrv" target="_blank" rel="noopener">Support on Ko-fi</a></p>
+      <p class="links"><a href="phonecode-privacy.html">Privacy Policy</a> <a href="phonecode-terms.html">Terms of Service</a></p>
+    </section>
+
+    <pre class="fill" data-screen="0.4" aria-hidden="true"></pre>
   </main>
 
-  <!-- Scripts -->
-  <script src="translations.js?v=2" defer></script>
-  <script src="script.js?v=2" defer></script>
-
-  <!-- GitHub Release Dynamic Resolution -->
-  <script>
-    fetch('https://api.github.com/repos/dttdrv/phonecode/releases/latest')
-      .then(r => r.ok ? r.json() : null)
-      .then(rel => {
-        if (!rel) return;
-        const asset = rel.assets && rel.assets.find(a => a.name.endsWith('.apk'));
-        if (asset) {
-          document.querySelectorAll('a[data-download]').forEach(a => { a.href = asset.browser_download_url; });
-        }
-        const meta = document.querySelector('.phone-meta');
-        if (meta && rel.tag_name) {
-          const version = rel.tag_name.replace(/^v/, '');
-          meta.textContent = `Version ${version} · Android 8.0+ (arm64) · Sideload APK`;
-        }
-      })
-      .catch(() => {});
-  </script>
+  <script type="module" src="home/main.js"></script>
 </body>
 
 </html>

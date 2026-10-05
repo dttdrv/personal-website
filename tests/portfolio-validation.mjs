@@ -6,78 +6,22 @@ const ROOT = process.cwd();
 
 console.log('Running portfolio validation tests...');
 
-// 1. Validate translations.js
-const translationsPath = path.join(ROOT, 'translations.js');
-assert.ok(fs.existsSync(translationsPath), 'translations.js must exist');
-const translationsFile = fs.readFileSync(translationsPath, 'utf8');
-
-const context = {};
-const evalFn = new Function('context', translationsFile + '; context.TRANSLATIONS = TRANSLATIONS;');
-evalFn(context);
-const { TRANSLATIONS } = context;
-assert.ok(TRANSLATIONS, 'TRANSLATIONS object must be defined');
-assert.ok(TRANSLATIONS.en, 'English translations must be present');
-assert.ok(TRANSLATIONS.bg, 'Bulgarian translations must be present');
-
-const requiredKeys = [
-  'nav.top',
-  'nav.about',
-  'nav.misul',
-  'nav.projects',
-  'nav.opensource',
-  'nav.contact',
-  'about.role',
-  'about.statement',
-  'misul.heading',
-  'misul.role',
-  'misul.intro',
-  'misul.laplace.title',
-  'misul.laplace.brief',
-  'misul.laplace.desc',
-  'misul.interlace.title',
-  'misul.interlace.brief',
-  'misul.interlace.desc',
-  'misul.monodratic.title',
-  'misul.monodratic.brief',
-  'misul.monodratic.desc',
-  'projects.heading',
-  'projects.phonecode.title',
-  'projects.phonecode.brief',
-  'projects.phonecode.desc',
-  'projects.optisys.title',
-  'projects.optisys.brief',
-  'projects.optisys.desc',
-  'projects.dzipobel.title',
-  'projects.dzipobel.brief',
-  'projects.dzipobel.desc',
-  'projects.schoolmap.title',
-  'projects.schoolmap.brief',
-  'projects.schoolmap.desc',
-  'opensource.heading',
-  'opensource.intro',
-  'opensource.moltenvk.title',
-  'opensource.moltenvk.brief',
-  'opensource.moltenvk.desc',
-  'opensource.moltenvk.pr2771',
-  'opensource.moltenvk.pr2776',
-  'opensource.moltenvk.pr2788',
-  'opensource.moltenvk.pr2790'
-];
-
-function getNested(obj, keyPath) {
-  return keyPath.split('.').reduce((acc, part) => (acc ? acc[part] : undefined), obj);
-}
-
+// 1. Validate the home page strings
+const { STRINGS } = await import('../home/strings.js');
+const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+assert.deepEqual(Object.keys(STRINGS.bg), Object.keys(STRINGS.en), 'en and bg must define the same keys in the same order');
 for (const lang of ['en', 'bg']) {
-  for (const key of requiredKeys) {
-    const val = getNested(TRANSLATIONS[lang], key);
-    assert.ok(
-      typeof val === 'string' && val.trim().length > 0,
-      `Missing translation key "${key}" for language "${lang}"`
-    );
+  for (const [key, value] of Object.entries(STRINGS[lang])) {
+    assert.ok(typeof value === 'string' && value.trim().length > 0, `Empty string "${key}" for language "${lang}"`);
   }
 }
-console.log('✔ Translations validation passed (all keys present in en & bg).');
+// the markup is the English source for crawlers and no-script readers, so it must not drift from the strings
+const inline = [...indexHtml.matchAll(/data-i18n="([^"]+)">([^<]*)</g)];
+assert.ok(inline.length > 20, 'index.html must carry its text inline');
+for (const [, key, text] of inline) {
+  assert.equal(text.replaceAll('&amp;', '&'), STRINGS.en[key], `index.html text for "${key}" must match STRINGS.en`);
+}
+console.log('✔ Home strings validation passed (en and bg aligned with the markup).');
 
 // 2. Validate llms.txt & llms-full.txt
 const llmsPath = path.join(ROOT, 'llms.txt');
@@ -101,6 +45,7 @@ assert.ok(llmsContent.includes('pull/2788'), 'llms.txt must link MoltenVK pull r
 assert.ok(llmsContent.includes('pull/2790'), 'llms.txt must link MoltenVK pull request 2790');
 assert.ok(!llmsContent.includes('Misul Agent'), 'llms.txt must not mention Misul Agent');
 assert.ok(!llmsContent.includes('misul.org/agent'), 'llms.txt must not link misul.org/agent');
+assert.ok(llmsContent.includes('github.com/dttdrv/epigenesis'), 'llms.txt must link Epigenesis');
 assert.ok(llmsContent.includes('llms-full.txt'), 'llms.txt must reference llms-full.txt');
 
 const llmsFullPath = path.join(ROOT, 'llms-full.txt');
@@ -114,6 +59,8 @@ assert.ok(!llmsFullContent.includes('Gemma 4'), 'llms-full.txt must not list ret
 assert.ok(!llmsFullContent.includes('431 passed'), 'llms-full.txt must not cite a stale Monodratic test count');
 assert.ok(llmsFullContent.includes('99.35%'), 'llms-full.txt must use the published Monodratic recall mean');
 assert.ok(!llmsFullContent.includes('OpenAPI'), 'llms-full.txt must not claim an OpenAPI document that does not exist');
+assert.ok(llmsFullContent.includes('Epigenesis'), 'llms-full.txt must describe Epigenesis');
+assert.ok(llmsFullContent.includes('failed their scientific acceptance criteria'), 'llms-full.txt must keep the Epigenesis failed-predictor statement');
 assert.ok(llmsFullContent.includes('Interlace'), 'llms-full.txt must describe Interlace');
 assert.ok(llmsFullContent.includes('MoltenVK'), 'llms-full.txt must describe MoltenVK');
 assert.ok(llmsFullContent.includes('Vulkan ray tracing'), 'llms-full.txt must describe the Vulkan ray tracing port');
@@ -137,11 +84,6 @@ assert.ok(sitemapContent.includes('<loc>https://dttdrv.xyz/phonecode.html</loc>'
 console.log('✔ SEO & discoverability files validation passed.');
 
 // 4. Validate index.html Schema.org JSON-LD and Markup
-const indexPath = path.join(ROOT, 'index.html');
-assert.ok(fs.existsSync(indexPath), 'index.html must exist');
-const indexHtml = fs.readFileSync(indexPath, 'utf8');
-
-// Extract JSON-LD script
 const jsonLdMatch = indexHtml.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
 assert.ok(jsonLdMatch, 'index.html must contain a JSON-LD script block');
 const jsonLd = JSON.parse(jsonLdMatch[1]);
@@ -152,42 +94,43 @@ assert.ok(graphTypes.some(t => t.includes('Person')), 'JSON-LD must define Perso
 assert.ok(graphTypes.some(t => t.includes('ResearchOrganization')), 'JSON-LD must define ResearchOrganization');
 assert.ok(graphTypes.some(t => t.includes('ItemList')), 'JSON-LD must define ItemList');
 
-// Verify remaining project drawers exist in index.html
-const drawerIds = [
-  'drawer-item-laplace',
-  'drawer-item-interlace',
-  'drawer-item-monodratic',
-  'drawer-item-phonecode',
-  'drawer-item-optisys',
-  'drawer-item-dzipobel',
-  'drawer-item-schoolmap',
-  'drawer-item-moltenvk'
-];
-
-for (const id of drawerIds) {
-  assert.ok(indexHtml.includes(`id="${id}"`), `index.html must contain drawer with id="${id}"`);
+// the strand is drawn by script; the words themselves must already be in the markup
+for (const id of ['epigenesis', 'research', 'projects', 'opensource', 'contact']) {
+  assert.match(indexHtml, new RegExp(`<section class="gene" id="${id}">\\s*<h2`), `gene ${id} must open with its heading`);
+}
+for (const [, href] of indexHtml.matchAll(/(?:href|src)="((?!https?:|mailto:|#)[^"]+)"/g)) {
+  assert.ok(fs.existsSync(path.join(ROOT, href)), `index.html references missing file ${href}`);
 }
 
-// Verify accessibility attributes are present
-assert.ok(indexHtml.includes('aria-expanded="false"'), 'index.html must include aria-expanded on drawer triggers');
-assert.ok(indexHtml.includes('role="region"'), 'index.html must include role="region" on drawer expandables');
+assert.ok(indexHtml.includes('https://github.com/dttdrv/epigenesis'), 'index.html must link the Epigenesis repository');
+assert.ok(indexHtml.includes('Two of my own predictors failed their tests'), 'index.html must own up to the Epigenesis predictors that failed');
+assert.ok(!/artificial intelligence|digital brain|AGI/i.test(indexHtml.split('</head>')[1]), 'the page must not pitch Epigenesis as building an intelligence');
 assert.ok(indexHtml.includes('https://misul.org/Interlace'), 'index.html must link Interlace report at misul.org/Interlace');
-assert.ok(indexHtml.includes('https://github.com/MisulOrg/Interlace/blob/main/paper/interlace.pdf'), 'index.html must link the Interlace PDF paper');
-assert.ok(indexHtml.includes('https://github.com/MisulOrg/Interlace"'), 'index.html must link the Interlace GitHub repo');
+assert.ok(indexHtml.includes('https://misul.org/monodratic/'), 'index.html must link the Monodratic report');
+assert.ok(indexHtml.includes('https://github.com/MisulOrg/Laplace'), 'index.html must link Laplace');
 assert.ok(!indexHtml.includes('Misul-Computing'), 'index.html must not use the retired Misul-Computing GitHub org');
-assert.ok(!indexHtml.includes('drawer-item-todorov'), 'index.html must not include the Todorov drawer');
-assert.ok(!indexHtml.includes('drawer-item-transformerov'), 'index.html must not include the Transformerov drawer');
-assert.ok(!indexHtml.includes('drawer-item-agent'), 'index.html must not include the Misul Agent drawer');
 assert.ok(!indexHtml.includes('misul.org/agent'), 'index.html must not link misul.org/agent');
-assert.ok(indexHtml.includes('Porting Vulkan ray tracing to macOS'), 'index.html must headline the MoltenVK ray tracing port');
-assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2771'), 'index.html must link MoltenVK pull request 2771');
-assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2776'), 'index.html must link MoltenVK pull request 2776');
-assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2788'), 'index.html must link MoltenVK pull request 2788');
-assert.ok(indexHtml.includes('https://github.com/KhronosGroup/MoltenVK/pull/2790'), 'index.html must link MoltenVK pull request 2790');
-assert.ok(!indexHtml.includes('href="https://github.com/KhronosGroup/MoltenVK"'), 'index.html must not link the MoltenVK repo from the drawer');
-assert.ok(indexHtml.includes('opensource.moltenvk.pr2771'), 'index.html must expose the MoltenVK ray tracing PR action');
-assert.ok(indexHtml.includes('Contributor to Khronos MoltenVK'), 'index.html must name Khronos MoltenVK as contributor work');
+assert.ok(indexHtml.includes('Vulkan ray tracing on macOS'), 'index.html must name the MoltenVK ray tracing port');
+for (const pr of [2771, 2776, 2788, 2790, 2819, 2820, 2837, 2842, 2843]) {
+  assert.ok(indexHtml.includes(`https://github.com/KhronosGroup/MoltenVK/pull/${pr}`), `index.html must link MoltenVK pull request ${pr}`);
+}
+assert.ok(!indexHtml.includes('href="https://github.com/KhronosGroup/MoltenVK"'), 'index.html must not link the MoltenVK repo itself');
+assert.ok(indexHtml.includes('I contribute to Khronos MoltenVK'), 'index.html must name Khronos MoltenVK as contributor work');
+assert.ok(indexHtml.includes('Four of my patches are merged'), 'index.html must state how many MoltenVK patches are merged');
 assert.ok(!indexHtml.includes('LaplaceKV'), 'index.html must not present retired LaplaceKV as current');
 assert.ok(!indexHtml.includes('SIMD kernels'), 'index.html must not describe current Laplace as a SIMD kernel engine');
+assert.ok(indexHtml.includes('inference engine for Apple Silicon'), 'index.html must describe Laplace as an inference engine');
+
+for (const product of ['phonecode.html', 'optisys.html']) {
+  assert.ok(!fs.readFileSync(path.join(ROOT, product), 'utf8').includes('<img'), `${product} must not show pictures`);
+}
+// in-site links swap one strand page for another, so every page they lead to must be one
+for (const [, href] of indexHtml.matchAll(/href="((?!https?:|mailto:|#)[^"]+\.html)"/g)) {
+  const target = fs.readFileSync(path.join(ROOT, href), 'utf8');
+  assert.ok(target.includes('<main class="strand">') && target.includes('<header class="bar">'), `${href} must be a strand page`);
+  assert.ok(target.includes('href="index.html"'), `${href} must link back home`);
+}
+assert.ok(indexHtml.indexOf('about.statement') < indexHtml.indexOf('id="epigenesis"'), 'the statement must come straight after the name');
+assert.ok(indexHtml.lastIndexOf('mailto:deyan@misul.org') > indexHtml.indexOf('id="contact"'), 'contact links must close the page');
 
 console.log('✔ HTML & Schema.org JSON-LD graph validation passed.');

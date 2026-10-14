@@ -35,12 +35,12 @@
   <meta name="twitter:image" content="https://dttdrv.xyz/pictures/preview.png">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="preload" href="fonts/instrument-serif-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="fonts.css?v=ceebf99ba7">
-  <link rel="stylesheet" href="home/home.css?v=ceebf99ba7">
+  <link rel="preload" href="fonts/inter-600-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="fonts.css?v=1ecf6b03f3">
+  <link rel="stylesheet" href="home/home.css?v=1ecf6b03f3">
   <script>document.documentElement.className = 'js';</script>
-  <link rel="modulepreload" href="home/main.js?v=ceebf99ba7">
-  <link rel="modulepreload" href="home/strings.js?v=ceebf99ba7">
+  <link rel="modulepreload" href="home/main.js?v=1ecf6b03f3">
+  <link rel="modulepreload" href="home/strings.js?v=1ecf6b03f3">
 
   <script type="application/ld+json">
   {
@@ -51,7 +51,6 @@
         "@id": "https://dttdrv.xyz/#person",
         "name": "Deyan Todorov",
         "url": "https://dttdrv.xyz",
-        "image": "https://dttdrv.xyz/pictures/profile.jpg",
         "jobTitle": "Founder & AI Systems Researcher",
         "worksFor": {
           "@type": "ResearchOrganization",
@@ -266,24 +265,14 @@
 
   <main>
     <section class="hero" id="top">
-      <div class="title">
-        <h1 class="name"><span class="line"><span data-i18n="name.first">Deyan</span></span> <span class="line"><span data-i18n="name.last">Todorov</span></span></h1>
-        <p class="hero-line" data-i18n="hero.line">I write software in Sofia, from a compiler for DNA to patches for a Vulkan driver.</p>
-      </div>
-      <figure class="cover">
-        <div class="print" data-shader="halftone" data-pitch="11"><img src="pictures/profile.jpg" width="1080" height="1176" alt="Deyan Todorov, looking slightly to the side against a dark backdrop" fetchpriority="high"></div>
-      </figure>
+      <h1 class="name"><span class="line"><span data-i18n="name.first">Deyan</span></span> <span class="line"><span data-i18n="name.last">Todorov</span></span></h1>
     </section>
 
-    <section class="about" aria-label="About me">
-      <p class="statement" data-i18n="about.statement" data-reveal>I believe in doing a job 100% or not doing it at all.</p>
-      <figure class="band">
-        <div class="print" data-shader="halftone" data-pitch="14"><img src="assets/basa-1577k-1-61-12-sofia-bulgaria.jpg" width="1620" height="983" alt="A tram on Targovska Street in Sofia, between corner buildings with shops on the ground floor" loading="lazy" decoding="async"></div>
+    <section class="about" aria-label="Byala Slatina">
+      <figure class="band" tabindex="0">
+        <div class="print" data-shader="halftone" data-pitch="14"><img src="assets/chitalishte-razvitie-byala-slatina.jpg" width="444" height="332" alt="The chitalishte in Byala Slatina, a white building with a red roof behind a paved square" loading="lazy" decoding="async"></div>
+        <figcaption><span data-i18n="about.town">The chitalishte in Byala Slatina.</span> <a href="https://commons.wikimedia.org/wiki/File:Chital-bsl.JPG" target="_blank" rel="noopener">Photo by Dikovski, 2010, public domain.</a></figcaption>
       </figure>
-      <div class="under" data-reveal>
-        <p class="note" data-i18n="about.sofia">Targovska Street in Sofia, on a postcard from before 1930.</p>
-        <p data-i18n="about.me">I'm Deyan and I live in Sofia. Most days I write software, and nearly all of it ends up on this page: a compiler for DNA, a research lab, a few apps and patches for a graphics driver.</p>
-      </div>
     </section>
 
     <section class="showcase" id="epigenesis">
@@ -294,14 +283,7 @@
         <p data-i18n="epigenesis.desc">It reads FASTA, GenBank and GFF3 files. So far it runs two published models of how neural cells pick their fate, grows small networks from a single starting cell, and turns real mutations into proteins. Two of my own predictors failed their tests and I kept them in the repo anyway. Version 1.6 is on GitHub.</p>
         <p><a href="https://github.com/dttdrv/epigenesis" target="_blank" rel="noopener">github.com/dttdrv/epigenesis</a></p>
       </div>
-      <figure class="specimen" data-reveal>
-        <div class="print" data-shader="halftone" data-pitch="9" data-contrast="0.62" data-drawing><img src="assets/the-development-of-the-chick-an-introduction.jpg" width="1920" height="1316" alt="An engraved section through the head of a chick embryo, with the parts of its developing brain labelled" loading="lazy" decoding="async"></div>
-        <figcaption data-i18n="epigenesis.plate">The brain of a chick embryo in section, from The Development of the Chick, 1908.</figcaption>
-      </figure>
-      <figure class="machine" data-machine data-reveal>
-        <div class="stage" tabindex="0"></div>
-        <figcaption data-i18n="epigenesis.figure">The smallest example in the repository, built as a machine. Fifteen bases are punched into a tape and read under four pins, then the result is sealed and replayed on a second station. Point at the tape to read one base.</figcaption>
-      </figure>
+      <div class="specimen print" data-shader="dither" data-shape="ripple" aria-hidden="true" data-reveal></div>
     </section>
 
     <section class="ledger" id="work">
@@ -330,10 +312,6 @@
     </section>
 
     <section class="lineup" id="opensource">
-      <figure class="tall">
-        <div class="print" data-shader="halftone" data-pitch="12"><img src="assets/jacquard-loom-cards.jpg" width="1536" height="2048" alt="A chain of punched cards for a Jacquard loom, laced together and running over the machine" loading="lazy" decoding="async"></div>
-        <figcaption data-i18n="opensource.plate">Punched cards for a Jacquard loom, a program read one row at a time.</figcaption>
-      </figure>
       <div class="side" data-reveal>
         <h2 data-i18n="opensource.heading">Open source</h2>
         <p class="lead" data-i18n="moltenvk.desc">I contribute to Khronos MoltenVK, the Vulkan driver for Apple platforms. Four of my patches are merged. Vulkan ray tracing on macOS, mesh shaders and a few fixes are still in review.</p>
@@ -361,10 +339,9 @@
       <span data-i18n="contact.place">Sofia, Bulgaria</span>
       <span><a href="https://github.com/dttdrv" target="_blank" rel="noopener">GitHub</a> <a href="https://x.com/dttdrv" target="_blank" rel="noopener">X</a> <a href="https://misul.org" target="_blank" rel="noopener">Misul</a></span>
     </div>
-    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:BASA-1577K-1-61-12-Sofia,_Bulgaria.JPG" target="_blank" rel="noopener">Targovska Street, Sofia</a>, Bulgarian State Archives, public domain. <a href="https://commons.wikimedia.org/wiki/File:The_development_of_the_chick;_an_introduction_to_embryology_(1908)_(20703166960).jpg" target="_blank" rel="noopener">The Development of the Chick</a>, Internet Archive Book Images, no known copyright restrictions. <a href="https://commons.wikimedia.org/wiki/File:Jacquard_loom_cards.jpg" target="_blank" rel="noopener">Jacquard loom cards</a> by Robert-brook, CC0. All via Wikimedia Commons, printed with <a href="https://shaders.paper.design" target="_blank" rel="noopener">Paper Shaders</a>.</p>
   </footer>
 
-  <script type="module" src="home/main.js?v=ceebf99ba7"></script>
+  <script type="module" src="home/main.js?v=1ecf6b03f3"></script>
 </body>
 
 </html>

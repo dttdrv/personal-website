@@ -5,7 +5,7 @@
   --soft: #5C5C5C;
   --accent: #0000FF;
 
-  --display: 'Instrument Serif', Georgia, serif;
+  /* one grotesk for everything; size, weight and tracking make the hierarchy */
   --text: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -48,12 +48,12 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em
 a:hover { color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 h1, h2, h3 { font-weight: 400; }
-h2 { font: 400 var(--large)/1 var(--display); letter-spacing: -0.02em; }
+h2 { font: 600 var(--large)/1 var(--text); letter-spacing: -0.04em; }
 p { text-wrap: pretty; }
 ul { list-style: none; }
-figcaption, .note { font-size: var(--small); color: var(--soft); }
+figcaption { font-size: var(--small); color: var(--soft); }
 figcaption { margin-top: 14px; max-width: 40em; }
-.lead { font: 400 var(--middle)/1.2 var(--display); }
+.lead { font: 500 var(--middle)/1.25 var(--text); letter-spacing: -0.02em; }
 
 /* the one action in the top row is a plain underlined link with a full-size target */
 .button {
@@ -102,42 +102,56 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .cover { position: relative; }
 .cover .print { position: absolute; inset: 0; }
 .name {
-  font: 400 clamp(64px, 12.4vw, 230px)/0.86 var(--display);
-  letter-spacing: -0.04em;
+  font: 600 clamp(64px, 10.6vw, 196px)/0.86 var(--text);
+  letter-spacing: -0.055em;
   view-transition-name: name;
 }
+/* standing alone, the name runs the width of the page */
+.hero:not(:has(.cover)) .name { font-size: 24vw; }
 /* each line rises from behind its own baseline */
 .name .line { display: block; overflow: hidden; padding-bottom: 0.07em; }
 .name .line > span { display: inline-block; }
 .js .name .line > span { animation: rise 900ms var(--ease) both; }
 .js .name .line + .line > span { animation-delay: 110ms; }
-.hero-line { max-width: 28ch; margin-top: 32px; font: 400 var(--middle)/1.25 var(--display); }
+.hero-line { max-width: 26ch; margin-top: 32px; font: 500 var(--middle)/1.25 var(--text); letter-spacing: -0.02em; }
 .js .hero-line { animation: appear 700ms 450ms var(--ease) both; }
 .js .cover .print { animation: appear 900ms 150ms var(--ease) both; }
 
 @keyframes rise { from { transform: translateY(105%); } }
 @keyframes appear { from { opacity: 0; transform: translateY(12px); } }
 
-/* === About: the credo across the page, a street in Sofia across the page under it === */
+/* === Byala Slatina across the page === */
 .about { padding: 160px 0 0; }
-.statement {
-  max-width: 17em;
-  padding: 0 var(--margin);
-  font: 400 var(--large)/1.02 var(--display);
-  letter-spacing: -0.02em;
+/* each section opens on a full-width rule, the grid's one line */
+.about::before, .showcase::before, .ledger::before, .lineup::before {
+  content: '';
+  grid-column: 1 / -1;
+  display: block;
+  height: 1px;
+  margin-bottom: 24px;
+  background: var(--ink);
 }
-.band { margin-top: 72px; }
+.about::before { margin: 0 var(--margin) 24px; }
+.band { position: relative; }
 .band .print { height: min(72svh, 56vw); }
-.under {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: 16px;
-  padding: 20px var(--margin) 0;
+.band figcaption { padding-inline: var(--margin); }
+/* where a pointer can hover, a picture names its source only when pointed at */
+@media (hover: hover) {
+  .band figcaption {
+    position: absolute;
+    left: var(--margin);
+    bottom: 16px;
+    margin: 0;
+    padding: 8px 12px;
+    background: var(--paper);
+    color: var(--ink);
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+  .band:hover figcaption, .band:focus-within figcaption { opacity: 1; }
 }
-.under .note { grid-column: 1 / 5; }
-.under p:last-child { grid-column: 7 / 13; max-width: 34em; }
 
-/* === Epigenesis: the words on the left, the embryo on the right, the machine below across the page === */
+/* === Epigenesis: the words on the left, a dithered print on the right === */
 .showcase {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -149,10 +163,7 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .copy p + p { margin-top: 1em; }
 .copy .lead { margin-bottom: 1em; }
 .specimen { grid-column: 7 / 13; }
-.specimen .print { aspect-ratio: 1920 / 1316; }
-.machine { grid-column: 1 / -1; margin-top: 140px; }
-.stage { outline-offset: 8px; }
-.stage svg { display: block; width: 100%; height: auto; }
+.specimen { aspect-ratio: 4 / 3; }
 
 /* === Work: two panels side by side, each headed by its own moving print === */
 .ledger {
@@ -165,13 +176,13 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .group h2 { margin-bottom: 20px; }
 .group .intro { max-width: 30em; margin-bottom: 28px; }
 .group li { display: grid; grid-template-columns: 9em 1fr; column-gap: 20px; align-items: baseline; padding: 12px 0; transition: opacity 200ms; }
-.group li > :first-child { font: 400 var(--middle)/1.1 var(--display); text-decoration: none; }
+.group li > :first-child { font: 500 var(--middle)/1.15 var(--text); letter-spacing: -0.02em; text-decoration: none; }
 /* pointing at one row quiets the others */
 .group ul:has(a:hover) li:not(:has(a:hover)) { opacity: 0.4; }
 /* a product page's single panel reads across the page */
 .ledger:not(:has(.group + .group)) { grid-template-columns: minmax(0, 860px); }
 
-/* === Open source: the punched cards down the left, every pull request at one size on the right === */
+/* === Open source: what it is on the left, every pull request at one size on the right === */
 .lineup {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -179,10 +190,10 @@ figcaption { margin-top: 14px; max-width: 40em; }
   align-items: start;
   padding: 200px var(--margin);
 }
-.tall { grid-column: 1 / 6; position: sticky; top: 24px; }
-.tall .print { height: calc(100svh - 120px); }
-.lineup .side { grid-column: 7 / 13; }
-.lineup .side .lead { margin: 28px 0 72px; }
+.lineup .side { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: start; }
+.lineup .side > h2, .lineup .side > .lead { grid-column: 1 / 6; }
+.lineup .side > .lead { margin-top: 28px; }
+.lineup .side > .table { grid-column: 7 / 13; grid-row: 1 / span 2; }
 .table { font-size: var(--middle); line-height: 1.5; }
 .table h3 { font: inherit; color: var(--accent); margin: 56px 0 12px; }
 .table h3:first-child { margin-top: 0; }
@@ -209,11 +220,11 @@ figcaption { margin-top: 14px; max-width: 40em; }
   overflow: hidden;
 }
 .close a:hover { color: var(--accent); }
-.ask { max-width: 22ch; font: 400 var(--middle)/1.2 var(--display); }
+.ask { max-width: 22ch; font: 500 var(--middle)/1.25 var(--text); letter-spacing: -0.02em; }
 .email {
   align-self: end;
-  font: 400 15.2vw/0.9 var(--display);
-  letter-spacing: -0.035em;
+  font: 600 11.4vw/0.9 var(--text);
+  letter-spacing: -0.055em;
   white-space: nowrap;
   text-decoration: none;
   transition: color 200ms;
@@ -233,33 +244,41 @@ figcaption { margin-top: 14px; max-width: 40em; }
 
 /* === The phone gets its own composition === */
 @media (max-width: 720px) {
-  .top, .top:has(~ main .cover) { right: 0; padding: 4px var(--margin); background: var(--paper); }
-  .hero:has(.cover) { padding-top: 52px; }
+  /* one column on the margins; pictures run to the edges of the screen */
+  .top, .top:has(~ main .cover) { right: 0; min-height: 52px; padding: 0 var(--margin); background: var(--paper); }
   .top nav { display: none; }
   .hero { padding-top: 96px; }
-  .hero:has(.cover) { grid-template-columns: 1fr; padding-inline: 0; padding-bottom: 0; }
-  .cover { grid-row: 1; height: 58svh; }
-  .title { padding: 28px var(--margin) 32px; }
-  .name { font-size: 25vw; }
-  .hero-line { margin-top: 20px; }
-  .about { padding-top: 96px; }
-  .statement { font-size: 34px; }
-  .band { margin-top: 40px; }
-  .band .print { height: 64vw; }
-  .under { row-gap: 16px; }
-  .under .note, .under p:last-child { grid-column: 1 / -1; }
-  .showcase, .ledger, .lineup { padding-top: 120px; }
-  .showcase h2 { margin-bottom: 28px; }
-  .showcase .copy, .specimen, .lineup .side, .lineup .head h2, .lineup .head .copy { grid-column: 1 / -1; }
-  .specimen { margin-top: 48px; }
-  .machine { margin: 72px calc(-1 * var(--margin)) 0; }
-  .machine figcaption { padding: 0 var(--margin); }
-  .ledger { grid-template-columns: 1fr; }
+  .hero:has(.cover) { grid-template-columns: minmax(0, 1fr); padding: 52px 0 0; }
+  .cover { grid-row: 1; aspect-ratio: 4 / 5; }
+  /* a whole screenshot keeps its own shape instead of floating in paper */
+  .cover:has([data-fit="contain"]) { aspect-ratio: 652 / 480; }
+  .title { padding: 28px var(--margin) 48px; }
+  .name { font-size: 20.5vw; }
+  /* a product's one long word gets the width a two-line name gets per line */
+  .name:not(:has(.line + .line)) { font-size: 15vw; }
+  .hero-line { margin-top: 20px; font-size: 20px; }
+
+  .about, .showcase, .ledger, .lineup { padding-top: 72px; }
+  .band .print { height: auto; aspect-ratio: 4 / 3; }
+
+  .showcase h2 { margin-bottom: 24px; }
+  .showcase .copy, .lineup .head h2, .lineup .head .copy { grid-column: 1 / -1; }
+  .specimen { grid-column: 1 / -1; margin: 40px calc(-1 * var(--margin)) 0; }
+
+  .ledger { grid-template-columns: 1fr; row-gap: 72px; }
+  .group > .print { margin: 0 calc(-1 * var(--margin)) 28px; }
   .group li { grid-template-columns: 1fr; row-gap: 2px; padding: 10px 0; }
-  .tall { grid-column: 1 / -1; position: static; margin-bottom: 56px; }
-  .tall .print { height: 110vw; }
-  .lineup { padding-bottom: 120px; }
-  .table a { grid-template-columns: 4.2em 1fr; }
+
+  .lineup { padding-bottom: 96px; }
+  .lineup .side > h2, .lineup .side > .lead, .lineup .side > .table { grid-column: 1 / -1; }
+  .lineup .side > .table { grid-row: auto; margin-top: 48px; }
+  .table { font-size: 20px; }
+  .table h3 { margin-top: 40px; }
+  .table a { grid-template-columns: 4em 1fr; padding: 4px 0; }
+
+  .close { min-height: 80svh; }
+  .email { font-size: 11.2vw; }
+  .corners { flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -269,7 +288,7 @@ figcaption { margin-top: 14px; max-width: 40em; }
 }
 
 @media print {
-  .top, .machine, [data-shader="dither"] { display: none; }
+  .top, [data-shader="dither"] { display: none; }
   .hero, .close { min-height: 0; }
   .close { background: none; color: inherit; }
   .print.printed img { opacity: 1; }

@@ -108,8 +108,6 @@ for (const [, file] of indexHtml.matchAll(/src="(assets\/[^"]+)"/g)) {
   assert.ok(credit && indexHtml.includes(credit.page), `${file} must be credited with its source page`);
 }
 assert.ok(fs.existsSync(path.join(ROOT, 'home/vendor/paper-0.0.81/LICENSE')), 'vendored Paper Shaders must keep their licence');
-assert.ok(fs.existsSync(path.join(ROOT, 'home/machine.js')), 'the Epigenesis machine module must be built');
-assert.ok(indexHtml.includes('data-machine'), 'the Epigenesis section must carry the machine');
 for (const [, href] of indexHtml.matchAll(/(?:href|src)="((?!https?:|mailto:|#)[^"?]+)/g)) {
   assert.ok(fs.existsSync(path.join(ROOT, href)), `index.html references missing file ${href}`);
 }

@@ -1,4 +1,4 @@
-import { STRINGS } from './strings.js?v=ceebf99ba7';
+import { STRINGS } from './strings.js?v=1ecf6b03f3';
 
 const lang = (navigator.language || 'en').toLowerCase().startsWith('bg') ? 'bg' : 'en';
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -18,17 +18,6 @@ if (!still) {
   for (const el of document.querySelectorAll('[data-reveal]')) entering.observe(el);
 }
 
-// the Epigenesis machine is loaded once the page nears it
-const machine = document.querySelector('[data-machine] .stage');
-if (machine) {
-  const near = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return;
-    near.disconnect();
-    import('./machine.js?v=ceebf99ba7').then(m => m.mount(machine, () => {}, new AbortController().signal, still));
-  }, { rootMargin: '100% 0px' });
-  near.observe(machine.parentElement);
-}
-
 // pictures are printed by Paper Shaders as they come near
 const prints = document.querySelectorAll('[data-shader]');
 if (prints.length) {
@@ -36,7 +25,7 @@ if (prints.length) {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       near.unobserve(entry.target);
-      import('./plates.js?v=ceebf99ba7').then(m => m.print(entry.target, still));
+      import('./plates.js?v=1ecf6b03f3').then(m => m.print(entry.target, still));
     }
   }, { rootMargin: '50% 0px' });
   for (const el of prints) near.observe(el);

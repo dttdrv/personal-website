@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 
 const ROOT = process.cwd();
 
@@ -97,16 +98,19 @@ assert.ok(graphTypes.some(t => t.includes('ItemList')), 'JSON-LD must define Ite
 for (const id of ['epigenesis', 'work', 'research', 'projects', 'opensource', 'contact']) {
   assert.match(indexHtml, new RegExp(`id="${id}"`), `index.html must have the ${id} section`);
 }
+// browsers keep the code for hours, so every stylesheet and script URL carries the current stamp
+assert.equal(spawnSync(process.execPath, [path.join(ROOT, 'scripts/stamp.mjs'), '--check']).status, 0, 'asset URLs must carry the current stamp: run node scripts/stamp.mjs');
+
 // every found picture on the page is credited with its source, and the shader code keeps its licence
 const credits = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/credits.json'), 'utf8'));
 for (const [, file] of indexHtml.matchAll(/src="(assets\/[^"]+)"/g)) {
   const credit = credits.find(c => c.file === file);
   assert.ok(credit && indexHtml.includes(credit.page), `${file} must be credited with its source page`);
 }
-assert.ok(fs.existsSync(path.join(ROOT, 'home/vendor/paper/LICENSE')), 'vendored Paper Shaders must keep their licence');
+assert.ok(fs.existsSync(path.join(ROOT, 'home/vendor/paper-0.0.81/LICENSE')), 'vendored Paper Shaders must keep their licence');
 assert.ok(fs.existsSync(path.join(ROOT, 'home/machine.js')), 'the Epigenesis machine module must be built');
 assert.ok(indexHtml.includes('data-machine'), 'the Epigenesis section must carry the machine');
-for (const [, href] of indexHtml.matchAll(/(?:href|src)="((?!https?:|mailto:|#)[^"]+)"/g)) {
+for (const [, href] of indexHtml.matchAll(/(?:href|src)="((?!https?:|mailto:|#)[^"?]+)/g)) {
   assert.ok(fs.existsSync(path.join(ROOT, href)), `index.html references missing file ${href}`);
 }
 
@@ -130,7 +134,7 @@ assert.ok(!indexHtml.includes('SIMD kernels'), 'index.html must not describe cur
 assert.ok(indexHtml.includes('inference engine for Apple Silicon'), 'index.html must describe Laplace as an inference engine');
 
 for (const product of ['phonecode.html', 'optisys.html']) {
-  for (const [, src] of fs.readFileSync(path.join(ROOT, product), 'utf8').matchAll(/src="((?!https?:)[^"]+)"/g)) {
+  for (const [, src] of fs.readFileSync(path.join(ROOT, product), 'utf8').matchAll(/src="((?!https?:)[^"?]+)/g)) {
     assert.ok(fs.existsSync(path.join(ROOT, src)), `${product} references missing file ${src}`);
   }
 }

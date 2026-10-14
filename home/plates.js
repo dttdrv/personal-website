@@ -1,9 +1,9 @@
 // Pictures printed by Paper Shaders: photographs as coarse blue halftone, and dithered moving shapes where no photograph fits.
 // Without WebGL the photographs stay as they are and the shapes keep a flat colour.
-import { ShaderMount } from './vendor/paper/shader-mount.js';
-import { halftoneDotsFragmentShader, HalftoneDotsTypes, HalftoneDotsGrids } from './vendor/paper/shaders/halftone-dots.js';
-import { ditheringFragmentShader, DitheringShapes, DitheringTypes } from './vendor/paper/shaders/dithering.js';
-import { getShaderColorFromString } from './vendor/paper/get-shader-color-from-string.js';
+import { ShaderMount } from './vendor/paper-0.0.81/shader-mount.js';
+import { halftoneDotsFragmentShader, HalftoneDotsTypes, HalftoneDotsGrids } from './vendor/paper-0.0.81/shaders/halftone-dots.js';
+import { ditheringFragmentShader, DitheringShapes, DitheringTypes } from './vendor/paper-0.0.81/shaders/dithering.js';
+import { getShaderColorFromString } from './vendor/paper-0.0.81/get-shader-color-from-string.js';
 
 const SIZING = { u_fit: 2, u_scale: 1, u_rotation: 0, u_offsetX: 0, u_offsetY: 0, u_originX: 0.5, u_originY: 0.5, u_worldWidth: 0, u_worldHeight: 0 };
 // css pixels between dot centres while pointed at; at rest a print sets its own coarse pitch

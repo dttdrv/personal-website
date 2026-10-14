@@ -1,4 +1,4 @@
-import { STRINGS } from './strings.js';
+import { STRINGS } from './strings.js?v=ceebf99ba7';
 
 const lang = (navigator.language || 'en').toLowerCase().startsWith('bg') ? 'bg' : 'en';
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,7 +24,7 @@ if (machine) {
   const near = new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) return;
     near.disconnect();
-    import('./machine.js').then(m => m.mount(machine, () => {}, new AbortController().signal, still));
+    import('./machine.js?v=ceebf99ba7').then(m => m.mount(machine, () => {}, new AbortController().signal, still));
   }, { rootMargin: '100% 0px' });
   near.observe(machine.parentElement);
 }
@@ -36,7 +36,7 @@ if (prints.length) {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       near.unobserve(entry.target);
-      import('./plates.js').then(m => m.print(entry.target, still));
+      import('./plates.js?v=ceebf99ba7').then(m => m.print(entry.target, still));
     }
   }, { rootMargin: '50% 0px' });
   for (const el of prints) near.observe(el);

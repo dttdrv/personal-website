@@ -7,6 +7,8 @@ the home page is set in Instrument Serif and Inter around one figure, the Epigen
 
 theme and language follow your system settings automatically.
 
+browsers keep the css and javascript for hours, so after changing any of it run `node scripts/stamp.mjs`, which puts a fresh `?v=` on every url; the tests fail until you do.
+
 tests: `node tests/portfolio-validation.mjs && node tests/phonecode-report.mjs`
 
 live at dttdrv.xyz

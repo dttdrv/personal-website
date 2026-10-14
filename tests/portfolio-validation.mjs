@@ -94,10 +94,18 @@ assert.ok(graphTypes.some(t => t.includes('Person')), 'JSON-LD must define Perso
 assert.ok(graphTypes.some(t => t.includes('ResearchOrganization')), 'JSON-LD must define ResearchOrganization');
 assert.ok(graphTypes.some(t => t.includes('ItemList')), 'JSON-LD must define ItemList');
 
-// the strand is drawn by script; the words themselves must already be in the markup
-for (const id of ['epigenesis', 'research', 'projects', 'opensource', 'contact']) {
-  assert.match(indexHtml, new RegExp(`<section class="gene" id="${id}">\\s*<h2`), `gene ${id} must open with its heading`);
+for (const id of ['epigenesis', 'work', 'research', 'projects', 'opensource', 'contact']) {
+  assert.match(indexHtml, new RegExp(`id="${id}"`), `index.html must have the ${id} section`);
 }
+// every found picture on the page is credited with its source, and the shader code keeps its licence
+const credits = JSON.parse(fs.readFileSync(path.join(ROOT, 'assets/credits.json'), 'utf8'));
+for (const [, file] of indexHtml.matchAll(/src="(assets\/[^"]+)"/g)) {
+  const credit = credits.find(c => c.file === file);
+  assert.ok(credit && indexHtml.includes(credit.page), `${file} must be credited with its source page`);
+}
+assert.ok(fs.existsSync(path.join(ROOT, 'home/vendor/paper/LICENSE')), 'vendored Paper Shaders must keep their licence');
+assert.ok(fs.existsSync(path.join(ROOT, 'home/machine.js')), 'the Epigenesis machine module must be built');
+assert.ok(indexHtml.includes('data-machine'), 'the Epigenesis section must carry the machine');
 for (const [, href] of indexHtml.matchAll(/(?:href|src)="((?!https?:|mailto:|#)[^"]+)"/g)) {
   assert.ok(fs.existsSync(path.join(ROOT, href)), `index.html references missing file ${href}`);
 }
@@ -122,18 +130,20 @@ assert.ok(!indexHtml.includes('SIMD kernels'), 'index.html must not describe cur
 assert.ok(indexHtml.includes('inference engine for Apple Silicon'), 'index.html must describe Laplace as an inference engine');
 
 for (const product of ['phonecode.html', 'optisys.html']) {
-  assert.ok(!fs.readFileSync(path.join(ROOT, product), 'utf8').includes('<img'), `${product} must not show pictures`);
+  for (const [, src] of fs.readFileSync(path.join(ROOT, product), 'utf8').matchAll(/src="((?!https?:)[^"]+)"/g)) {
+    assert.ok(fs.existsSync(path.join(ROOT, src)), `${product} references missing file ${src}`);
+  }
 }
-// what a shared link shows: the name alone, and the strand picture
+// what a shared link shows: the name alone, and its picture
 assert.match(indexHtml, /<title>Deyan Todorov<\/title>/, 'the page title must be the name alone');
 assert.match(indexHtml, /og:title" content="Deyan Todorov"/, 'the shared title must be the name alone');
 for (const [, image] of indexHtml.matchAll(/(?:og:image|twitter:image)" content="https:\/\/dttdrv\.xyz\/([^"]+)"/g)) {
   assert.ok(fs.existsSync(path.join(ROOT, image)), `preview image ${image} must exist`);
 }
-// in-site links swap one strand page for another, so every page they lead to must be one
+// pages the home page links to are built from the same parts, so the name can carry across
 for (const [, href] of indexHtml.matchAll(/href="((?!https?:|mailto:|#)[^"]+\.html)"/g)) {
   const target = fs.readFileSync(path.join(ROOT, href), 'utf8');
-  assert.ok(target.includes('<main class="strand">') && target.includes('<header class="bar">'), `${href} must be a strand page`);
+  assert.ok(target.includes('home/home.css') && target.includes('<header class="top">') && target.includes('<h1 class="name">'), `${href} must share the site's layout`);
   assert.ok(target.includes('href="index.html"'), `${href} must link back home`);
 }
 assert.ok(indexHtml.indexOf('about.statement') < indexHtml.indexOf('id="epigenesis"'), 'the statement must come straight after the name');

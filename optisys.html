@@ -39,44 +39,59 @@
 </head>
 
 <body>
-  <header class="bar">
-    <a href="index.html">Deyan Todorov</a>
+  <header class="top">
+    <a class="mark" href="index.html">Deyan Todorov</a>
     <nav aria-label="Sections">
-      <a href="#what">what it does</a>
-      <a href="#get">get it</a>
+      <a href="#what">What it does</a>
+      <a href="#get">Get it</a>
     </nav>
+    <a class="button" href="https://github.com/dttdrv/optiSYS/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/optiSYS" data-asset=".exe">Download for Windows</a>
   </header>
 
-  <main class="strand">
+  <main>
     <section class="hero" id="top">
-      <pre class="fill" data-screen="0.86" aria-hidden="true"></pre>
-      <h1 class="name"><span>optiSYS</span></h1>
+      <div class="title">
+        <h1 class="name"><span class="line"><span>optiSYS</span></span></h1>
+        <p class="hero-line">Keeps your PC responsive and your connection steady in the background.</p>
+      </div>
+      <figure class="cover">
+        <div class="print" data-shader="halftone" data-pitch="8" data-fit="contain"><img src="pictures/optisys-memory.png" width="652" height="480" alt="The optiSYS memory panel showing 68 percent of memory in use and how much it has freed" fetchpriority="high"></div>
+      </figure>
     </section>
 
-    <section class="gene">
-      <p>Keeps your PC responsive and your connection steady in the background.</p>
-      <p class="links"><a href="https://github.com/dttdrv/optiSYS/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/optiSYS" data-asset=".exe">Download for Windows</a></p>
+    <section class="ledger" id="what">
+      <div class="group" data-reveal>
+        <h2>What it does</h2>
+        <ul>
+          <li><b>Memory</b><span>It frees cached memory when RAM gets tight, so the machine stays usable under load.</span></li>
+          <li><b>Battery</b><span>It polls less when you are unplugged and leaves your Windows power settings alone.</span></li>
+          <li><b>Wi-Fi</b><span>It stops background Wi-Fi scanning while you are connected, which keeps latency steady.</span></li>
+        </ul>
+      </div>
     </section>
 
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="what">
-      <h2>What it does</h2>
-      <p class="entry"><b>Memory</b> It frees cached memory when RAM gets tight, so the machine stays usable under load.</p>
-      <p class="entry"><b>Battery</b> It polls less when you are unplugged and leaves your Windows power settings alone.</p>
-      <p class="entry"><b>Wi-Fi</b> It stops background Wi-Fi scanning while you are connected, which keeps latency steady.</p>
+    <section class="lineup" id="get">
+      <div class="head" data-reveal>
+        <h2>Get optiSYS</h2>
+        <div class="copy">
+          <p class="lead" data-release="dttdrv/optiSYS" data-version="Version {version} · Windows 10 (1809+) or 11 · Free &amp; open source">Windows 10 (1809+) or 11 · Free &amp; open source</p>
+          <ul class="links">
+            <li><a href="https://github.com/dttdrv/optiSYS/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/optiSYS" data-asset=".exe">Download for Windows</a></li>
+            <li><a href="https://github.com/dttdrv/optiSYS" target="_blank" rel="noopener">Source code</a></li>
+          </ul>
+        </div>
+      </div>
     </section>
-
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="get">
-      <h2>Get optiSYS</h2>
-      <p data-release="dttdrv/optiSYS" data-version="Version {version} · Windows 10 (1809+) or 11 · Free &amp; open source">Windows 10 (1809+) or 11 · Free &amp; open source</p>
-      <p class="links"><a href="https://github.com/dttdrv/optiSYS/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/optiSYS" data-asset=".exe">Download for Windows</a> <a href="https://github.com/dttdrv/optiSYS" target="_blank" rel="noopener">Source code</a></p>
-    </section>
-
-    <pre class="fill" data-screen="0.4" aria-hidden="true"></pre>
   </main>
+
+  <footer class="close" id="contact">
+    <p class="ask">Questions, bugs or ideas for optiSYS? Write to me.</p>
+    <a class="email" href="mailto:deyan@misul.org">deyan@misul.org</a>
+    <div class="corners">
+      <a href="index.html">Deyan Todorov</a>
+      <span><a href="https://github.com/dttdrv" target="_blank" rel="noopener">GitHub</a> <a href="https://x.com/dttdrv" target="_blank" rel="noopener">X</a> <a href="https://misul.org" target="_blank" rel="noopener">Misul</a></span>
+    </div>
+  </footer>
 
   <script type="module" src="home/main.js"></script>
 </body>

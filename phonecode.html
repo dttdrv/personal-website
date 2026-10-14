@@ -39,46 +39,62 @@
 </head>
 
 <body>
-  <header class="bar">
-    <a href="index.html">Deyan Todorov</a>
+  <header class="top">
+    <a class="mark" href="index.html">Deyan Todorov</a>
     <nav aria-label="Sections">
-      <a href="#what">what it does</a>
-      <a href="#get">get it</a>
+      <a href="#what">What it does</a>
+      <a href="#get">Get it</a>
     </nav>
+    <a class="button" href="https://github.com/dttdrv/phonecode/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/phonecode" data-asset=".apk">Download APK</a>
   </header>
 
-  <main class="strand">
+  <main>
     <section class="hero" id="top">
-      <pre class="fill" data-screen="0.86" aria-hidden="true"></pre>
-      <h1 class="name"><span>PhoneCode</span></h1>
+      <div class="title">
+        <h1 class="name"><span class="line"><span>PhoneCode</span></span></h1>
+        <p class="hero-line">A coding agent that runs on your Android phone.</p>
+      </div>
+      <figure class="cover">
+        <div class="print" data-shader="halftone" data-pitch="10"><img src="pictures/phonecode-screen.png" width="1080" height="2400" alt="PhoneCode on an Android phone, opening a new chat that asks what we should build" fetchpriority="high"></div>
+      </figure>
     </section>
 
-    <section class="gene">
-      <p>A coding agent that runs on your Android phone.</p>
-      <p class="links"><a href="https://github.com/dttdrv/phonecode/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/phonecode" data-asset=".apk">Download APK</a></p>
+    <section class="ledger" id="what">
+      <div class="group" data-reveal>
+        <h2>What it does</h2>
+        <ul>
+          <li><b>On-device agent</b><span>It reads and edits files in a folder on your phone and runs git there. It talks to the model directly from the phone.</span></li>
+          <li><b>Model choice</b><span>It works with OpenAI, Anthropic, OpenRouter, Google, xAI, DeepSeek, Mistral or your own endpoint, and your keys stay in the Android Keystore.</span></li>
+          <li><b>Workspaces</b><span>Every task gets its own git repo. You can branch, read the diff and commit from the chat.</span></li>
+          <li><b>Private</b><span>It collects nothing and does not need an account. Your files stay in Android scoped storage on the phone.</span></li>
+        </ul>
+      </div>
     </section>
 
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="what">
-      <h2>What it does</h2>
-      <p class="entry"><b>On-device agent</b> It reads and edits files in a folder on your phone and runs git there. It talks to the model directly from the phone.</p>
-      <p class="entry"><b>Model choice</b> It works with OpenAI, Anthropic, OpenRouter, Google, xAI, DeepSeek, Mistral or your own endpoint, and your keys stay in the Android Keystore.</p>
-      <p class="entry"><b>Workspaces</b> Every task gets its own git repo. You can branch, read the diff and commit from the chat.</p>
-      <p class="entry"><b>Private</b> It collects nothing and does not need an account. Your files stay in Android scoped storage on the phone.</p>
+    <section class="lineup" id="get">
+      <div class="head" data-reveal>
+        <h2>Get PhoneCode</h2>
+        <div class="copy">
+          <p class="lead" data-release="dttdrv/phonecode" data-version="Version {version} · Android 8.0+ (arm64) · Sideload APK">Android 8.0+ (arm64) · Sideload APK</p>
+          <ul class="links">
+            <li><a href="https://github.com/dttdrv/phonecode/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/phonecode" data-asset=".apk">Download APK</a></li>
+            <li><a href="https://github.com/dttdrv/phonecode" target="_blank" rel="noopener">Source code</a></li>
+            <li><a href="https://ko-fi.com/dttdrv" target="_blank" rel="noopener">Support on Ko-fi</a></li>
+          </ul>
+          <p class="legal"><a href="phonecode-privacy.html">Privacy Policy</a> <a href="phonecode-terms.html">Terms of Service</a></p>
+        </div>
+      </div>
     </section>
-
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="get">
-      <h2>Get PhoneCode</h2>
-      <p data-release="dttdrv/phonecode" data-version="Version {version} · Android 8.0+ (arm64) · Sideload APK">Latest release · Android 8.0+ (arm64) · Sideload APK</p>
-      <p class="links"><a href="https://github.com/dttdrv/phonecode/releases/latest" target="_blank" rel="noopener" data-release="dttdrv/phonecode" data-asset=".apk">Download APK</a> <a href="https://github.com/dttdrv/phonecode" target="_blank" rel="noopener">Source code</a> <a href="https://ko-fi.com/dttdrv" target="_blank" rel="noopener">Support on Ko-fi</a></p>
-      <p class="links"><a href="phonecode-privacy.html">Privacy Policy</a> <a href="phonecode-terms.html">Terms of Service</a></p>
-    </section>
-
-    <pre class="fill" data-screen="0.4" aria-hidden="true"></pre>
   </main>
+
+  <footer class="close" id="contact">
+    <p class="ask">Questions, bugs or ideas for PhoneCode? Write to me.</p>
+    <a class="email" href="mailto:deyan@misul.org">deyan@misul.org</a>
+    <div class="corners">
+      <a href="index.html">Deyan Todorov</a>
+      <span><a href="https://github.com/dttdrv" target="_blank" rel="noopener">GitHub</a> <a href="https://x.com/dttdrv" target="_blank" rel="noopener">X</a> <a href="https://misul.org" target="_blank" rel="noopener">Misul</a></span>
+    </div>
+  </footer>
 
   <script type="module" src="home/main.js"></script>
 </body>

@@ -23,7 +23,7 @@
   <meta property="og:image" content="https://dttdrv.xyz/pictures/preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Deyan Todorov, set in large serif letters over rows of DNA bases">
+  <meta property="og:image:alt" content="Deyan Todorov in large serif letters, with one line about the work beside it">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="bg_BG">
 
@@ -254,77 +254,115 @@
 </head>
 
 <body>
-  <header class="bar">
-    <a href="#top">Deyan Todorov</a>
+  <header class="top">
+    <a class="mark" href="#top">Deyan Todorov</a>
     <nav aria-label="Sections">
       <a href="#epigenesis" data-i18n="nav.epigenesis">Epigenesis</a>
-      <a href="#research" data-i18n="nav.research">Misul</a>
-      <a href="#projects" data-i18n="nav.projects">Independent</a>
-      <a href="#contact" data-i18n="nav.contact">Contact</a>
+      <a href="#work" data-i18n="nav.work">Work</a>
+      <a href="#opensource" data-i18n="nav.opensource">Open source</a>
     </nav>
+    <a class="button" href="mailto:deyan@misul.org" data-i18n="action.write">Write to me</a>
   </header>
 
-  <main class="strand">
+  <main>
     <section class="hero" id="top">
-      <pre class="fill" data-screen="0.86" aria-hidden="true"></pre>
-      <h1 class="name"><b data-i18n="name.first">DEYAN</b> <span data-i18n="name.last">TODOROV</span></h1>
+      <div class="title">
+        <h1 class="name"><span class="line"><span data-i18n="name.first">Deyan</span></span> <span class="line"><span data-i18n="name.last">Todorov</span></span></h1>
+        <p class="hero-line" data-i18n="hero.line">I write software in Sofia, from a compiler for DNA to patches for a Vulkan driver.</p>
+      </div>
+      <figure class="cover">
+        <div class="print" data-shader="halftone" data-pitch="11"><img src="pictures/profile.jpg" width="1080" height="1176" alt="Deyan Todorov, looking slightly to the side against a dark backdrop" fetchpriority="high"></div>
+      </figure>
     </section>
 
-    <section class="gene">
-      <p data-i18n="about.statement">I believe in doing a job 100% or not doing it at all.</p>
+    <section class="about" aria-label="About me">
+      <p class="statement" data-i18n="about.statement" data-reveal>I believe in doing a job 100% or not doing it at all.</p>
+      <figure class="band">
+        <div class="print" data-shader="halftone" data-pitch="14"><img src="assets/basa-1577k-1-61-12-sofia-bulgaria.jpg" width="1620" height="983" alt="A tram on Targovska Street in Sofia, between corner buildings with shops on the ground floor" loading="lazy" decoding="async"></div>
+      </figure>
+      <div class="under" data-reveal>
+        <p class="note" data-i18n="about.sofia">Targovska Street in Sofia, on a postcard from before 1930.</p>
+        <p data-i18n="about.me">I'm Deyan and I live in Sofia. Most days I write software, and nearly all of it ends up on this page: a compiler for DNA, a research lab, a few apps and patches for a graphics driver.</p>
+      </div>
     </section>
 
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="epigenesis">
-      <h2>Epigenesis</h2>
-      <p data-i18n="epigenesis.lead">DNA is a recipe, so I wrote a compiler for it.</p>
-      <p data-i18n="epigenesis.vision">In biology a brain gets built from the instructions in DNA, and I wanted to try the same thing in software. You give Epigenesis a DNA sequence and tell it how to read it. It gives back a module that describes how something develops, and it seals that module so anyone can run it again and get the same result.</p>
-      <p data-i18n="epigenesis.desc">It reads FASTA, GenBank and GFF3 files. So far it runs two published models of how neural cells pick their fate, grows small networks from a single starting cell, and turns real mutations into proteins. Two of my own predictors failed their tests and I kept them in the repo anyway. Version 1.6 is on GitHub.</p>
-      <p class="links"><a href="https://github.com/dttdrv/epigenesis" target="_blank" rel="noopener">GitHub</a></p>
+    <section class="showcase" id="epigenesis">
+      <h2 data-reveal>Epigenesis</h2>
+      <div class="copy" data-reveal>
+        <p class="lead" data-i18n="epigenesis.lead">DNA is a recipe, so I wrote a compiler for it.</p>
+        <p data-i18n="epigenesis.vision">In biology a brain gets built from the instructions in DNA, and I wanted to try the same thing in software. You give Epigenesis a DNA sequence and tell it how to read it. It gives back a module that describes how something develops, and it seals that module so anyone can run it again and get the same result.</p>
+        <p data-i18n="epigenesis.desc">It reads FASTA, GenBank and GFF3 files. So far it runs two published models of how neural cells pick their fate, grows small networks from a single starting cell, and turns real mutations into proteins. Two of my own predictors failed their tests and I kept them in the repo anyway. Version 1.6 is on GitHub.</p>
+        <p><a href="https://github.com/dttdrv/epigenesis" target="_blank" rel="noopener">github.com/dttdrv/epigenesis</a></p>
+      </div>
+      <figure class="specimen" data-reveal>
+        <div class="print" data-shader="halftone" data-pitch="9" data-contrast="0.62" data-drawing><img src="assets/the-development-of-the-chick-an-introduction.jpg" width="1920" height="1316" alt="An engraved section through the head of a chick embryo, with the parts of its developing brain labelled" loading="lazy" decoding="async"></div>
+        <figcaption data-i18n="epigenesis.plate">The brain of a chick embryo in section, from The Development of the Chick, 1908.</figcaption>
+      </figure>
+      <figure class="machine" data-machine data-reveal>
+        <div class="stage" tabindex="0"></div>
+        <figcaption data-i18n="epigenesis.figure">The smallest example in the repository, built as a machine. Fifteen bases are punched into a tape and read under four pins, then the result is sealed and replayed on a second station. Point at the tape to read one base.</figcaption>
+      </figure>
     </section>
 
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="research">
-      <h2>Misul</h2>
-      <p data-i18n="research.intro">Misul is the AI research lab I started in Sofia. We build models from how the brain works.</p>
-      <p class="entry"><a href="https://misul.org/Interlace" target="_blank" rel="noopener">Interlace</a> <span data-i18n="interlace.brief">A single architecture that handles language and step-by-step computation.</span></p>
-      <p class="entry"><a href="https://misul.org/monodratic/" target="_blank" rel="noopener">Monodratic</a> <span data-i18n="monodratic.brief">Sparse attention that only reads the tokens it needs.</span></p>
-      <p class="entry"><a href="https://github.com/MisulOrg/Laplace" target="_blank" rel="noopener">Laplace</a> <span data-i18n="laplace.brief">An inference engine for Apple Silicon that runs every model through one compiler.</span></p>
-      <p class="links"><a href="https://misul.org" target="_blank" rel="noopener">misul.org</a></p>
+    <section class="ledger" id="work">
+      <div class="group" id="research" data-reveal>
+        <div class="print" data-shader="dither" data-shape="sphere" aria-hidden="true"></div>
+        <h2>Misul</h2>
+        <p class="intro" data-i18n="research.intro">Misul is the AI research lab I started in Sofia. We build models from how the brain works.</p>
+        <ul>
+          <li><a href="https://misul.org/Interlace" target="_blank" rel="noopener">Interlace</a><span data-i18n="interlace.brief">A single architecture that handles language and step-by-step computation.</span></li>
+          <li><a href="https://misul.org/monodratic/" target="_blank" rel="noopener">Monodratic</a><span data-i18n="monodratic.brief">Sparse attention that only reads the tokens it needs.</span></li>
+          <li><a href="https://github.com/MisulOrg/Laplace" target="_blank" rel="noopener">Laplace</a><span data-i18n="laplace.brief">An inference engine for Apple Silicon that runs every model through one compiler.</span></li>
+          <li><a href="https://misul.org" target="_blank" rel="noopener">misul.org</a><span></span></li>
+        </ul>
+      </div>
+      <div class="group" id="projects" data-reveal>
+        <div class="print" data-shader="dither" data-shape="warp" aria-hidden="true"></div>
+        <h2 data-i18n="projects.heading">Independent</h2>
+        <p class="intro" data-i18n="projects.intro">Apps and sites I build on my own.</p>
+        <ul>
+          <li><a href="phonecode.html">PhoneCode</a><span data-i18n="projects.phonecode">A coding agent that runs on your Android phone.</span></li>
+          <li><a href="optisys.html">optiSYS</a><span data-i18n="projects.optisys">Keeps a Windows PC responsive in the background.</span></li>
+          <li><a href="https://dzipobel.wiki" target="_blank" rel="noopener">dzipobel.wiki</a><span data-i18n="projects.dzipobel">Literature and grammar notes for the Bulgarian matura.</span></li>
+          <li><a href="https://schoolmap.pages.dev" target="_blank" rel="noopener">SchoolMap</a><span data-i18n="projects.schoolmap">A map tool I made for geography lessons.</span></li>
+        </ul>
+      </div>
     </section>
 
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="projects">
-      <h2 data-i18n="projects.heading">Independent</h2>
-      <p class="entry"><a href="phonecode.html">PhoneCode</a> <span data-i18n="projects.phonecode">A coding agent that runs on your Android phone.</span></p>
-      <p class="entry"><a href="optisys.html">optiSYS</a> <span data-i18n="projects.optisys">Keeps a Windows PC responsive in the background.</span></p>
-      <p class="entry"><a href="https://dzipobel.wiki" target="_blank" rel="noopener">dzipobel.wiki</a> <span data-i18n="projects.dzipobel">Literature and grammar notes for the Bulgarian matura.</span></p>
-      <p class="entry"><a href="https://schoolmap.pages.dev" target="_blank" rel="noopener">SchoolMap</a> <span data-i18n="projects.schoolmap">A map tool I made for geography lessons.</span></p>
+    <section class="lineup" id="opensource">
+      <figure class="tall">
+        <div class="print" data-shader="halftone" data-pitch="12"><img src="assets/jacquard-loom-cards.jpg" width="1536" height="2048" alt="A chain of punched cards for a Jacquard loom, laced together and running over the machine" loading="lazy" decoding="async"></div>
+        <figcaption data-i18n="opensource.plate">Punched cards for a Jacquard loom, a program read one row at a time.</figcaption>
+      </figure>
+      <div class="side" data-reveal>
+        <h2 data-i18n="opensource.heading">Open source</h2>
+        <p class="lead" data-i18n="moltenvk.desc">I contribute to Khronos MoltenVK, the Vulkan driver for Apple platforms. Four of my patches are merged. Vulkan ray tracing on macOS, mesh shaders and a few fixes are still in review.</p>
+        <div class="table">
+          <h3 data-i18n="moltenvk.review">In review</h3>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2771" target="_blank" rel="noopener"><span>#2771</span><span>Vulkan ray tracing</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2842" target="_blank" rel="noopener"><span>#2842</span><span>Mesh shaders</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2837" target="_blank" rel="noopener"><span>#2837</span><span>Descriptor sets</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2820" target="_blank" rel="noopener"><span>#2820</span><span>Tessellation</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2843" target="_blank" rel="noopener"><span>#2843</span><span>Specialization constants</span></a>
+          <h3 data-i18n="moltenvk.merged">Merged</h3>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2819" target="_blank" rel="noopener"><span>#2819</span><span>Encoder dependencies</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2790" target="_blank" rel="noopener"><span>#2790</span><span>Indirect draws</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2788" target="_blank" rel="noopener"><span>#2788</span><span>Indexed indirect draws</span></a>
+          <a href="https://github.com/KhronosGroup/MoltenVK/pull/2776" target="_blank" rel="noopener"><span>#2776</span><span>Sampler min/max</span></a>
+        </div>
+      </div>
     </section>
-
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="opensource">
-      <h2 data-i18n="opensource.heading">Open Source</h2>
-      <p data-i18n="moltenvk.desc">I contribute to Khronos MoltenVK, the Vulkan driver for Apple platforms. Four of my patches are merged. Vulkan ray tracing on macOS, mesh shaders and a few fixes are still in review.</p>
-      <p data-i18n="moltenvk.review">In review</p>
-      <p class="links"><a href="https://github.com/KhronosGroup/MoltenVK/pull/2771" target="_blank" rel="noopener">#2771 ray tracing</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2842" target="_blank" rel="noopener">#2842 mesh shaders</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2837" target="_blank" rel="noopener">#2837 descriptor sets</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2820" target="_blank" rel="noopener">#2820 tessellation</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2843" target="_blank" rel="noopener">#2843 spec constants</a></p>
-      <p data-i18n="moltenvk.merged">Merged</p>
-      <p class="links"><a href="https://github.com/KhronosGroup/MoltenVK/pull/2819" target="_blank" rel="noopener">#2819 encoder dependencies</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2790" target="_blank" rel="noopener">#2790 indirect draws</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2788" target="_blank" rel="noopener">#2788 indexed indirect</a> <a href="https://github.com/KhronosGroup/MoltenVK/pull/2776" target="_blank" rel="noopener">#2776 sampler min/max</a></p>
-    </section>
-
-    <pre class="fill" data-lines="7" aria-hidden="true"></pre>
-
-    <section class="gene" id="contact">
-      <h2 data-i18n="nav.contact">Contact</h2>
-      <p class="links"><a href="mailto:deyan@misul.org">deyan@misul.org</a> <a href="https://github.com/dttdrv" target="_blank" rel="noopener">GitHub</a> <a href="https://x.com/dttdrv" target="_blank" rel="noopener">X</a></p>
-    </section>
-
-    <pre class="fill" data-screen="0.4" aria-hidden="true"></pre>
   </main>
+
+  <footer class="close" id="contact">
+    <p class="ask" data-i18n="contact.line">Write to me about Epigenesis, Misul or something you are building.</p>
+    <a class="email" href="mailto:deyan@misul.org">deyan@misul.org</a>
+    <div class="corners">
+      <span data-i18n="contact.place">Sofia, Bulgaria</span>
+      <span><a href="https://github.com/dttdrv" target="_blank" rel="noopener">GitHub</a> <a href="https://x.com/dttdrv" target="_blank" rel="noopener">X</a> <a href="https://misul.org" target="_blank" rel="noopener">Misul</a></span>
+    </div>
+    <p class="credits">Pictures: <a href="https://commons.wikimedia.org/wiki/File:BASA-1577K-1-61-12-Sofia,_Bulgaria.JPG" target="_blank" rel="noopener">Targovska Street, Sofia</a>, Bulgarian State Archives, public domain. <a href="https://commons.wikimedia.org/wiki/File:The_development_of_the_chick;_an_introduction_to_embryology_(1908)_(20703166960).jpg" target="_blank" rel="noopener">The Development of the Chick</a>, Internet Archive Book Images, no known copyright restrictions. <a href="https://commons.wikimedia.org/wiki/File:Jacquard_loom_cards.jpg" target="_blank" rel="noopener">Jacquard loom cards</a> by Robert-brook, CC0. All via Wikimedia Commons, printed with <a href="https://shaders.paper.design" target="_blank" rel="noopener">Paper Shaders</a>.</p>
+  </footer>
 
   <script type="module" src="home/main.js"></script>
 </body>

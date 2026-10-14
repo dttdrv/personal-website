@@ -2,137 +2,276 @@
   color-scheme: light dark;
   --paper: #FFFFFF;
   --ink: #0E0E0E;
-  --muted: #767676;
-  --base: rgb(0 0 0 / 0.17);
+  --soft: #5C5C5C;
   --accent: #0000FF;
 
   --display: 'Instrument Serif', Georgia, serif;
-  --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --text: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  /* one letter size for the whole strand; every measure on the page is a multiple of it */
-  --size: clamp(14px, 0.4vw + 12px, 18px);
-  --read-at: 87%;
+
+  /* five steps: small, text, middle, large, and the display sizes that fill a width */
+  --small: 15px;
+  --body: clamp(17px, 0.25vw + 16px, 19px);
+  --middle: clamp(22px, 1.6vw + 12px, 34px);
+  --large: clamp(40px, 4.4vw, 72px);
+
+  --margin: clamp(20px, 3.4vw, 48px);
+  --gap: clamp(20px, 2.4vw, 40px);
+  /* the share of the first screen the portrait or product picture takes */
+  --cover: 44vw;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --paper: #101010;
-    --ink: #F5F5F5;
-    --muted: #8A8A8A;
-    --base: rgb(255 255 255 / 0.17);
-    --accent: #4D79FF;
+    --ink: #F2F2F2;
+    --soft: #A0A0A0;
+    --accent: #6F8FFF;
   }
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { background: var(--paper); scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { background: var(--paper); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
-  font: 500 var(--size)/1.75 var(--mono);
-  letter-spacing: 0.1em;
+  font: 400 var(--body)/1.55 var(--text);
   color: var(--ink);
+  background: var(--paper);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   font-synthesis: none;
-  font-variant-ligatures: none;
+  text-rendering: optimizeLegibility;
 }
 
-a { color: inherit; text-decoration: none; }
-h1, h2 { font: inherit; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+h1, h2, h3 { font-weight: 400; }
+h2 { font: 400 var(--large)/1 var(--display); letter-spacing: -0.02em; }
+p { text-wrap: pretty; }
+ul { list-style: none; }
+figcaption, .note { font-size: var(--small); color: var(--soft); }
+figcaption { margin-top: 14px; max-width: 40em; }
+.lead { font: 400 var(--middle)/1.2 var(--display); }
 
-/* the reading height: two small marks at the edges of the screen */
-body::after {
-  content: '';
-  position: fixed;
-  inset: var(--read-at) 0 auto;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent) 0 0.9rem, transparent 0.9rem calc(100% - 0.9rem), var(--accent) calc(100% - 0.9rem));
-  pointer-events: none;
-}
-
-/* === Top bar === */
-.bar {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 1rem;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
+/* the one action in the top row is a plain underlined link with a full-size target */
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
   white-space: nowrap;
-  background: var(--paper);
 }
-.bar nav { display: flex; gap: clamp(0.7rem, 2.2vw, 1.6rem); overflow-x: auto; scrollbar-width: none; }
-.bar a { color: var(--ink); transition: color 150ms; }
-.bar a:hover { color: var(--accent); }
-.bar nav a::before { content: '>'; }
 
-/* === The strand === */
-.fill, .row { white-space: pre; overflow: hidden; }
-.fill { font: inherit; color: var(--base); }
-.row { display: block; }
-.b { color: var(--base); }
-.g { color: var(--ink); transition: color 300ms; }
-.row:not(.read) .g { color: var(--base); }
-/* once a line is read, the strand around it steps back so the words stand clear */
-.row.read .b { opacity: 0.4; transition: opacity 400ms; }
-.n { font-weight: 700; }
-.t { font-weight: 700; color: var(--accent); }
-a.g { text-decoration: underline; text-decoration-color: var(--base); text-underline-offset: 0.25em; transition: color 150ms, text-decoration-color 150ms; }
-.read a.g:hover { color: var(--accent); text-decoration-color: var(--accent); }
-.row:not(.read) a.g { text-decoration: none; }
-.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* === Pictures: printed in dots by a shader over the photograph, which stays for when there is no WebGL === */
+.print { position: relative; overflow: hidden; }
+.print img { display: block; width: 100%; height: 100%; object-fit: cover; transition: opacity 400ms; }
+[data-fit="contain"] img { object-fit: contain; }
+.print.printed img { opacity: 0; }
+/* where no photograph fits, a dithered shape; flat colour without WebGL */
+[data-shader="dither"] { background: color-mix(in srgb, var(--accent) 12%, var(--paper)); }
 
-/* before the script runs, and without it, the text is simply readable */
-.gene > :is(h2, p):not(:has(.row)), .gene figcaption:not(:has(.row)) { padding: 0.8em 1rem; max-width: 64ch; white-space: normal; letter-spacing: 0.02em; }
-
-/* === Hero: the name in its own type, laid over the strand === */
-.hero { position: relative; }
-.name {
+/* === The top row, over the half of the first screen that holds the name === */
+.top {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  font: 400 clamp(4.2rem, 16.5vw, 19.5rem)/0.85 var(--display);
-  letter-spacing: -0.03em;
-  user-select: none;
-  pointer-events: none;
-  text-shadow: 0 0 0.35em var(--paper), 0 0 0.1em var(--paper);
+  inset: 0 0 auto;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 20px var(--margin);
+  font-size: var(--small);
 }
-.name b { display: block; font-weight: 400; font-size: 1.48em; }
-/* a one-word name, such as a project's, takes the size of the larger line */
-.name:not(:has(b)) { font-size: clamp(4.4rem, 19vw, 24rem); }
-/* a letter still passing through bases; its width is already the real letter's */
-.letter { display: inline-block; text-align: center; transition: color 200ms; }
-.letter.unread { color: var(--base); }
+.top a:not(.button) { text-decoration: none; }
+.mark { font-weight: 500; margin-right: auto; }
+.top nav { display: flex; gap: 28px; }
+.top:has(~ main .cover) { right: var(--cover); }
 
-/* === Figures set in the strand === */
-.gene figure { display: block; }
+/* === First screen: the name as large as the half allows, the portrait printed to the edges beside it === */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 120px var(--margin) 56px;
+}
+.hero:has(.cover) { display: grid; grid-template-columns: minmax(0, 1fr) var(--cover); padding: 0; }
+.title { display: flex; flex-direction: column; justify-content: flex-end; padding: 120px var(--margin) 56px; }
+.cover { position: relative; }
+.cover .print { position: absolute; inset: 0; }
+.name {
+  font: 400 clamp(64px, 12.4vw, 230px)/0.86 var(--display);
+  letter-spacing: -0.04em;
+  view-transition-name: name;
+}
+/* each line rises from behind its own baseline */
+.name .line { display: block; overflow: hidden; padding-bottom: 0.07em; }
+.name .line > span { display: inline-block; }
+.js .name .line > span { animation: rise 900ms var(--ease) both; }
+.js .name .line + .line > span { animation-delay: 110ms; }
+.hero-line { max-width: 28ch; margin-top: 32px; font: 400 var(--middle)/1.25 var(--display); }
+.js .hero-line { animation: appear 700ms 450ms var(--ease) both; }
+.js .cover .print { animation: appear 900ms 150ms var(--ease) both; }
 
-/* === Leaving a page: what is not strand fades while the strand recomputes === */
-.name { transition: opacity 180ms; }
-.leaving .name { opacity: 0; }
+@keyframes rise { from { transform: translateY(105%); } }
+@keyframes appear { from { opacity: 0; transform: translateY(12px); } }
 
-@media (max-width: 520px) {
-  /* the name is already the whole first screen */
-  .bar > a { display: none; }
-  .bar { font-size: 0.8rem; letter-spacing: 0; }
-  .bar nav { width: 100%; justify-content: space-between; gap: 0.5rem; }
+/* === About: the credo across the page, a street in Sofia across the page under it === */
+.about { padding: 160px 0 0; }
+.statement {
+  max-width: 17em;
+  padding: 0 var(--margin);
+  font: 400 var(--large)/1.02 var(--display);
+  letter-spacing: -0.02em;
+}
+.band { margin-top: 72px; }
+.band .print { height: min(72svh, 56vw); }
+.under {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 16px;
+  padding: 20px var(--margin) 0;
+}
+.under .note { grid-column: 1 / 5; }
+.under p:last-child { grid-column: 7 / 13; max-width: 34em; }
+
+/* === Epigenesis: the words on the left, the embryo on the right, the machine below across the page === */
+.showcase {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 16px;
+  padding: 200px var(--margin) 0;
+}
+.showcase h2 { grid-column: 1 / -1; margin-bottom: 56px; }
+.showcase .copy { grid-column: 1 / 6; }
+.copy p + p { margin-top: 1em; }
+.copy .lead { margin-bottom: 1em; }
+.specimen { grid-column: 7 / 13; }
+.specimen .print { aspect-ratio: 1920 / 1316; }
+.machine { grid-column: 1 / -1; margin-top: 140px; }
+.stage { outline-offset: 8px; }
+.stage svg { display: block; width: 100%; height: auto; }
+
+/* === Work: two panels side by side, each headed by its own moving print === */
+.ledger {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 72px var(--gap);
+  padding: 200px var(--margin) 0;
+}
+.group > .print { aspect-ratio: 16 / 10; margin-bottom: 36px; }
+.group h2 { margin-bottom: 20px; }
+.group .intro { max-width: 30em; margin-bottom: 28px; }
+.group li { display: grid; grid-template-columns: 9em 1fr; column-gap: 20px; align-items: baseline; padding: 12px 0; transition: opacity 200ms; }
+.group li > :first-child { font: 400 var(--middle)/1.1 var(--display); text-decoration: none; }
+/* pointing at one row quiets the others */
+.group ul:has(a:hover) li:not(:has(a:hover)) { opacity: 0.4; }
+/* a product page's single panel reads across the page */
+.ledger:not(:has(.group + .group)) { grid-template-columns: minmax(0, 860px); }
+
+/* === Open source: the punched cards down the left, every pull request at one size on the right === */
+.lineup {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 16px;
+  align-items: start;
+  padding: 200px var(--margin);
+}
+.tall { grid-column: 1 / 6; position: sticky; top: 24px; }
+.tall .print { height: calc(100svh - 120px); }
+.lineup .side { grid-column: 7 / 13; }
+.lineup .side .lead { margin: 28px 0 72px; }
+.table { font-size: var(--middle); line-height: 1.5; }
+.table h3 { font: inherit; color: var(--accent); margin: 56px 0 12px; }
+.table h3:first-child { margin-top: 0; }
+.table a { display: grid; grid-template-columns: 4.6em 1fr; text-decoration: none; }
+.table a span:first-child { font-variant-numeric: tabular-nums; color: var(--soft); }
+.table a span { transition: color 150ms; }
+.table a:hover span { color: var(--accent); }
+
+/* a product page's download block */
+.lineup .head { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; row-gap: 24px; }
+.lineup .head h2 { grid-column: 1 / 6; }
+.lineup .head .copy { grid-column: 7 / 13; }
+.copy .links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 16px; }
+.legal { display: flex; gap: 24px; margin-top: 28px; font-size: var(--small); color: var(--soft); }
+
+/* === The close: the address as display type on the dark ground === */
+.close {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  padding: 40px var(--margin);
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+}
+.close a:hover { color: var(--accent); }
+.ask { max-width: 22ch; font: 400 var(--middle)/1.2 var(--display); }
+.email {
+  align-self: end;
+  font: 400 15.2vw/0.9 var(--display);
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 200ms;
+}
+.corners { display: flex; justify-content: space-between; gap: 24px; padding-top: 28px; font-size: var(--small); }
+.corners span:last-child { display: flex; gap: 20px; }
+.credits { max-width: 62em; margin-top: 48px; font-size: var(--small); opacity: 0.7; }
+
+/* === Entrances: each block rises once as it comes into view === */
+.armed [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 700ms var(--ease), transform 900ms var(--ease); }
+.armed [data-reveal].in { opacity: 1; transform: none; }
+.armed .copy[data-reveal].in, .armed .group + .group[data-reveal].in { transition-delay: 90ms; }
+.armed .specimen[data-reveal].in { transition-delay: 160ms; }
+
+/* going from page to page, the name stays and becomes the next one */
+@view-transition { navigation: auto; }
+
+/* === The phone gets its own composition === */
+@media (max-width: 720px) {
+  .top, .top:has(~ main .cover) { right: 0; padding: 4px var(--margin); background: var(--paper); }
+  .hero:has(.cover) { padding-top: 52px; }
+  .top nav { display: none; }
+  .hero { padding-top: 96px; }
+  .hero:has(.cover) { grid-template-columns: 1fr; padding-inline: 0; padding-bottom: 0; }
+  .cover { grid-row: 1; height: 58svh; }
+  .title { padding: 28px var(--margin) 32px; }
+  .name { font-size: 25vw; }
+  .hero-line { margin-top: 20px; }
+  .about { padding-top: 96px; }
+  .statement { font-size: 34px; }
+  .band { margin-top: 40px; }
+  .band .print { height: 64vw; }
+  .under { row-gap: 16px; }
+  .under .note, .under p:last-child { grid-column: 1 / -1; }
+  .showcase, .ledger, .lineup { padding-top: 120px; }
+  .showcase h2 { margin-bottom: 28px; }
+  .showcase .copy, .specimen, .lineup .side, .lineup .head h2, .lineup .head .copy { grid-column: 1 / -1; }
+  .specimen { margin-top: 48px; }
+  .machine { margin: 72px calc(-1 * var(--margin)) 0; }
+  .machine figcaption { padding: 0 var(--margin); }
+  .ledger { grid-template-columns: 1fr; }
+  .group li { grid-template-columns: 1fr; row-gap: 2px; padding: 10px 0; }
+  .tall { grid-column: 1 / -1; position: static; margin-bottom: 56px; }
+  .tall .print { height: 110vw; }
+  .lineup { padding-bottom: 120px; }
+  .table a { grid-template-columns: 4.2em 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { transition: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  @view-transition { navigation: none; }
 }
 
 @media print {
-  .bar, .fill, .b, body::after { display: none; }
-  .name { position: static; }
+  .top, .machine, [data-shader="dither"] { display: none; }
+  .hero, .close { min-height: 0; }
+  .close { background: none; color: inherit; }
+  .print.printed img { opacity: 1; }
+  .print canvas { display: none; }
 }

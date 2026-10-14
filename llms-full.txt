@@ -71,7 +71,7 @@ Misul is an independent AI research lab in Sofia, Bulgaria. The lab builds machi
 ## 3. Independent Projects
 
 ### 3.0 Epigenesis
-- **Scope**: Universal DNA translation compiler targeting Development Module IR (version 1.5, Python 3.11+, standard library only, Apache-2.0).
+- **Scope**: Universal DNA translation compiler targeting Development Module IR (version 1.6, Python 3.11+, standard library only, Apache-2.0).
 - **Repository**: `https://github.com/dttdrv/epigenesis`
 - **Pipeline**: DNA source language, grammar frontend, typed source bundle with profile-native IR, validated caller-supplied interpretation, target-bound lowering, Development Module IR, sealed compilation bundle.
 - **Sources**: Raw IUPAC, FASTA, streaming reference FASTA, GenBank, and GFF3 are built in. Other DNA-bearing grammars enter through digest-pinned external frontends with separate validators.

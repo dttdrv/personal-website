@@ -124,6 +124,12 @@ assert.ok(indexHtml.includes('inference engine for Apple Silicon'), 'index.html 
 for (const product of ['phonecode.html', 'optisys.html']) {
   assert.ok(!fs.readFileSync(path.join(ROOT, product), 'utf8').includes('<img'), `${product} must not show pictures`);
 }
+// what a shared link shows: the name alone, and the strand picture
+assert.match(indexHtml, /<title>Deyan Todorov<\/title>/, 'the page title must be the name alone');
+assert.match(indexHtml, /og:title" content="Deyan Todorov"/, 'the shared title must be the name alone');
+for (const [, image] of indexHtml.matchAll(/(?:og:image|twitter:image)" content="https:\/\/dttdrv\.xyz\/([^"]+)"/g)) {
+  assert.ok(fs.existsSync(path.join(ROOT, image)), `preview image ${image} must exist`);
+}
 // in-site links swap one strand page for another, so every page they lead to must be one
 for (const [, href] of indexHtml.matchAll(/href="((?!https?:|mailto:|#)[^"]+\.html)"/g)) {
   const target = fs.readFileSync(path.join(ROOT, href), 'utf8');

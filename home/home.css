@@ -10,7 +10,7 @@
   --mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   /* one letter size for the whole strand; every measure on the page is a multiple of it */
-  --size: clamp(13px, 0.55vw + 10px, 18px);
+  --size: clamp(14px, 0.4vw + 12px, 18px);
   --read-at: 87%;
 }
 
@@ -66,7 +66,7 @@ body::after {
   letter-spacing: 0.04em;
   text-transform: lowercase;
   white-space: nowrap;
-  background: linear-gradient(var(--paper) 55%, transparent);
+  background: var(--paper);
 }
 .bar nav { display: flex; gap: clamp(0.7rem, 2.2vw, 1.6rem); overflow-x: auto; scrollbar-width: none; }
 .bar a { color: var(--ink); transition: color 150ms; }

@@ -81,7 +81,7 @@ const sitemapPath = path.join(ROOT, 'sitemap.xml');
 assert.ok(fs.existsSync(sitemapPath), 'sitemap.xml must exist');
 const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
 assert.ok(sitemapContent.includes('<loc>https://dttdrv.xyz/</loc>'), 'sitemap.xml must include root');
-assert.ok(sitemapContent.includes('<loc>https://dttdrv.xyz/phonecode.html</loc>'), 'sitemap.xml must include phonecode.html');
+assert.ok(sitemapContent.includes('<loc>https://dttdrv.xyz/phonecode</loc>'), 'sitemap.xml must list phonecode by the extensionless URL Cloudflare Pages serves');
 console.log('✔ SEO & discoverability files validation passed.');
 
 // 4. Validate index.html Schema.org JSON-LD and Markup

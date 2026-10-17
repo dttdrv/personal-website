@@ -50,6 +50,7 @@ a:hover { color: var(--accent); }
 h1, h2, h3 { font-weight: 400; }
 h2 { font: 600 var(--large)/1 var(--text); letter-spacing: -0.04em; }
 p { text-wrap: pretty; }
+h1, h2, h3 { text-wrap: balance; }
 ul { list-style: none; }
 figcaption { font-size: var(--small); color: var(--soft); }
 figcaption { margin-top: 14px; max-width: 40em; }
@@ -64,6 +65,10 @@ figcaption { margin-top: 14px; max-width: 40em; }
   text-underline-offset: 0.25em;
   white-space: nowrap;
 }
+
+/* the first stop for the keyboard, out of sight until it is focused */
+.skip { position: absolute; z-index: 3; left: var(--margin); top: 12px; padding: 8px 12px; background: var(--paper); transform: translateY(-200%); }
+.skip:focus { transform: none; }
 
 /* === Pictures: printed in dots by a shader over the photograph, which stays for when there is no WebGL === */
 .print { position: relative; overflow: hidden; }

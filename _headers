@@ -1,0 +1,18 @@
+# Cloudflare Pages response headers. The script hash is the one inline line in index.html that sets the js class;
+# change that line and the hash has to change with it. Styles stay inline-allowed because Paper Shaders injects a <style>.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-VDVDNNRTREupwUTWnq6itaNdc1TFEVFbXV4xlAS7Gow='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Link: </llms.txt>; rel="alternate"; type="text/plain", </sitemap.xml>; rel="sitemap"
+
+# every stylesheet and script URL carries a ?v= stamp (scripts/stamp.mjs), so browsers may keep them for good
+/home/*
+  Cache-Control: public, max-age=31536000, immutable
+/fonts.css
+  Cache-Control: public, max-age=31536000, immutable
+/styles.css
+  Cache-Control: public, max-age=31536000, immutable

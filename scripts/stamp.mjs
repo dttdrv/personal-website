@@ -11,7 +11,7 @@ const STAMP = /\?v=[0-9a-f]+/g;
 const walk = dir => readdirSync(join(ROOT, dir), { withFileTypes: true }).flatMap(e =>
   e.isDirectory() ? (e.name === 'vendor' ? [] : walk(join(dir, e.name))) : [join(dir, e.name)]);
 
-const code = ['fonts.css', 'styles.css', ...walk('home')].filter(f => /\.(css|js)$/.test(f)).sort();
+const code = ['fonts.css', ...walk('home')].filter(f => /\.(css|js)$/.test(f)).sort();
 const pages = readdirSync(ROOT).filter(f => f.endsWith('.html'));
 
 const hash = createHash('sha256');

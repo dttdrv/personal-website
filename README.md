@@ -3,7 +3,7 @@ personal website
 research, software and contact info, with live figures that run in the browser.
 
 static html, css and javascript modules; no build step and no dependencies.
-the home page is set in Instrument Serif and Inter, with its pictures printed in halftone by Paper Shaders (`home/plates.js`); it lives in `index.html` and `home/`. the PhoneCode privacy and terms pages keep `styles.css`.
+every page is set in Inter and shares `home/home.css`; pictures are printed in halftone by Paper Shaders (`home/plates.js`).
 
 theme and language follow your system settings automatically.
 

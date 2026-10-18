@@ -89,7 +89,10 @@ figcaption { margin-top: 14px; max-width: 40em; }
   padding: 20px var(--margin);
   font-size: var(--small);
 }
+.top { container-type: inline-size; }
+.top a { white-space: nowrap; }
 .top a:not(.button) { text-decoration: none; }
+@container (max-width: 560px) { .top nav { display: none; } }
 .mark { font-weight: 500; margin-right: auto; }
 .top nav { display: flex; gap: 28px; }
 .top:has(~ main .cover) { right: var(--cover); }
@@ -99,11 +102,13 @@ figcaption { margin-top: 14px; max-width: 40em; }
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 120px var(--margin) 56px;
 }
 .hero:has(.cover) { display: grid; grid-template-columns: minmax(0, 1fr) var(--cover); padding: 0; }
-.title { display: flex; flex-direction: column; justify-content: flex-end; padding: 120px var(--margin) 56px; }
+.title { display: flex; flex-direction: column; justify-content: center; padding: 120px var(--margin) 56px; container-type: inline-size; }
+/* beside a picture the name never runs past its half: 19cqi fits the widest name, PhoneCode */
+.title .name { font-size: min(clamp(64px, 10.6vw, 196px), 19cqi); }
 .cover { position: relative; }
 .cover .print { position: absolute; inset: 0; }
 .name {
@@ -114,15 +119,21 @@ figcaption { margin-top: 14px; max-width: 40em; }
 /* standing alone, the name runs the width of the page */
 .hero:not(:has(.cover)) .name { font-size: 24vw; }
 /* each line rises from behind its own baseline */
-.name .line { display: block; overflow: hidden; padding-bottom: 0.07em; }
+/* at 0.86 line height a descender reaches 1.005em below the line top, so each mask leaves 1.02em and gives the extra back */
+.name .line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.09em; }
 .name .line > span { display: inline-block; }
-.js .name .line > span { animation: rise 900ms var(--ease) both; }
-.js .name .line + .line > span { animation-delay: 110ms; }
+.name .ch { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  /* main.js splits the name into letters that rise one after another; if it never runs, the whole line rises late instead */
+  .js .name .line > span { animation: rise 900ms 1200ms var(--ease) both; }
+  .js .name.split .line > span { animation: none; }
+  .js .name .ch { animation: rise 1100ms calc(120ms + var(--i) * 32ms) var(--ease) both; }
+}
 .hero-line { max-width: 26ch; margin-top: 32px; font: 500 var(--middle)/1.25 var(--text); letter-spacing: -0.02em; }
 .js .hero-line { animation: appear 700ms 450ms var(--ease) both; }
 .js .cover .print { animation: appear 900ms 150ms var(--ease) both; }
 
-@keyframes rise { from { transform: translateY(105%); } }
+@keyframes rise { from { transform: translateY(110%) rotate(4deg); } }
 @keyframes appear { from { opacity: 0; transform: translateY(12px); } }
 
 /* === Byala Slatina across the page === */
@@ -180,7 +191,8 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .group > .print { aspect-ratio: 16 / 10; margin-bottom: 36px; }
 .group h2 { margin-bottom: 20px; }
 .group .intro { max-width: 30em; margin-bottom: 28px; }
-.group li { display: grid; grid-template-columns: 9em 1fr; column-gap: 20px; align-items: baseline; padding: 12px 0; transition: opacity 200ms; }
+.group ul { display: grid; grid-template-columns: max-content minmax(0, 1fr); column-gap: 28px; }
+.group li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: baseline; padding: 12px 0; transition: opacity 200ms; }
 .group li > :first-child { font: 500 var(--middle)/1.15 var(--text); letter-spacing: -0.02em; text-decoration: none; }
 /* pointing at one row quiets the others */
 .group ul:has(a:hover) li:not(:has(a:hover)) { opacity: 0.4; }
@@ -195,7 +207,7 @@ figcaption { margin-top: 14px; max-width: 40em; }
   align-items: start;
   padding: 200px var(--margin);
 }
-.lineup .side { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: start; }
+.lineup .side { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; grid-template-rows: auto 1fr; align-items: start; }
 .lineup .side > h2, .lineup .side > .lead { grid-column: 1 / 6; }
 .lineup .side > .lead { margin-top: 28px; }
 .lineup .side > .table { grid-column: 7 / 13; grid-row: 1 / span 2; }
@@ -214,6 +226,15 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .copy .links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 16px; }
 .legal { display: flex; gap: 24px; margin-top: 28px; font-size: var(--small); color: var(--soft); }
 
+/* === Legal pages: one readable column under the top row === */
+.doc { max-width: calc(720px + 2 * var(--margin)); margin: 0 auto; padding: 160px var(--margin) 160px; }
+.doc h1 { font: 600 var(--large)/1 var(--text); letter-spacing: -0.04em; }
+.doc .date { margin: 20px 0 72px; font-size: var(--small); color: var(--soft); }
+.doc h2 { font: 500 var(--middle)/1.2 var(--text); letter-spacing: -0.02em; margin: 64px 0 16px; }
+.doc p + p, .doc ul + p, .doc p + ul { margin-top: 1em; }
+.doc ul { list-style: disc; padding-left: 1.2em; }
+.doc li + li { margin-top: 0.5em; }
+
 /* === The close: the address as display type on the dark ground === */
 .close {
   min-height: 100svh;
@@ -225,6 +246,9 @@ figcaption { margin-top: 14px; max-width: 40em; }
   overflow: hidden;
 }
 .close a:hover { color: var(--accent); }
+@media (prefers-color-scheme: dark) {
+  .close { background: color-mix(in srgb, var(--accent) 14%, var(--paper)); color: var(--ink); }
+}
 .ask { max-width: 22ch; font: 500 var(--middle)/1.25 var(--text); letter-spacing: -0.02em; }
 .email {
   align-self: end;
@@ -239,28 +263,59 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .credits { max-width: 62em; margin-top: 48px; font-size: var(--small); opacity: 0.7; }
 
 /* === Entrances: each block rises once as it comes into view === */
-.armed [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 700ms var(--ease), transform 900ms var(--ease); }
+/* words lift in, headings rise out of their own line, pictures open from the bottom, rows follow one another */
+.armed [data-reveal] { opacity: 0; transform: translateY(32px); transition: opacity 800ms var(--ease), transform 1100ms var(--ease); }
 .armed [data-reveal].in { opacity: 1; transform: none; }
 .armed .copy[data-reveal].in, .armed .group + .group[data-reveal].in { transition-delay: 90ms; }
+.armed [data-reveal] h2 { clip-path: inset(-0.2em -0.2em 100% -0.2em); transform: translateY(0.4em); transition: clip-path 1100ms var(--ease), transform 1100ms var(--ease); }
+.armed [data-reveal].in h2 { clip-path: inset(-0.2em -0.2em -0.3em -0.2em); transform: none; }
+.armed .print[data-reveal], .armed [data-reveal] > .print, .armed .band > .print { opacity: 1; transform: none; clip-path: inset(100% 0 0 0); transition: clip-path 1400ms var(--ease); }
+.armed .print[data-reveal].in, .armed [data-reveal].in > .print, .armed .band.in > .print { clip-path: inset(0); }
 .armed .specimen[data-reveal].in { transition-delay: 160ms; }
+.armed :is(.print[data-reveal], [data-reveal] > .print, .band > .print) > * { scale: 1.12; transition: scale 1800ms var(--ease), opacity 400ms; }
+.armed .in.print > *, .armed .in > .print > * { scale: 1; }
+.armed [data-reveal] :is(li, .table > *) { opacity: 0; translate: 0 14px; transition: opacity 700ms var(--ease), translate 900ms var(--ease); transition-delay: calc(200ms + var(--i, 0) * 55ms); }
+.armed [data-reveal].in :is(li, .table > *) { opacity: 1; translate: none; }
+.armed :is(.about, .showcase, .ledger, .lineup)::before { transform: scaleX(0); transform-origin: left; transition: transform 1400ms var(--ease); }
+.armed :is(.about, .showcase, .ledger, .lineup).in::before { transform: none; }
+
+/* scrolling away, the name drifts up behind the page; scrolling in, the address slides home */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero .name { animation: drift linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+    .email { animation: arrive linear both; animation-timeline: view(); animation-range: entry 0% entry 100%; }
+  }
+}
+@keyframes drift { to { transform: translateY(-18%); opacity: 0.2; } }
+@keyframes arrive { from { transform: translateX(12%); } }
 
 /* going from page to page, the name stays and becomes the next one */
 @view-transition { navigation: auto; }
+
+/* === Tablets: panels stack before their columns get too narrow to read === */
+@media (max-width: 1024px) {
+  .showcase .copy { grid-column: 1 / 9; }
+  .specimen { grid-column: 1 / -1; margin-top: 56px; aspect-ratio: 16 / 9; }
+  .ledger { grid-template-columns: minmax(0, 1fr); }
+  .lineup .side > h2, .lineup .side > .lead, .lineup .side > .table { grid-column: 1 / -1; }
+  .lineup .side > .table { grid-row: auto; margin-top: 56px; }
+  .lineup .side > .lead { max-width: 34em; }
+}
 
 /* === The phone gets its own composition === */
 @media (max-width: 720px) {
   /* one column on the margins; pictures run to the edges of the screen */
   .top, .top:has(~ main .cover) { right: 0; min-height: 52px; padding: 0 var(--margin); background: var(--paper); }
   .top nav { display: none; }
-  .hero { padding-top: 96px; }
-  .hero:has(.cover) { grid-template-columns: minmax(0, 1fr); padding: 52px 0 0; }
+  .hero { padding: 76px var(--margin) 40px; }
+  .hero:has(.cover) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; padding: 52px 0 0; }
   .cover { grid-row: 1; aspect-ratio: 4 / 5; }
   /* a whole screenshot keeps its own shape instead of floating in paper */
   .cover:has([data-fit="contain"]) { aspect-ratio: 652 / 480; }
   .title { padding: 28px var(--margin) 48px; }
-  .name { font-size: 20.5vw; }
+  .name, .hero:not(:has(.cover)) .name { font-size: 20.5vw; }
   /* a product's one long word gets the width a two-line name gets per line */
-  .name:not(:has(.line + .line)) { font-size: 15vw; }
+  .title .name:not(:has(.line + .line)) { font-size: 15vw; }
   .hero-line { margin-top: 20px; font-size: 20px; }
 
   .about, .showcase, .ledger, .lineup { padding-top: 72px; }
@@ -272,7 +327,9 @@ figcaption { margin-top: 14px; max-width: 40em; }
 
   .ledger { grid-template-columns: 1fr; row-gap: 72px; }
   .group > .print { margin: 0 calc(-1 * var(--margin)) 28px; }
+  .group ul { display: block; }
   .group li { grid-template-columns: 1fr; row-gap: 2px; padding: 10px 0; }
+  .doc { padding-top: 112px; }
 
   .lineup { padding-bottom: 96px; }
   .lineup .side > h2, .lineup .side > .lead, .lineup .side > .table { grid-column: 1 / -1; }

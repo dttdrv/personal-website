@@ -73,7 +73,6 @@ figcaption { margin-top: 14px; max-width: 40em; }
 /* === Pictures: printed in dots by a shader over the photograph, which stays for when there is no WebGL === */
 .print { position: relative; overflow: hidden; }
 .print img { display: block; width: 100%; height: 100%; object-fit: cover; transition: opacity 400ms; }
-[data-fit="contain"] img { object-fit: contain; }
 .print.printed img { opacity: 0; }
 /* where no photograph fits, a dithered shape; flat colour without WebGL */
 [data-shader="dither"] { background: color-mix(in srgb, var(--accent) 12%, var(--paper)); }
@@ -111,6 +110,11 @@ figcaption { margin-top: 14px; max-width: 40em; }
 .title .name { font-size: min(clamp(64px, 10.6vw, 196px), 19cqi); }
 .cover { position: relative; }
 .cover .print { position: absolute; inset: 0; }
+/* a product screenshot stays whole and unprinted, so its words can be read, on a panel in the accent */
+.cover { background: color-mix(in srgb, var(--accent) 10%, var(--paper)); }
+.shot { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: clamp(40px, 6vw, 96px); }
+.shot img { width: auto; height: auto; max-width: 100%; max-height: 100%; }
+.shot img[height="2400"] { border-radius: clamp(18px, 2.2vw, 32px); outline: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); }
 .name {
   font: 600 clamp(64px, 10.6vw, 196px)/0.86 var(--text);
   letter-spacing: -0.055em;
@@ -311,7 +315,9 @@ figcaption { margin-top: 14px; max-width: 40em; }
   .hero:has(.cover) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; padding: 52px 0 0; }
   .cover { grid-row: 1; aspect-ratio: 4 / 5; }
   /* a whole screenshot keeps its own shape instead of floating in paper */
-  .cover:has([data-fit="contain"]) { aspect-ratio: 652 / 480; }
+  .cover:has(.shot) { aspect-ratio: auto; }
+  .cover .shot { position: static; padding: 32px var(--margin); }
+  .shot img { max-height: 58svh; }
   .title { padding: 28px var(--margin) 48px; }
   .name, .hero:not(:has(.cover)) .name { font-size: 20.5vw; }
   /* a product's one long word gets the width a two-line name gets per line */

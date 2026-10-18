@@ -1,4 +1,4 @@
-import { STRINGS } from './strings.js?v=675e030e78';
+import { STRINGS } from './strings.js?v=7c9b4e7ff0';
 
 const lang = (navigator.language || 'en').toLowerCase().startsWith('bg') ? 'bg' : 'en';
 const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -38,7 +38,7 @@ if (prints.length) {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       near.unobserve(entry.target);
-      import('./plates.js?v=675e030e78').then(m => m.print(entry.target, still));
+      import('./plates.js?v=7c9b4e7ff0').then(m => m.print(entry.target, still));
     }
   }, { rootMargin: '50% 0px' });
   for (const el of prints) near.observe(el);

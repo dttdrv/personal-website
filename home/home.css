@@ -109,12 +109,13 @@ figcaption { margin-top: 14px; max-width: 40em; }
 /* beside a picture the name never runs past its half: 19cqi fits the widest name, PhoneCode */
 .title .name { font-size: min(clamp(64px, 10.6vw, 196px), 19cqi); }
 .cover { position: relative; }
-.cover .print { position: absolute; inset: 0; }
-/* a product screenshot stays whole and unprinted, so its words can be read, on a panel in the accent */
+.cover > .print { position: absolute; inset: 0; }
+/* a product screenshot is printed whole on a panel in the accent, in a box of its own shape with its own rounded corners,
+   so nothing outside the screenshot prints; pointing at it closes up the dots and then shows the screenshot itself */
 .cover { background: color-mix(in srgb, var(--accent) 10%, var(--paper)); }
-.shot { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: clamp(40px, 6vw, 96px); }
-.shot img { width: auto; height: auto; max-width: 100%; max-height: 100%; }
-.shot img[height="2400"] { border-radius: clamp(18px, 2.2vw, 32px); outline: 1px solid color-mix(in srgb, var(--ink) 14%, transparent); }
+.shot { position: absolute; inset: 0; display: grid; place-items: center; padding: clamp(40px, 6vw, 96px); container-type: size; }
+.shot .print { width: min(100cqw, 100cqh * var(--ar)); aspect-ratio: var(--ar); outline: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+.shot .print.printed:hover img { opacity: 1; transition-delay: 220ms; }
 .name {
   font: 600 clamp(64px, 10.6vw, 196px)/0.86 var(--text);
   letter-spacing: -0.055em;
@@ -316,8 +317,7 @@ figcaption { margin-top: 14px; max-width: 40em; }
   .cover { grid-row: 1; aspect-ratio: 4 / 5; }
   /* a whole screenshot keeps its own shape instead of floating in paper */
   .cover:has(.shot) { aspect-ratio: auto; }
-  .cover .shot { position: static; padding: 32px var(--margin); }
-  .shot img { max-height: 58svh; }
+  .shot { position: relative; height: min(calc((100vw - 2 * var(--margin)) / var(--ar) + 64px), 62svh); padding: 32px var(--margin); }
   .title { padding: 28px var(--margin) 48px; }
   .name, .hero:not(:has(.cover)) .name { font-size: 20.5vw; }
   /* a product's one long word gets the width a two-line name gets per line */
